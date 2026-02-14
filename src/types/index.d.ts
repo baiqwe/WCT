@@ -1,22 +1,47 @@
 /**
- * Config types (no i18n). Used by website and other config modules.
+ * Website config types (no i18n). Used by website and other config modules.
  * Icon is React component (e.g. from @tabler/icons-react) for menu items.
  */
 import type { ComponentType } from 'react';
 
+/** Website config */
+export interface WebsiteConfig {
+  ui?: UiConfig;
+  metadata?: MetadataConfig;
+  features?: FeaturesConfig;
+  routes?: RoutesConfig;
+  analytics?: AnalyticsConfig;
+  auth?: AuthConfig;
+  blog?: BlogConfig;
+  mail?: MailConfig;
+  newsletter?: NewsletterConfig;
+  storage?: StorageConfig;
+  payment?: PaymentConfig;
+  price?: PriceConfig;
+}
+
+/** UI configuration */
 export interface UiConfig {
   mode?: {
-    defaultMode?: 'light' | 'dark' | 'system';
-    enableSwitch?: boolean;
+    defaultMode?: 'light' | 'dark' | 'system';  // The default mode of the website
+    enableSwitch?: boolean;                     // Whether to enable the mode switch
   };
 }
 
-export interface ImagesConfig {
-  ogImage?: string;
-  logoLight?: string;
-  logoDark?: string;
+/** Website metadata */
+export interface MetadataConfig {
+  images?: ImagesConfig;
+  social?: SocialConfig;
 }
 
+/** Website metadata */
+export interface ImagesConfig {
+  ogImage?: string;     // The image as Open Graph image
+  logoLight?: string;    // The light logo image
+  logoDark?: string;    // The dark logo image
+}
+
+/** Social media configuration */
 export interface SocialConfig {
   github?: string;
   twitter?: string;
@@ -31,66 +56,79 @@ export interface SocialConfig {
   telegram?: string;
 }
 
-export interface MetadataConfig {
-  images?: ImagesConfig;
-  social?: SocialConfig;
-}
-
+/** Website features */
 export interface FeaturesConfig {
-  enableUpgradeCard?: boolean;
-  enableUpdateAvatar?: boolean;
-  enableCrispChat?: boolean;
-  enableTurnstileCaptcha?: boolean;
+  enableUpgradeCard?: boolean;      // Whether to enable the upgrade card in the sidebar
+  enableUpdateAvatar?: boolean;     // Whether to enable the update avatar in settings
+  enableCrispChat?: boolean;        // Whether to enable the crisp chat
+  enableTurnstileCaptcha?: boolean; // Whether to enable turnstile captcha
 }
 
+/** Routes configuration */
 export interface RoutesConfig {
-  defaultLoginRedirect?: string;
+  defaultLoginRedirect?: string;    // The default login redirect route
 }
 
+/** Analytics configuration */
 export interface AnalyticsConfig {
-  enableVercelAnalytics?: boolean;
-  enableSpeedInsights?: boolean;
+  enable: boolean;                  // Whether to enable the analytics
+  enableVercelAnalytics?: boolean;  // Whether to enable vercel analytics
+  enableSpeedInsights?: boolean;    // Whether to enable speed insights
 }
 
+/** Auth configuration */
 export interface AuthConfig {
-  enableGoogleLogin?: boolean;
-  enableCredentialLogin?: boolean;
+  enable: boolean;                // Whether to enable the auth
+  enableGoogleLogin?: boolean;     // Whether to enable google login
+  enableCredentialLogin?: boolean; // Whether to enable email/password login
 }
 
-export interface I18nConfig {
-  defaultLocale: string;
-  locales: Record<string, { flag?: string; name: string; hreflang?: string }>;
-}
-
+/** Blog configuration */
 export interface BlogConfig {
-  enable: boolean;
-  paginationSize?: number;
-  relatedPostsSize?: number;
+  enable: boolean;           // Whether to enable the blog
+  paginationSize?: number;  // Number of posts per page
+  relatedPostsSize?: number; // Number of related posts to show
 }
 
-export interface DocsConfig {
-  enable: boolean;
-}
-
+/** Mail configuration */
 export interface MailConfig {
-  provider: 'resend';
-  fromEmail?: string;
-  supportEmail?: string;
+  enable: boolean;         // Whether to enable the mail
+  provider?: 'resend';       // The email provider, only resend is supported for now
+  fromEmail?: string;       // The email address to send from
+  supportEmail?: string;    // The email address to send support emails to
 }
 
+/** Newsletter configuration */
 export interface NewsletterConfig {
-  enable: boolean;
-  provider?: 'resend' | 'beehiiv';
-  autoSubscribeAfterSignUp?: boolean;
+  enable: boolean;                    // Whether to enable the newsletter
+  provider?: 'resend' | 'beehiiv';    // The newsletter provider
+  autoSubscribeAfterSignUp?: boolean; // Whether to automatically subscribe users after sign up
 }
 
+/** Storage configuration */
 export interface StorageConfig {
-  enable: boolean;
-  provider?: 'r2';
+  enable: boolean;   // Whether to enable the storage
+  provider?: 'r2';   // The storage provider (e.g. R2)
 }
 
+/** Payment configuration */
 export interface PaymentConfig {
-  provider?: 'stripe';
+  provider?: 'stripe';  // The payment provider, only stripe is supported for now
+}
+
+/** Price configuration - plans indexed by ID */
+export interface PriceConfig {
+  enable: boolean;   // Whether to enable the price
+  plans: Record<string, PlanConfig>;
+}
+
+/** Plan config in websiteConfig.price.plans */
+export interface PlanConfig {
+  id: string;
+  prices: PriceItemConfig[];
+  isFree: boolean;
+  isLifetime: boolean;
+  popular?: boolean;
 }
 
 /** Price item for a plan (subscription or one-time) */
@@ -103,80 +141,13 @@ export interface PriceItemConfig {
   allowPromotionCode?: boolean;
 }
 
-/** Credits config for a plan */
-export interface PlanCreditsConfig {
-  enable: boolean;
-  amount: number;
-  expireDays?: number;
-}
-
-/** Plan config in websiteConfig.price.plans */
-export interface PlanConfig {
-  id: string;
-  prices: PriceItemConfig[];
-  isFree: boolean;
-  isLifetime: boolean;
-  popular?: boolean;
-  credits?: PlanCreditsConfig;
-}
-
-export interface PriceConfig {
-  plans: Record<string, PlanConfig>;
-}
-
-/** Credit package price */
-export interface CreditPackagePriceConfig {
-  priceId: string;
-  amount: number;
-  currency: string;
-  allowPromotionCode?: boolean;
-}
-
-/** Credit package config */
-export interface CreditPackageConfig {
-  id: string;
-  amount: number;
-  expireDays?: number;
-  popular: boolean;
-  price: CreditPackagePriceConfig;
-}
-
-export interface CreditsConfig {
-  enableCredits: boolean;
-  enablePackagesForFreePlan?: boolean;
-  registerGiftCredits: {
-    enable: boolean;
-    amount: number;
-    expireDays?: number;
-  };
-  packages: Record<string, CreditPackageConfig>;
-}
-
-export interface WebsiteConfig {
-  ui?: UiConfig;
-  metadata?: MetadataConfig;
-  features?: FeaturesConfig;
-  routes: RoutesConfig;
-  analytics?: AnalyticsConfig;
-  auth: AuthConfig;
-  i18n?: I18nConfig;
-  blog?: BlogConfig;
-  docs?: DocsConfig;
-  mail: MailConfig;
-  newsletter?: NewsletterConfig;
-  storage?: StorageConfig;
-  payment?: PaymentConfig;
-  price?: PriceConfig;
-  credits?: CreditsConfig;
-}
-
-/** Menu item for navbar/sidebar/footer. */
+/** Menu item for navbar links, sidebar links, footer links. */
 export interface MenuItemConfig {
-  title: string;
-  description?: string;
-  href?: string;
-  icon?: ComponentType<{ className?: string }>;
-  external?: boolean;
-  authorizeOnly?: string[];
-  items?: MenuItemConfig[];
+  title: string;                                   // The text to display
+  description?: string;                             // The description of the item
+  href?: string;                                    // The url to link to
+  icon?: ComponentType<{ className?: string }>;     // The icon to display (e.g. from @tabler/icons-react)
+  external?: boolean;                                // Whether the link is external
+  authorizeOnly?: string[];                          // The roles that are authorized to see the item
+  items?: MenuItemConfig[];                         // Nested items for dropdown/group
 }

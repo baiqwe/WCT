@@ -2,16 +2,7 @@ import { websiteConfig } from './config/website';
 
 export const Routes = {
   Root: '/',
-  // Auth routes
-  Login: '/auth/login',
-  Register: '/auth/register',
-  AuthError: '/auth/error',
-  ForgotPassword: '/auth/forgot-password',
-  ResetPassword: '/auth/reset-password',
-  // Legal routes
-  TermsOfService: '/terms',
-  PrivacyPolicy: '/privacy',
-  CookiePolicy: '/cookie',
+  
   // Marketing routes
   Features: '/features',
   Pricing: '/pricing',
@@ -20,6 +11,19 @@ export const Routes = {
   About: '/about',
   Contact: '/contact',
   Waitlist: '/waitlist',
+
+  // Auth routes
+  Login: '/auth/login',
+  Register: '/auth/register',
+  AuthError: '/auth/error',
+  ForgotPassword: '/auth/forgot-password',
+  ResetPassword: '/auth/reset-password',
+  
+  // Legal routes
+  TermsOfService: '/terms',
+  PrivacyPolicy: '/privacy',
+  CookiePolicy: '/cookie',
+  
   // Settings routes
   Dashboard: '/dashboard',
   SettingsProfile: '/dashboard/settings/profile',
@@ -27,9 +31,10 @@ export const Routes = {
   SettingsCredits: '/dashboard/settings/credits',
   SettingsSecurity: '/dashboard/settings/security',
   SettingsNotifications: '/dashboard/settings/notifications',
+  
   // Admin routes
   AdminUsers: '/dashboard/admin/users',
 } as const;
 
 export const DEFAULT_LOGIN_REDIRECT =
-  websiteConfig.routes.defaultLoginRedirect ?? Routes.Dashboard;
+  websiteConfig.routes?.defaultLoginRedirect ?? Routes.Dashboard;
