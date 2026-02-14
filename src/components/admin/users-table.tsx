@@ -16,6 +16,7 @@ import type { AdminUser } from '@/hooks/use-users';
 import { messages } from '@/config/messages';
 import {
   type ColumnDef,
+  type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -49,13 +50,14 @@ interface UsersTableProps {
   pageIndex: number;
   pageSize: number;
   search: string;
-  sortId: string;
-  sortDesc: boolean;
+  sorting: SortingState;
+  filters?: ColumnFiltersState;
   loading?: boolean;
   onSearch: (value: string) => void;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
-  onSortChange: (sortId: string, sortDesc: boolean) => void;
+  onSortingChange: (sorting: SortingState) => void;
+  onFiltersChange?: (filters: ColumnFiltersState) => void;
 }
 
 export function UsersTable({
@@ -64,20 +66,16 @@ export function UsersTable({
   pageIndex,
   pageSize,
   search,
-  sortId,
-  sortDesc,
+  sorting,
+  filters = [],
   loading,
   onSearch,
   onPageChange,
   onPageSizeChange,
-  onSortChange,
+  onSortingChange,
+  onFiltersChange,
 }: UsersTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-
-  const sorting: SortingState = useMemo(
-    () => (sortId ? [{ id: sortId, desc: sortDesc }] : []),
-    [sortId, sortDesc]
-  );
 
   const columns: ColumnDef<AdminUser>[] = useMemo(
     () => [
@@ -130,8 +128,7 @@ export function UsersTable({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} label={m.columns.createdAt} />
         ),
-        cell: ({ row }) =>
-          formatDateTime(new Date(row.original.createdAt)),
+        cell: ({ row }) => formatDateTime(new Date(row.original.createdAt)),
         meta: { label: m.columns.createdAt },
         minSize: 140,
         size: 160,
@@ -146,13 +143,19 @@ export function UsersTable({
     pageCount: Math.ceil(total / pageSize) || 1,
     state: {
       sorting,
+      columnFilters: filters,
       columnVisibility,
       pagination: { pageIndex, pageSize },
     },
     onSortingChange: (updater) => {
       const next = typeof updater === 'function' ? updater(sorting) : updater;
-      const first = next[0];
-      if (first) onSortChange(first.id, first.desc);
+      onSortingChange(next);
+    },
+    onColumnFiltersChange: (updater) => {
+      const next =
+        typeof updater === 'function' ? updater(filters) : updater;
+      onFiltersChange?.(next);
+      onPageChange(0);
     },
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: (updater) => {
@@ -171,6 +174,7 @@ export function UsersTable({
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
     manualSorting: true,
+    manualFiltering: true,
     enableMultiSort: false,
   });
 

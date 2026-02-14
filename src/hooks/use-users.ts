@@ -1,4 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import type { ColumnSort } from '@tanstack/react-table';
+
+/** Sorting state for users list (avoids ExtendedColumnSort from data-table parsers). */
+export type UsersSortingState = ColumnSort[];
 
 export interface AdminUser {
   id: string;
@@ -10,6 +14,11 @@ export interface AdminUser {
   updatedAt: Date;
 }
 
+interface SimpleFilter {
+  id: string;
+  value: string;
+}
+
 export const usersKeys = {
   all: ['users'] as const,
   lists: () => [...usersKeys.all, 'lists'] as const,
@@ -17,27 +26,33 @@ export const usersKeys = {
     pageIndex: number;
     pageSize: number;
     search: string;
-    sortId: string;
-    sortDesc: boolean;
+    sorting: UsersSortingState;
+    filters: SimpleFilter[];
   }) => [...usersKeys.lists(), params] as const,
 };
 
+/**
+ * Fetch users with pagination, search, sort. Uses TanStack Query; filters are in key for cache but API only supports search/sort.
+ */
 export function useUsers(
   pageIndex: number,
   pageSize: number,
   search: string,
-  sortId: string,
-  sortDesc: boolean
+  sorting: UsersSortingState,
+  filters: SimpleFilter[]
 ) {
   return useQuery({
     queryKey: usersKeys.list({
       pageIndex,
       pageSize,
       search,
-      sortId,
-      sortDesc,
+      sorting,
+      filters,
     }),
     queryFn: async () => {
+      const first = sorting[0];
+      const sortId = first?.id ?? 'createdAt';
+      const sortDesc = first?.desc ?? true;
       const params = new URLSearchParams({
         pageIndex: String(pageIndex),
         pageSize: String(pageSize),

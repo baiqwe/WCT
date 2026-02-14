@@ -1,7 +1,8 @@
 import { UsersTable } from '@/components/admin/users-table';
 import { getSortingStateParser } from '@/components/data-table/lib/parsers';
-import type { SortingItem } from '@/components/data-table/lib/parsers';
+import type { UsersSortingState } from '@/hooks/use-users';
 import { useUsers } from '@/hooks/use-users';
+import type { SortingState } from '@tanstack/react-table';
 import {
   parseAsIndex,
   parseAsInteger,
@@ -9,56 +10,51 @@ import {
   useQueryStates,
 } from 'nuqs';
 
-const SORTABLE_IDS: string[] = ['name', 'email', 'createdAt'];
-const defaultSort: SortingItem[] = [{ id: 'createdAt', desc: true }];
+const SORTABLE_IDS = ['name', 'email', 'createdAt'] as const;
+const defaultSorting: SortingState = [{ id: 'createdAt', desc: true }];
+const sortableColumnSet = new Set<string>(SORTABLE_IDS);
+
+function normalizeSorting(value: SortingState): SortingState {
+  const filtered = value.filter((item) => sortableColumnSet.has(item.id));
+  return filtered.length > 0 ? filtered : defaultSorting;
+}
 
 /**
  * Admin users table with URL-synced search, sort, pagination.
- * Used by the dashboard admin users route; kept as client component for hooks (nuqs, useUsers).
+ * Aligned with mksaas: nuqs + TanStack Query + normalizeSorting.
  */
 export function AdminUsersContent() {
-  const [queryState, setQueryState] = useQueryStates(
-    {
-      page: parseAsIndex.withDefault(0),
-      size: parseAsInteger.withDefault(10),
-      search: parseAsString.withDefault(''),
-      sort: getSortingStateParser(SORTABLE_IDS).withDefault(defaultSort),
-    },
-    { shallow: false }
-  );
+  const [{ page, size, search, sort }, setQueryStates] = useQueryStates({
+    page: parseAsIndex.withDefault(0),
+    size: parseAsInteger.withDefault(10),
+    search: parseAsString.withDefault(''),
+    sort: getSortingStateParser([...SORTABLE_IDS]).withDefault(
+      defaultSorting as Parameters<
+        ReturnType<typeof getSortingStateParser>['withDefault']
+      >[0]
+    ),
+  });
 
-  const sortFirst = queryState.sort[0];
-  const sortId = sortFirst?.id ?? 'createdAt';
-  const sortDesc = sortFirst?.desc ?? true;
-
-  const { data, isLoading } = useUsers(
-    queryState.page,
-    queryState.size,
-    queryState.search,
-    sortId,
-    sortDesc
-  );
-
-  const safeSort = (next: SortingItem[]) => {
-    const filtered = next.filter((item) => SORTABLE_IDS.includes(item.id));
-    return filtered.length > 0 ? filtered : defaultSort;
-  };
+  const safeSorting: UsersSortingState = normalizeSorting(sort as SortingState);
+  const { data, isLoading } = useUsers(page, size, search, safeSorting, []);
 
   return (
     <UsersTable
       data={data?.items ?? []}
       total={data?.total ?? 0}
-      pageIndex={queryState.page}
-      pageSize={queryState.size}
-      search={queryState.search}
-      sortId={sortId}
-      sortDesc={sortDesc}
+      pageIndex={page}
+      pageSize={size}
+      search={search}
+      sorting={safeSorting}
       loading={isLoading}
-      onSearch={(search) => setQueryState({ search, page: 0 })}
-      onPageChange={(page) => setQueryState({ page })}
-      onPageSizeChange={(size) => setQueryState({ size, page: 0 })}
-      onSortChange={(id, desc) => {
-        setQueryState({ sort: safeSort([{ id, desc }]), page: 0 });
+      onSearch={(newSearch) => setQueryStates({ search: newSearch, page: 0 })}
+      onPageChange={(newPage) => setQueryStates({ page: newPage })}
+      onPageSizeChange={(newSize) =>
+        setQueryStates({ size: newSize, page: 0 })
+      }
+      onSortingChange={(newSorting) => {
+        const next = normalizeSorting(newSorting);
+        setQueryStates({ sort: next as typeof sort, page: 0 });
       }}
     />
   );
