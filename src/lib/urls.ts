@@ -6,7 +6,7 @@ const DEFAULT_BASE_URL = 'http://localhost:3000';
  * - pnpm build: .env.production (mode is production)
  */
 export function getBaseUrl(): string {
-  return import.meta.env.VITE_BASE_URL ?? DEFAULT_BASE_URL;
+  return process.env.VITE_BASE_URL ?? DEFAULT_BASE_URL;
 }
 
 /**
