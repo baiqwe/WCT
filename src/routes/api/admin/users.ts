@@ -31,6 +31,34 @@ const SORT_FIELD_MAP: Record<
   banned: user.banned,
 };
 
+interface ListUsersParams {
+  pageIndex: number;
+  pageSize: number;
+  search: string;
+  sortId: string;
+  sortDesc: boolean;
+  role?: string;
+  status?: 'active' | 'inactive';
+}
+
+function parseListUsersParams(url: URL): ListUsersParams {
+  const pageIndex = Math.max(0, Number(url.searchParams.get('pageIndex')) || 0);
+  const pageSize = Math.min(
+    100,
+    Math.max(1, Number(url.searchParams.get('pageSize')) || 10)
+  );
+  const search = (url.searchParams.get('search') ?? '').trim();
+  const sortId = url.searchParams.get('sortId') ?? 'createdAt';
+  const sortDesc = url.searchParams.get('sortDesc') !== 'false';
+  const role = (url.searchParams.get('role') ?? '').trim() || undefined;
+  const statusParam = url.searchParams.get('status') ?? '';
+  const status =
+    statusParam === 'active' || statusParam === 'inactive'
+      ? statusParam
+      : undefined;
+  return { pageIndex, pageSize, search, sortId, sortDesc, role, status };
+}
+
 function normalizeSortId(
   raw: string
 ): 'name' | 'email' | 'createdAt' | 'role' | 'status' {
@@ -46,15 +74,7 @@ function normalizeSortId(
 }
 
 async function listUsers(
-  params: {
-    pageIndex: number;
-    pageSize: number;
-    search: string;
-    sortId: string;
-    sortDesc: boolean;
-    role?: string;
-    status?: string;
-  }
+  params: ListUsersParams
 ): Promise<{ items: Array<Record<string, unknown>>; total: number }> {
   const db = getDb();
   const { pageIndex, pageSize, search, sortDesc, role, status } = params;
@@ -128,31 +148,9 @@ export const Route = createFileRoute('/api/admin/users')({
         if (!session?.user) {
           return unauthorizedResponse();
         }
-        const url = new URL(request.url);
-        const pageIndex = Math.max(
-          0,
-          Number(url.searchParams.get('pageIndex')) || 0
-        );
-        const pageSize = Math.min(
-          100,
-          Math.max(1, Number(url.searchParams.get('pageSize')) || 10)
-        );
-        const search = (url.searchParams.get('search') ?? '').trim();
-        const sortId = url.searchParams.get('sortId') ?? 'createdAt';
-        const sortDesc = url.searchParams.get('sortDesc') !== 'false';
-        const role = (url.searchParams.get('role') ?? '').trim();
-        const status = url.searchParams.get('status') ?? '';
-
+        const params = parseListUsersParams(new URL(request.url));
         try {
-          const result = await listUsers({
-            pageIndex,
-            pageSize,
-            search,
-            sortId,
-            sortDesc,
-            role: role || undefined,
-            status: status === 'active' || status === 'inactive' ? status : undefined,
-          });
+          const result = await listUsers(params);
           return Response.json({ success: true, data: result });
         } catch (error) {
           console.error('get users error:', error);

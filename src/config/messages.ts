@@ -362,7 +362,7 @@ export const messages = {
     mode: {
       light: 'Light',
       dark: 'Dark',
-      system: 'System'
+      system: 'System',
     },
     table: {
       ascending: 'Ascending',
