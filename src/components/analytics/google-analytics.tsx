@@ -1,13 +1,13 @@
+import { clientEnv } from '@/env/client';
 import { ScriptInject } from './script-inject';
 
 /**
  * Google Analytics (GA4)
  * https://analytics.google.com
- * Set VITE_GOOGLE_ANALYTICS_ID in .env.production
  */
 export function GoogleAnalytics() {
   if (!import.meta.env.PROD) return null;
-  const id = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
+  const id = clientEnv.VITE_GOOGLE_ANALYTICS_ID;
   if (!id) return null;
 
   const inlineHtml = `

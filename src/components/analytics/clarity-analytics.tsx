@@ -1,13 +1,13 @@
+import { clientEnv } from '@/env/client';
 import { ScriptInject } from './script-inject';
 
 /**
  * Microsoft Clarity
  * https://clarity.microsoft.com
- * Set VITE_CLARITY_PROJECT_ID in .env.production
  */
 export function ClarityAnalytics() {
   if (!import.meta.env.PROD) return null;
-  const projectId = import.meta.env.VITE_CLARITY_PROJECT_ID;
+  const projectId = clientEnv.VITE_CLARITY_PROJECT_ID;
   if (!projectId) return null;
 
   const inlineHtml = `(function(c,l,a,r,i,t,y){
