@@ -41,7 +41,7 @@ export function BlogCard({ post }: { post: BlogWithMeta }) {
             {dateFormatted}
           </time>
         </div>
-        {/* Title + description: flex-1 so author stays at bottom when description is 1 line */}
+        {/* Title + description */}
         <div className="mt-3 flex min-h-[4.5rem] flex-1 flex-col">
           <h3 className="line-clamp-2 text-lg font-semibold">{post.title}</h3>
           {post.description && (
@@ -49,23 +49,6 @@ export function BlogCard({ post }: { post: BlogWithMeta }) {
               {post.description}
             </p>
           )}
-        </div>
-        {/* Author and avatar - always at bottom */}
-        <div className="mt-4 flex shrink-0 items-center gap-2 border-t border-border pt-4">
-          {post.avatar ? (
-            <img
-              src={post.avatar}
-              alt=""
-              className="size-8 shrink-0 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-medium">
-              {post.author?.charAt(0) ?? '?'}
-            </div>
-          )}
-          <span className="truncate text-muted-foreground text-sm">
-            {post.author}
-          </span>
         </div>
       </div>
     </Link>

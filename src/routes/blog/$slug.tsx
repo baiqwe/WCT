@@ -70,24 +70,6 @@ function BlogPostPage() {
               </p>
             )}
 
-            {/* Author and avatar - small avatar aligned with name */}
-            <div className="mt-6 flex items-center gap-2 border-b border-border pb-6">
-              {post.avatar ? (
-                <img
-                  src={post.avatar}
-                  alt=""
-                  className="size-8 shrink-0 rounded-full object-cover align-middle"
-                />
-              ) : (
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-medium align-middle">
-                  {post.author?.charAt(0) ?? '?'}
-                </div>
-              )}
-              <span className="text-muted-foreground text-sm leading-none">
-                {post.author}
-              </span>
-            </div>
-
             <div className="mt-8">
               <MarkdownBody content={post.content} />
             </div>

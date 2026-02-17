@@ -3,8 +3,6 @@ title: Hello World
 description: A simple introduction to the blog and what you can expect.
 date: 2025-01-15
 category: General
-author: MkFast
-avatar: https://cdn.mksaas.com/images/avatars/fox.png
 image: https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80
 ---
 
