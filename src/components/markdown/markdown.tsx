@@ -56,6 +56,25 @@ export function Markdown({ content, className }: MarkdownProps) {
             />
           );
         }
+
+        if (domNode.name === 'code') {
+          // Remove backticks from inline code content
+          // Check if children are text nodes and remove backticks
+          const processedChildren = (domNode.children as DOMNode[]).map((child) => {
+            if (child.type === 'text' && 'data' in child && typeof child.data === 'string') {
+              return {
+                ...child,
+                data: child.data.replace(/^`+|`+$/g, ''),
+              };
+            }
+            return child;
+          });
+          return (
+            <code {...domNode.attribs}>
+              {domToReact(processedChildren as DOMNode[], options)}
+            </code>
+          );
+        }
       }
     },
   };

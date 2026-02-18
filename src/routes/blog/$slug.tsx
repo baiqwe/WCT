@@ -105,11 +105,22 @@ function BlogPostPage() {
             </p>
           )}
 
-          <div className="mt-8">
+          <div className="mt-6 pt-10 border-t border-border">
             <Markdown
               content={post.content}
               className="prose prose-neutral dark:prose-invert max-w-none"
             />
+          </div>
+
+          <div className="mt-10 pt-6 border-t border-border">
+            <Link
+              to="/blog"
+              search={{ page: 1 }}
+              className="inline-flex items-center gap-2 text-muted-foreground text-sm hover:text-foreground"
+            >
+              <IconArrowLeft className="size-4" />
+              {messages.blog.allPosts}
+            </Link>
           </div>
         </article>
       </div>

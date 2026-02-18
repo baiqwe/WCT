@@ -9,7 +9,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
     <Link
       to="/blog/$slug"
       params={{ slug }}
-      className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-primary hover:shadow-md"
+      className="flex h-full flex-col overflow-hidden rounded-lg border border-border/50 bg-card transition-colors hover:border-primary/60 hover:shadow-md"
     >
       {/* Featured image (Achromatic / Mixus style card image) */}
       {post.image && (

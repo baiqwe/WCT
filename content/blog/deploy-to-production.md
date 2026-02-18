@@ -6,8 +6,6 @@ category: Guide
 image: https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80
 ---
 
-# Deploy to Production
-
 Once your app is ready, you can deploy it with a single command.
 
 ## Build

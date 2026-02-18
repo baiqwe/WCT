@@ -6,8 +6,6 @@ category: Guide
 image: https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80
 ---
 
-# Getting Started
-
 This post walks you through the basics.
 
 ## Prerequisites

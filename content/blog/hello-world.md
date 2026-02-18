@@ -6,8 +6,6 @@ category: General
 image: https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80
 ---
 
-# Hello World
-
 This is the first post on the blog. You can use **Markdown** here.
 
 ## Paragraphs and headings
