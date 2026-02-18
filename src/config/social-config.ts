@@ -50,7 +50,11 @@ export function getSocialLinks(): SocialLinkItem[] {
     social.push({ title: 'Facebook', href: config.facebook, key: 'facebook' });
   }
   if (config?.instagram) {
-    social.push({ title: 'Instagram', href: config.instagram, key: 'instagram' });
+    social.push({
+      title: 'Instagram',
+      href: config.instagram,
+      key: 'instagram',
+    });
   }
   if (config?.tiktok) {
     social.push({ title: 'TikTok', href: config.tiktok, key: 'tiktok' });

@@ -12,7 +12,11 @@ export const Route = createFileRoute('/sitemap.xml')({
     handlers: {
       GET: async () => {
         const base = getBaseUrl().replace(/\/$/, '');
-        const staticUrls: { path: string; changefreq?: string; priority?: string }[] = [
+        const staticUrls: {
+          path: string;
+          changefreq?: string;
+          priority?: string;
+        }[] = [
           { path: '/', changefreq: 'daily', priority: '1.0' },
           { path: '/about', changefreq: 'monthly' },
           { path: '/blog', changefreq: 'weekly' },
@@ -23,20 +27,34 @@ export const Route = createFileRoute('/sitemap.xml')({
           { path: '/cookie', changefreq: 'monthly' },
         ];
 
-        const urlEntry = (path: string, opts?: { changefreq?: string; priority?: string; lastmod?: string }) => {
-          const lastmod = opts?.lastmod ? `\n    <lastmod>${opts.lastmod}</lastmod>` : '';
-          const changefreq = opts?.changefreq ? `\n    <changefreq>${opts.changefreq}</changefreq>` : '';
-          const priority = opts?.priority ? `\n    <priority>${opts.priority}</priority>` : '';
+        const urlEntry = (
+          path: string,
+          opts?: { changefreq?: string; priority?: string; lastmod?: string }
+        ) => {
+          const lastmod = opts?.lastmod
+            ? `\n    <lastmod>${opts.lastmod}</lastmod>`
+            : '';
+          const changefreq = opts?.changefreq
+            ? `\n    <changefreq>${opts.changefreq}</changefreq>`
+            : '';
+          const priority = opts?.priority
+            ? `\n    <priority>${opts.priority}</priority>`
+            : '';
           return `  <url>\n    <loc>${base}${path}</loc>${lastmod}${changefreq}${priority}\n  </url>`;
         };
 
         const staticPart = staticUrls
-          .map((u) => urlEntry(u.path, { changefreq: u.changefreq, priority: u.priority }))
+          .map((u) =>
+            urlEntry(u.path, { changefreq: u.changefreq, priority: u.priority })
+          )
           .join('\n');
 
         let blogPart = '';
         if (websiteConfig.blog?.enable) {
-          const posts = getSortedPosts() as Array<{ _meta: { path: string }; date: string }>;
+          const posts = getSortedPosts() as Array<{
+            _meta: { path: string };
+            date: string;
+          }>;
           blogPart = posts
             .map((p) =>
               urlEntry(`/blog/${p._meta.path}`, {

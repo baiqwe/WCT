@@ -2,11 +2,7 @@ import { Button } from '@/components/ui/button';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/config/messages';
 import { cn } from '@/lib/utils';
-import {
-  IconDeviceDesktop,
-  IconMoon,
-  IconSun,
-} from '@tabler/icons-react';
+import { IconDeviceDesktop, IconMoon, IconSun } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@/components/theme/theme-provider';
 

@@ -8,7 +8,7 @@ export function getBaseUrl(): string {
   return clientEnv.VITE_BASE_URL;
 }
 
-/** 
+/**
  * Build canonical URL for a path (e.g. /about -> https://example.com/about)
  * @param path - The path to build the canonical URL for
  * @returns The canonical URL

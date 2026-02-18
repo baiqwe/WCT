@@ -85,9 +85,7 @@ export function UserButtonMobile({ user }: UserButtonMobileProps) {
                   onClick={closeDrawer}
                   className="flex w-full items-center gap-3 px-2.5 py-2"
                 >
-                  {item.icon ? (
-                    <item.icon className="size-4 shrink-0" />
-                  ) : null}
+                  {item.icon ? <item.icon className="size-4 shrink-0" /> : null}
                   <span className="text-sm">{item.title}</span>
                 </Link>
               </li>

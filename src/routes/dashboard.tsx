@@ -23,7 +23,7 @@ function DashboardLayout() {
   );
 }
 
-/** 
+/**
  * Wraps children with sidebar and enforces auth (redirect to login if no session)
  * @param children - The children to wrap
  * @returns A sidebar provider with the children wrapped in a sidebar inset

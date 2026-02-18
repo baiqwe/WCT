@@ -19,7 +19,7 @@ export const websiteConfig: WebsiteConfig = {
       ogImage: '/og.png',
       logoLight: '/logo.png',
       logoDark: '/logo-dark.png',
-    }
+    },
   },
   social: {
     github: 'https://github.com/MkFastHQ',
