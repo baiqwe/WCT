@@ -78,17 +78,23 @@ export const Route = createRootRouteWithContext<{
 
 /**
  * Root component (wrapped by shellComponent: RootDocument)
- * Only marketing pages get Navbar + Footer; auth/dashboard pages don't.
+ * Only marketing pages get Navbar + Footer; auth/dashboard/404 pages don't.
  */
 function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname }) ?? '';
+  const matches = useRouterState({ select: (s) => s.matches }) ?? [];
   const isAuthPages = pathname.startsWith('/auth');
   const isProtectedPages =
     pathname.startsWith('/admin') ||
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/settings');
+  // When no child route matches (e.g. /hello), only root is in matches; use minimal layout
+  const isNotFound =
+    pathname !== '/' &&
+    pathname !== '' &&
+    matches.length <= 1;
 
-  if (isAuthPages || isProtectedPages) {
+  if (isAuthPages || isProtectedPages || isNotFound) {
     return (
       <div className="flex min-h-screen flex-col">
         <main className="flex-1">
