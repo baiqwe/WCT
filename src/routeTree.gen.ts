@@ -10,13 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaitlistRouteImport } from './routes/waitlist'
-import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ManifestDotjsonRouteImport } from './routes/manifest[.]json'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -30,6 +27,9 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AuthErrorRouteImport } from './routes/auth/error'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
+import { Route as legalsTermsRouteImport } from './routes/(legals)/terms'
+import { Route as legalsPrivacyRouteImport } from './routes/(legals)/privacy'
+import { Route as legalsCookieRouteImport } from './routes/(legals)/cookie'
 import { Route as DashboardSettingsSecurityRouteImport } from './routes/dashboard/settings/security'
 import { Route as DashboardSettingsProfileRouteImport } from './routes/dashboard/settings/profile'
 import { Route as DashboardSettingsNotificationsRouteImport } from './routes/dashboard/settings/notifications'
@@ -47,11 +47,6 @@ const WaitlistRoute = WaitlistRouteImport.update({
   path: '/waitlist',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -62,11 +57,6 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ManifestDotjsonRoute = ManifestDotjsonRouteImport.update({
   id: '/manifest.json',
   path: '/manifest.json',
@@ -75,11 +65,6 @@ const ManifestDotjsonRoute = ManifestDotjsonRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookieRoute = CookieRouteImport.update({
-  id: '/cookie',
-  path: '/cookie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -147,6 +132,21 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const legalsTermsRoute = legalsTermsRouteImport.update({
+  id: '/(legals)/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const legalsPrivacyRoute = legalsPrivacyRouteImport.update({
+  id: '/(legals)/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const legalsCookieRoute = legalsCookieRouteImport.update({
+  id: '/(legals)/cookie',
+  path: '/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardSettingsSecurityRoute =
   DashboardSettingsSecurityRouteImport.update({
     id: '/settings/security',
@@ -212,14 +212,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookie': typeof CookieRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/manifest.json': typeof ManifestDotjsonRoute
-  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
   '/waitlist': typeof WaitlistRoute
+  '/cookie': typeof legalsCookieRoute
+  '/privacy': typeof legalsPrivacyRoute
+  '/terms': typeof legalsTermsRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -246,13 +246,13 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookie': typeof CookieRoute
   '/manifest.json': typeof ManifestDotjsonRoute
-  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
   '/waitlist': typeof WaitlistRoute
+  '/cookie': typeof legalsCookieRoute
+  '/privacy': typeof legalsPrivacyRoute
+  '/terms': typeof legalsTermsRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -280,14 +280,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookie': typeof CookieRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/manifest.json': typeof ManifestDotjsonRoute
-  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
   '/waitlist': typeof WaitlistRoute
+  '/(legals)/cookie': typeof legalsCookieRoute
+  '/(legals)/privacy': typeof legalsPrivacyRoute
+  '/(legals)/terms': typeof legalsTermsRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -316,14 +316,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
-    | '/cookie'
     | '/dashboard'
     | '/manifest.json'
-    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/terms'
     | '/waitlist'
+    | '/cookie'
+    | '/privacy'
+    | '/terms'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -350,13 +350,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
-    | '/cookie'
     | '/manifest.json'
-    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/terms'
     | '/waitlist'
+    | '/cookie'
+    | '/privacy'
+    | '/terms'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -383,14 +383,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
-    | '/cookie'
     | '/dashboard'
     | '/manifest.json'
-    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/terms'
     | '/waitlist'
+    | '/(legals)/cookie'
+    | '/(legals)/privacy'
+    | '/(legals)/terms'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -418,14 +418,14 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRouteWithChildren
   ContactRoute: typeof ContactRoute
-  CookieRoute: typeof CookieRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   ManifestDotjsonRoute: typeof ManifestDotjsonRoute
-  PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  TermsRoute: typeof TermsRoute
   WaitlistRoute: typeof WaitlistRoute
+  legalsCookieRoute: typeof legalsCookieRoute
+  legalsPrivacyRoute: typeof legalsPrivacyRoute
+  legalsTermsRoute: typeof legalsTermsRoute
   ApiContactRoute: typeof ApiContactRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -447,13 +447,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WaitlistRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -468,13 +461,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/manifest.json': {
       id: '/manifest.json'
       path: '/manifest.json'
@@ -487,13 +473,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookie': {
-      id: '/cookie'
-      path: '/cookie'
-      fullPath: '/cookie'
-      preLoaderRoute: typeof CookieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -585,6 +564,27 @@ declare module '@tanstack/react-router' {
       path: '/api/contact'
       fullPath: '/api/contact'
       preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(legals)/terms': {
+      id: '/(legals)/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof legalsTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(legals)/privacy': {
+      id: '/(legals)/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof legalsPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(legals)/cookie': {
+      id: '/(legals)/cookie'
+      path: '/cookie'
+      fullPath: '/cookie'
+      preLoaderRoute: typeof legalsCookieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/settings/security': {
@@ -710,14 +710,14 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRouteWithChildren,
   ContactRoute: ContactRoute,
-  CookieRoute: CookieRoute,
   DashboardRoute: DashboardRouteWithChildren,
   ManifestDotjsonRoute: ManifestDotjsonRoute,
-  PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  TermsRoute: TermsRoute,
   WaitlistRoute: WaitlistRoute,
+  legalsCookieRoute: legalsCookieRoute,
+  legalsPrivacyRoute: legalsPrivacyRoute,
+  legalsTermsRoute: legalsTermsRoute,
   ApiContactRoute: ApiContactRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

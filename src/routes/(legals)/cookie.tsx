@@ -5,9 +5,9 @@ import { getPageBySlug } from '@/lib/pages';
 import { websiteConfig } from '@/config/website';
 import { getCanonicalUrl } from '@/lib/urls';
 
-export const Route = createFileRoute('/privacy')({
+export const Route = createFileRoute('/(legals)/cookie')({
   loader: () => {
-    const page = getPageBySlug('privacy');
+    const page = getPageBySlug('cookie');
     if (!page) throw notFound();
     return { page };
   },
@@ -19,13 +19,13 @@ export const Route = createFileRoute('/privacy')({
         { title: `${p.title} | ${websiteConfig.metadata?.name}` },
         { name: 'description', content: p.description },
       ],
-      links: [{ rel: 'canonical', href: getCanonicalUrl('/privacy') }],
+      links: [{ rel: 'canonical', href: getCanonicalUrl('/cookie') }],
     };
   },
-  component: PrivacyPage,
+  component: CookiePage,
 });
 
-function PrivacyPage() {
+function CookiePage() {
   const { page } = Route.useLoaderData();
   if (!page) throw notFound();
   return (

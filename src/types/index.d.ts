@@ -1,7 +1,3 @@
-/**
- * Website config types (no i18n). Used by website and other config modules.
- * Icon is React component (e.g. from @tabler/icons-react) for menu items.
- */
 import type { ComponentType } from 'react';
 
 /** Website config */
@@ -40,7 +36,7 @@ export interface MetadataConfig {
 /** Website metadata */
 export interface ImagesConfig {
   ogImage?: string;     // The image as Open Graph image
-  logoLight?: string;    // The light logo image
+  logoLight?: string;   // The light logo image
   logoDark?: string;    // The dark logo image
 }
 
@@ -79,7 +75,7 @@ export interface AnalyticsConfig {
 
 /** Auth configuration */
 export interface AuthConfig {
-  enable: boolean;                // Whether to enable the auth
+  enable: boolean;                 // Whether to enable the auth
   enableGoogleLogin?: boolean;     // Whether to enable google login
   enableCredentialLogin?: boolean; // Whether to enable email/password login
 }
@@ -87,14 +83,14 @@ export interface AuthConfig {
 /** Blog configuration */
 export interface BlogConfig {
   enable: boolean;           // Whether to enable the blog
-  paginationSize?: number;  // Number of posts per page
+  paginationSize?: number;   // Number of posts per page
   relatedPostsSize?: number; // Number of related posts to show
 }
 
 /** Mail configuration */
 export interface MailConfig {
-  enable: boolean;         // Whether to enable the mail
-  provider?: 'resend';       // The email provider, only resend is supported for now
+  enable: boolean;          // Whether to enable the mail
+  provider?: 'resend';      // The email provider, only resend is supported for now
   fromEmail?: string;       // The email address to send from
   supportEmail?: string;    // The email address to send support emails to
 }
@@ -144,11 +140,11 @@ export interface PriceItemConfig {
 
 /** Menu item for navbar links, sidebar links, footer links. */
 export interface MenuItemConfig {
-  title: string;                                   // The text to display
+  title: string;                                    // The text to display
   description?: string;                             // The description of the item
   href?: string;                                    // The url to link to
-  icon?: ComponentType<{ className?: string }>;     // The icon to display (e.g. from @tabler/icons-react)
-  external?: boolean;                                // Whether the link is external
-  authorizeOnly?: string[];                          // The roles that are authorized to see the item
+  icon?: ComponentType<{ className?: string }>;     // The icon to display
+  external?: boolean;                               // Whether the link is external
+  authorizeOnly?: string[];                         // The roles that are authorized to see the item
   items?: MenuItemConfig[];                         // Nested items for dropdown/group
 }

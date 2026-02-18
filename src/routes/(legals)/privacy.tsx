@@ -5,9 +5,9 @@ import { getPageBySlug } from '@/lib/pages';
 import { websiteConfig } from '@/config/website';
 import { getCanonicalUrl } from '@/lib/urls';
 
-export const Route = createFileRoute('/terms')({
+export const Route = createFileRoute('/(legals)/privacy')({
   loader: () => {
-    const page = getPageBySlug('terms');
+    const page = getPageBySlug('privacy');
     if (!page) throw notFound();
     return { page };
   },
@@ -19,13 +19,13 @@ export const Route = createFileRoute('/terms')({
         { title: `${p.title} | ${websiteConfig.metadata?.name}` },
         { name: 'description', content: p.description },
       ],
-      links: [{ rel: 'canonical', href: getCanonicalUrl('/terms') }],
+      links: [{ rel: 'canonical', href: getCanonicalUrl('/privacy') }],
     };
   },
-  component: TermsPage,
+  component: PrivacyPage,
 });
 
-function TermsPage() {
+function PrivacyPage() {
   const { page } = Route.useLoaderData();
   if (!page) throw notFound();
   return (
