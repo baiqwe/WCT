@@ -76,42 +76,43 @@ function BlogPostPage() {
   }
 
   return (
-    <div className="flex flex-col gap-8 p-16">
-      <Container className="px-4">
-        <div className="mx-auto max-w-3xl">
-          <Link
-            to="/blog"
-            search={{ page: 1 }}
-            className="mb-6 inline-flex items-center gap-2 text-muted-foreground text-sm hover:text-foreground"
-          >
-            <IconArrowLeft className="size-4" />
-            {messages.blog.allPosts}
-          </Link>
+    <Container className="py-16 px-4">
+      <div className="mx-auto max-w-3xl">
+        <Link
+          to="/blog"
+          search={{ page: 1 }}
+          className="mb-6 inline-flex items-center gap-2 text-muted-foreground text-sm hover:text-foreground"
+        >
+          <IconArrowLeft className="size-4" />
+          {messages.blog.allPosts}
+        </Link>
 
-          <article>
-            <div className="mb-4 flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
-              <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium capitalize">
-                {post.category}
-              </span>
-              <span>{formatDate(new Date(post.date))}</span>
-            </div>
+        <article>
+          <div className="mb-4 flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
+            <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium capitalize">
+              {post.category}
+            </span>
+            <span>{formatDate(new Date(post.date))}</span>
+          </div>
 
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {post.title}
-            </h1>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {post.title}
+          </h1>
 
-            {post.description && (
-              <p className="mt-4 text-muted-foreground text-lg leading-relaxed">
-                {post.description}
-              </p>
-            )}
+          {post.description && (
+            <p className="mt-4 text-muted-foreground text-lg leading-relaxed">
+              {post.description}
+            </p>
+          )}
 
-            <div className="mt-8">
-              <Markdown content={post.content} className='prose prose-neutral dark:prose-invert max-w-none' />
-            </div>
-          </article>
-        </div>
-      </Container>
-    </div>
+          <div className="mt-8">
+            <Markdown
+              content={post.content}
+              className="prose prose-neutral dark:prose-invert max-w-none"
+            />
+          </div>
+        </article>
+      </div>
+    </Container>
   );
 }

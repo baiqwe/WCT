@@ -48,6 +48,10 @@ export function Navbar({ scroll = true }: NavbarProps) {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    setMenuValue(undefined);
+  }, [pathname]);
+
   const closeMenu = () => setMenuValue(undefined);
 
   return (
@@ -66,7 +70,9 @@ export function Navbar({ scroll = true }: NavbarProps) {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <Logo />
-              <span className="text-xl font-semibold">{websiteConfig.metadata?.name}</span>
+              <span className="text-xl font-semibold">
+                {websiteConfig.metadata?.name}
+              </span>
             </Link>
           </div>
 

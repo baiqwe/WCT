@@ -2,7 +2,7 @@ import { getAvatarLinks } from '@/config/avatar-config';
 import { authClient } from '@/auth/auth-client';
 import type { User } from 'better-auth';
 import { IconLogout } from '@tabler/icons-react';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +13,14 @@ import {
 import { UserAvatar } from './user-avatar';
 import { messages } from '@/config/messages';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface UserButtonProps {
   user: User;
 }
 
 export function UserButton({ user }: UserButtonProps) {
+  const router = useRouter();
   const avatarLinks = getAvatarLinks();
   const [open, setOpen] = useState(false);
 
@@ -26,7 +28,11 @@ export function UserButton({ user }: UserButtonProps) {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          window.location.href = '/';
+          router.navigate({ to: '/' });
+        },
+        onError: (err) => {
+          toast.error('Log out failed');
+          console.error('sign out error:', err);
         },
       },
     });

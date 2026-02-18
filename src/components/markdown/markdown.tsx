@@ -39,7 +39,7 @@ export function Markdown({ content, className }: MarkdownProps) {
           if (href?.startsWith('/')) {
             // Internal link - use your router's Link component
             return (
-              <Link to={href} className='underline-offset-4 hover:underline'>
+              <Link to={href} className="underline-offset-4 hover:underline">
                 {domToReact(domNode.children as DOMNode[], options)}
               </Link>
             );

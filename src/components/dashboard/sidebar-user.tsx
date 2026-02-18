@@ -27,6 +27,8 @@ import { useTheme } from '@/components/theme/theme-provider';
 import { UserAvatar } from '@/components/layout/user-avatar';
 import { authClient } from '@/auth/auth-client';
 import { messages } from '@/config/messages';
+import { useRouter } from '@tanstack/react-router';
+import { toast } from 'sonner';
 
 const m = messages.common;
 
@@ -36,23 +38,24 @@ interface SidebarUserProps {
 }
 
 export function SidebarUser({ user }: SidebarUserProps) {
+  const router = useRouter();
   const { setTheme } = useTheme();
   const { isMobile } = useSidebar();
   const showModeSwitch = websiteConfig.ui?.mode?.enableSwitch ?? false;
   const [open, setOpen] = useState(false);
 
   const handleSignOut = async () => {
-    try {
-      await authClient.signOut({
-        fetchOptions: {
-          onSuccess: () => {
-            window.location.href = '/';
-          },
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.navigate({ to: '/' });
         },
-      });
-    } catch (error) {
-      console.error('sign out error:', error);
-    }
+        onError: (err) => {
+          toast.error('Log out failed');
+          console.error('sign out error:', err);
+        },
+      },
+    });
   };
 
   return (
@@ -129,10 +132,10 @@ export function SidebarUser({ user }: SidebarUserProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
-                onSelect={async (event) => {
+                onClick={async (event) => {
                   event.preventDefault();
                   setOpen(false);
-                  handleSignOut();
+                  await handleSignOut();
                 }}
               >
                 <IconLogout className="mr-2 size-4" />

@@ -26,7 +26,10 @@ export function MarkdownPage({ page }: { page: PageDoc }) {
       <Card className="ring-0 border border-border">
         <CardContent className="pt-6">
           <div className="mt-0">
-            <Markdown content={content} className='prose prose-neutral dark:prose-invert max-w-none' />
+            <Markdown
+              content={content}
+              className="prose prose-neutral dark:prose-invert max-w-none"
+            />
           </div>
         </CardContent>
       </Card>
