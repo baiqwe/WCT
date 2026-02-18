@@ -2,6 +2,7 @@ import { serverEnv } from '@/env/server';
 import { websiteConfig } from '@/config/website';
 import type {
   MailProvider,
+  MailProviderName,
   SendRawEmailParams,
   SendTemplateParams,
 } from './types';
@@ -10,36 +11,43 @@ import { ResendProvider } from './provider/resend';
 export { getTemplate } from './render';
 export type {
   EmailTemplate,
+  MailProviderName,
   SendTemplateParams,
   SendRawEmailParams,
 } from './types';
 
 let mailProvider: MailProvider | null = null;
 
-function createProvider(): MailProvider {
-  if (websiteConfig.mail?.provider === 'resend') {
+type ProviderFactory = () => MailProvider;
+
+/**
+ * Registry of mail provider factories
+ **/
+const providerRegistry: Record<MailProviderName, ProviderFactory> = {
+  resend: () => {
     const apiKey = serverEnv.RESEND_API_KEY;
-    if (!apiKey) {
-      throw new Error('RESEND_API_KEY is required.');
-    }
-    if (!websiteConfig.mail?.fromEmail) {
-      throw new Error('mail.fromEmail is required in websiteConfig.');
-    }
-    return new ResendProvider({
-      apiKey,
-      from: websiteConfig.mail?.fromEmail,
-    });
+    if (!apiKey) throw new Error('RESEND_API_KEY is required.');
+    const from = websiteConfig.mail?.fromEmail;
+    if (!from) throw new Error('mail.fromEmail is required in websiteConfig.');
+    return new ResendProvider({ apiKey, from });
+  },
+};
+
+function createProvider(): MailProvider {
+  const name = websiteConfig.mail?.provider;
+  if (!name) throw new Error('mail.provider is required in websiteConfig.');
+  const factory = providerRegistry[name as MailProviderName];
+  if (!factory) {
+    throw new Error(`Unsupported mail provider: ${name}.`);
   }
-  throw new Error(`Unsupported mail provider: ${websiteConfig.mail?.provider}`);
+  return factory();
 }
 
 /**
- * Get the mail provider (lazy-initialized on first use with current request env).
+ * Get the mail provider (lazy-initialized on first use).
  */
 export function getMailProvider(): MailProvider {
-  if (!mailProvider) {
-    mailProvider = createProvider();
-  }
+  if (!mailProvider) mailProvider = createProvider();
   return mailProvider;
 }
 
@@ -50,10 +58,9 @@ export async function sendEmail(
   params: SendTemplateParams | SendRawEmailParams
 ): Promise<boolean> {
   const provider = getMailProvider();
-  if ('template' in params) {
-    const result = await provider.sendTemplate(params);
-    return result.success;
-  }
-  const result = await provider.sendRawEmail(params);
+  const result =
+    'template' in params
+      ? await provider.sendTemplate(params)
+      : await provider.sendRawEmail(params);
   return result.success;
 }

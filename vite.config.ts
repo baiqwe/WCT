@@ -16,17 +16,19 @@ const config = defineConfig({
   },
   plugins: [
     devtools(),
+    tailwindcss(),
     contentCollections(),
     // this is the plugin that enables path aliases
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    tailwindcss(),
+    // https://tanstack.dev/start/latest/docs/framework/react/build-from-scratch
     tanstackStart({
       srcDirectory: 'src',
       start: { entry: './start.tsx' },
       server: { entry: './server.ts' },
     }),
+    // react's vite plugin must come after start's vite plugin
     viteReact(),
     // https://developers.cloudflare.com/workers/vite-plugin/
     cloudflare({

@@ -1,17 +1,21 @@
 # Mail module
 
-The mail module handles transactional email (verification, password reset, contact form, subscription welcome, etc.) using **Resend**. It runs in the Cloudflare Worker environment and reads the API key from env.
+Transactional email (verification, password reset, contact form, subscription welcome). Runs in Cloudflare Worker; **Resend** is the built-in provider. Design allows adding other providers (e.g. Cloudflare Emails) via a provider registry without changing callers.
+
+**Consumers:** Auth (`sendVerificationEmail`, `sendResetPassword`), `/api/contact`, `/api/newsletter/subscribe` — all use `sendEmail(...)` only.
+
+---
 
 ## Directory structure
 
 ```
 src/mail/
-├── index.ts           # Entry: getMailProvider, sendEmail, getTemplate
-├── types.ts           # Template names, SendTemplateParams, MailProvider types
-├── render.tsx         # React template rendering to HTML + plain text, getTemplate
+├── index.ts           # sendEmail, getMailProvider, getTemplate; providerRegistry
+├── types.ts           # EmailTemplate, MailProviderName, Send*Params, MailProvider
+├── render.ts          # getTemplate, renderEmailHtml, toPlainText; subjectByTemplate
 ├── provider/
-│   └── resend.ts      # Resend implementation
-├── templates/         # React email templates
+│   └── resend.ts      # ResendProvider implements MailProvider
+├── templates/
 │   ├── verify-email.tsx
 │   ├── forgot-password.tsx
 │   ├── subscribe-newsletter.tsx
@@ -21,40 +25,57 @@ src/mail/
     └── email-button.tsx
 ```
 
+---
+
 ## Configuration
 
-- **websiteConfig.mail** (`src/config/website.ts`)
-  - `provider`: `'resend'`
-  - `fromEmail`, `supportEmail`: Sender display name and address
+| Source | Key | Description |
+|--------|-----|-------------|
+| `websiteConfig.mail` | `provider` | `'resend'`. Extend in `src/types/index.d.ts` when adding providers. |
+| | `fromEmail` | Sender address (required for sending). |
+| | `supportEmail` | Used by contact form target. |
+| Env / Worker | `RESEND_API_KEY` | Required for Resend. `.dev.vars` or Wrangler secrets in production. |
 
-- **Environment / Worker bindings**
-  - `RESEND_API_KEY`: Resend API key. Use `.dev.vars` or `process.env` locally, Wrangler secrets in production.
+---
 
-## Core API
+## API
 
-- **sendEmail(params)**
-  - `SendTemplateParams`: `{ to, template, context }` — renders the template then sends via Resend.
-  - `SendRawEmailParams`: `{ to, subject, html, text? }` — sends raw content.
-  - Returns `Promise<boolean>` indicating success.
+| Export | Description |
+|--------|-------------|
+| **sendEmail(params)** | `SendTemplateParams` → render template + send; `SendRawEmailParams` → send raw. Returns `Promise<boolean>`. |
+| **getMailProvider()** | Lazy-initialized provider from `websiteConfig.mail.provider`. |
+| **getTemplate({ template, context })** | Returns `{ html, text, subject }`; used by providers internally. |
 
-- **getTemplate({ template, context })**
-  - Internal: selects the React component by `template`, renders to `{ html, text, subject }` for the provider.
+**Types (re-exported):** `EmailTemplate`, `MailProviderName`, `SendTemplateParams`, `SendRawEmailParams`.
+
+---
 
 ## Templates
 
-- **forgotPassword**: Password reset link; context: `{ url, name }`.
-- **verifyEmail**: Email verification link; context: `{ url, name }`.
-- **subscribeNewsletter**: Subscription welcome; context: `{ email }`.
-- **contactMessage**: Contact form notification; context: `{ name, email, message }`.
+| Template | Context | Subject (in render.ts) |
+|----------|---------|---------------------------|
+| forgotPassword | `{ url, name }` | Reset your password |
+| verifyEmail | `{ url, name }` | Verify your email |
+| subscribeNewsletter | `{ email? }` | Thanks for subscribing |
+| contactMessage | `{ name, email, message }` | Contact Message from Website |
 
-To add a template: extend `EmailTemplate` in `types.ts`, register in `EmailTemplates` and `subjectByTemplate` in `render.tsx`, and add the corresponding React template component.
+**Adding a template:** extend `EmailTemplate` in `types.ts` → add to `EmailTemplates` and `subjectByTemplate` in `render.ts` → add React component under `templates/`.
 
-## Consumers
+---
 
-- **Auth** (`src/auth/auth.ts`): Verification and password-reset emails via `sendEmail({ to, template, context })`.
-- **API routes**: `/api/contact`, `/api/newsletter/subscribe` call `sendEmail` when needed.
+## Adding a new mail provider
+
+The module uses a **provider registry** (`providerRegistry` in `index.ts`). To add e.g. Cloudflare Emails:
+
+1. **Types** — In `src/mail/types.ts`, extend `MailProviderName` (e.g. `'resend' | 'cloudflare'`). In `src/types/index.d.ts`, extend `MailConfig.provider` with the same union.
+2. **Implementation** — Add `src/mail/provider/cloudflare.ts` implementing `MailProvider` (`sendTemplate`, `sendRawEmail`, `getProviderName`). Use `getTemplate` from `../render` for template-based sends.
+3. **Registration** — In `src/mail/index.ts`, add a factory to `providerRegistry`: `cloudflare: () => new CloudflareProvider(...)`, reading provider-specific env/bindings inside.
+
+Callers continue using `sendEmail(...)` only.
+
+---
 
 ## Dependencies
 
-- `resend`: Resend official SDK.
-- React / react-dom/server: Template rendering (`renderToStaticMarkup` or `renderToReadableStream`).
+- **resend** — Resend SDK (when using Resend provider).
+- **React / react-dom/server** — Template rendering (`renderToReadableStream` or `renderToStaticMarkup`).

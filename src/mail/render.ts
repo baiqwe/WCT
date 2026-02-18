@@ -69,7 +69,7 @@ export async function getTemplate({
   const Component = EmailTemplates[template];
   const email = React.createElement(
     Component as React.ComponentType<Record<string, unknown>>,
-    context as Record<string, unknown>
+    context
   );
   const html = await renderEmailHtml(email);
   const text = toPlainText(html);

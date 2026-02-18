@@ -1,6 +1,5 @@
 /**
- * Email template registry and mail types.
- * Template components are imported in index.ts to avoid circular deps.
+ * Email template registry and mail types
  */
 export type EmailTemplate =
   | 'forgotPassword'
@@ -8,13 +7,11 @@ export type EmailTemplate =
   | 'subscribeNewsletter'
   | 'contactMessage';
 
-export interface SendEmailParams {
-  to: string;
-  subject: string;
-  text?: string;
-  html: string;
-  from?: string;
-}
+/**
+ * Supported mail provider names
+ * extend when adding new providers (e.g. 'cloudflare')
+ **/
+export type MailProviderName = 'resend';
 
 export interface SendEmailResult {
   success: boolean;
