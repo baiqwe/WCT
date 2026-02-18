@@ -4,7 +4,7 @@ import { UpdateNameCard } from '@/components/settings/profile/update-name-card';
 import { messages } from '@/config/messages';
 import { createFileRoute } from '@tanstack/react-router';
 
-const m = messages.dashboard.settings.profile;
+const m = messages.settings.profile;
 
 export const Route = createFileRoute('/settings/profile')({
   component: ProfilePage,

@@ -17,7 +17,7 @@ interface ResetPasswordCardProps {
   className?: string;
 }
 
-const m = messages.dashboard.settings.security.resetPassword;
+const m = messages.settings.security.resetPassword;
 
 /**
  * For users who signed up with social providers: guide them to set a password via forgot-password flow.

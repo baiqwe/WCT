@@ -12,7 +12,7 @@ import type { MenuItemConfig } from '../types';
 import { messages } from './messages';
 
 const m = messages.dashboard.sidebar;
-const am = messages.dashboard.admin;
+const am = messages.admin;
 
 /**
  * Dashboard sidebar links

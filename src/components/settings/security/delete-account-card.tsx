@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from '@tanstack/react-router';
 
-const m = messages.dashboard.settings.security.deleteAccount;
+const m = messages.settings.security.deleteAccount;
 
 export function DeleteAccountCard() {
   const [isDeleting, setIsDeleting] = useState(false);

@@ -32,7 +32,7 @@ import { Badge } from '@/components/ui/badge';
 import { IconMailCheck, IconMailQuestion } from '@tabler/icons-react';
 import { formatDateTime } from '@/lib/formatter';
 
-const m = messages.dashboard.admin.users;
+const m = messages.admin.users;
 
 function TableRowSkeleton({ columns }: { columns: number }) {
   return (

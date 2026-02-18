@@ -35,7 +35,7 @@ interface NewsletterFormCardProps {
   className?: string;
 }
 
-const m = messages.dashboard.settings.notification.newsletter;
+const m = messages.settings.notification.newsletter;
 
 const formSchema = z.object({ subscribed: z.boolean() });
 

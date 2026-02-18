@@ -27,7 +27,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const m = messages.dashboard.settings.security.updatePassword;
+const m = messages.settings.security.updatePassword;
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(1, { message: m.currentRequired }),

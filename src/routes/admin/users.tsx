@@ -3,7 +3,7 @@ import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { AdminUsersContent } from '@/components/admin/admin-users-content';
 import { messages } from '@/config/messages';
 
-const m = messages.dashboard.admin.users;
+const m = messages.admin.users;
 
 export const Route = createFileRoute('/admin/users')({
   component: AdminUsersPage,
@@ -11,7 +11,7 @@ export const Route = createFileRoute('/admin/users')({
 
 function AdminUsersPage() {
   const breadcrumbs = [
-    { label: messages.dashboard.admin.title, isCurrentPage: false },
+    { label: messages.admin.title, isCurrentPage: false },
     { label: m.title, isCurrentPage: true },
   ];
 

@@ -29,7 +29,7 @@ interface UpdateNameCardProps {
   className?: string;
 }
 
-const m = messages.dashboard.settings.profile.name;
+const m = messages.settings.profile.name;
 
 const nameSchema = z.object({
   name: z

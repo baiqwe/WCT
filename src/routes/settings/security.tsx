@@ -5,7 +5,7 @@ import { messages } from '@/config/messages';
 import { websiteConfig } from '@/config/website';
 import { createFileRoute } from '@tanstack/react-router';
 
-const m = messages.dashboard.settings.security;
+const m = messages.settings.security;
 
 export const Route = createFileRoute('/settings/security')({
   component: SecurityPage,

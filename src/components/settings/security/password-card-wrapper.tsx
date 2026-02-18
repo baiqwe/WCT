@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { UpdatePasswordCard } from './update-password-card';
 import { ResetPasswordCard } from './reset-password-card';
 
-const m = messages.dashboard.settings.security.updatePassword;
+const m = messages.settings.security.updatePassword;
 
 export function PasswordCardWrapper() {
   const { data: session } = authClient.useSession();

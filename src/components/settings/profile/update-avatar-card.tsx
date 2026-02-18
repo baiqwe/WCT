@@ -23,7 +23,7 @@ interface UpdateAvatarCardProps {
   className?: string;
 }
 
-const m = messages.dashboard.settings.profile.avatar;
+const m = messages.settings.profile.avatar;
 
 /**
  * Renders when storage and enableUpdateAvatar are enabled. Supports avatar upload via S3-compatible storage.
