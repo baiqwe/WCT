@@ -77,7 +77,7 @@ function BlogPostPage() {
 
   return (
     <Container className="py-16 px-4">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
         <Link
           to="/blog"
           search={{ page: 1 }}

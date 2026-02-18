@@ -52,8 +52,6 @@ export function Navbar({ scroll = true }: NavbarProps) {
     setMenuValue(undefined);
   }, [pathname]);
 
-  const closeMenu = () => setMenuValue(undefined);
-
   return (
     <section
       className={cn(
@@ -117,6 +115,7 @@ export function Navbar({ scroll = true }: NavbarProps) {
                             return (
                               <li key={subIndex}>
                                 <NavigationMenuLink
+                                  closeOnClick
                                   render={
                                     <Link
                                       to={subItem.href ?? '#'}
@@ -128,7 +127,6 @@ export function Navbar({ scroll = true }: NavbarProps) {
                                           ? 'noopener noreferrer'
                                           : undefined
                                       }
-                                      onClick={closeMenu}
                                       className={cn(
                                         'group flex select-none flex-row items-center gap-4 rounded-md p-2 leading-none no-underline outline-hidden transition-colors',
                                         'hover:bg-accent hover:text-accent-foreground',

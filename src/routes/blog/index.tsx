@@ -42,8 +42,8 @@ function BlogListPage() {
   }
 
   return (
-    <div className="mb-16">
-      <div className="mt-8 flex w-full flex-col items-center justify-center gap-8">
+    <Container className="py-16 px-4">
+      <div className="flex w-full flex-col items-center justify-center gap-8">
         <div className="space-y-4 text-center">
           <h1 className="text-3xl font-bold tracking-tight">
             {messages.blog.title}
@@ -52,11 +52,9 @@ function BlogListPage() {
             {messages.blog.description}
           </p>
         </div>
-      </div>
-      <Container className="mt-8 px-4">
         <BlogGrid posts={posts} />
         <BlogPagination currentPage={currentPage} totalPages={totalPages} />
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }

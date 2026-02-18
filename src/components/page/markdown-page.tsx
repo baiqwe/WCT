@@ -7,7 +7,7 @@ export function MarkdownPage({ page }: { page: PageDoc }) {
   const { title, description, date, content } = page;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-4xl space-y-8">
       <div className="space-y-4">
         <h1 className="text-center text-3xl font-bold tracking-tight">
           {title}
@@ -24,13 +24,11 @@ export function MarkdownPage({ page }: { page: PageDoc }) {
         )}
       </div>
       <Card className="ring-0 border border-border">
-        <CardContent className="pt-6">
-          <div className="mt-0">
+        <CardContent className="py-4 px-8">
             <Markdown
               content={content}
               className="prose prose-neutral dark:prose-invert max-w-none"
             />
-          </div>
         </CardContent>
       </Card>
     </div>
