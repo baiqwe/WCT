@@ -47,6 +47,9 @@ export const messages = {
 
   auth: {
     common: {
+      signup: 'Sign up',
+      login: 'Login',
+      logout: 'Log out',
       byClickingContinue: 'By clicking continue, you agree to our ',
       termsOfService: 'Terms of Service',
       privacyPolicy: 'Privacy Policy',
@@ -259,18 +262,18 @@ export const messages = {
 
   about: {
     title: 'About',
-    subtitle: 'We build tools that help you ship faster.',
-    description: 'Learn more about our mission and how we can help you.',
+    subtitle: 'We help you make SaaS faster',
+    description: 'Learn more about our mission and how we can help you',
     introduction:
-      '👋 Hi there! This is MkFast, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better. If you have any questions, welcome to contact me.',
-    followUs: 'Follow us',
+      '👋 Hi there! This is MkFast, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better. If you have any questions, please welcome to contact us for free.',
+    followUs: 'Follow us on X',
     contactUs: 'Contact us',
   },
 
   contact: {
     title: 'Contact',
-    subtitle: 'Send us a message',
-    description: 'Send us a message and we will get back to you.',
+    subtitle: 'Send message',
+    description: 'Send us a message and we will get back to you',
     name: 'Name',
     email: 'Email',
     message: 'Message',
@@ -290,7 +293,7 @@ export const messages = {
   waitlist: {
     title: 'Waitlist',
     subtitle: 'Join the waitlist',
-    description: 'Join the waitlist for early access and updates.',
+    description: 'Join the waitlist for early access and updates',
     email: 'Email',
     placeholderEmail: 'you@example.com',
     subscribe: 'Subscribe',

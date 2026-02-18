@@ -101,7 +101,7 @@ export function UserButtonMobile({ user }: UserButtonMobileProps) {
               className="flex w-full items-center gap-3 px-2.5 py-2 text-left"
             >
               <IconLogout className="size-4 shrink-0" />
-              <span className="text-sm">{messages.common.logout}</span>
+              <span className="text-sm">{messages.auth.common.logout}</span>
             </button>
           </li>
         </ul>

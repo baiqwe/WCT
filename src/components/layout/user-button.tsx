@@ -71,7 +71,7 @@ export function UserButton({ user }: UserButtonProps) {
           }}
         >
           <IconLogout className="mr-2 size-4" />
-          {messages.common.logout}
+          {messages.auth.common.logout}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

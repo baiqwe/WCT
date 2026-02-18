@@ -136,7 +136,7 @@ export function SidebarUser({ user }: SidebarUserProps) {
                 }}
               >
                 <IconLogout className="mr-2 size-4" />
-                {m.logout}
+                {messages.auth.common.logout}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

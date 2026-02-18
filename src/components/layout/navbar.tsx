@@ -21,6 +21,7 @@ import { NavbarMobile } from '@/components/layout/navbar-mobile';
 import { UserButton } from '@/components/layout/user-button';
 import { Link, useLocation } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import { websiteConfig } from '@/config/website';
 
 const navTriggerStyle = cn(
   'relative bg-transparent text-muted-foreground cursor-pointer',
@@ -33,20 +34,21 @@ interface NavbarProps {
   scroll?: boolean;
 }
 
-const APP_NAME = 'MkFast';
-
 export function Navbar({ scroll = true }: NavbarProps) {
   const scrolled = useScroll(50);
   const menuLinks = getNavbarLinks();
   const location = useLocation();
   const pathname = location.pathname;
   const [mounted, setMounted] = useState(false);
+  const [menuValue, setMenuValue] = useState<string | undefined>(undefined);
   const { data: session, isPending } = authClient.useSession();
   const currentUser = session?.user;
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const closeMenu = () => setMenuValue(undefined);
 
   return (
     <section
@@ -64,16 +66,24 @@ export function Navbar({ scroll = true }: NavbarProps) {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <Logo />
-              <span className="text-xl font-semibold">{APP_NAME}</span>
+              <span className="text-xl font-semibold">{websiteConfig.metadata?.name}</span>
             </Link>
           </div>
 
           <div className="flex-1 flex items-center justify-center space-x-2">
-            <NavigationMenu className="relative">
+            <NavigationMenu
+              value={menuValue}
+              onValueChange={(v) => setMenuValue(v)}
+              className="relative"
+            >
               <NavigationMenuList className="flex items-center">
                 {menuLinks?.map((item, index) =>
                   item.items ? (
-                    <NavigationMenuItem key={index} className="relative">
+                    <NavigationMenuItem
+                      key={index}
+                      value={item.title}
+                      className="relative"
+                    >
                       <NavigationMenuTrigger
                         data-active={
                           item.items.some(
@@ -112,6 +122,7 @@ export function Navbar({ scroll = true }: NavbarProps) {
                                           ? 'noopener noreferrer'
                                           : undefined
                                       }
+                                      onClick={closeMenu}
                                       className={cn(
                                         'group flex select-none flex-row items-center gap-4 rounded-md p-2 leading-none no-underline outline-hidden transition-colors',
                                         'hover:bg-accent hover:text-accent-foreground',
