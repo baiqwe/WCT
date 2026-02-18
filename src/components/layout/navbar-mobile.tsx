@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/layout/logo';
 import { ModeSwitcher } from '@/components/theme/mode-switcher';
+import { ModeSwitcherHorizontal } from '@/components/theme/mode-switcher-horizontal';
 import { UserButton } from '@/components/layout/user-button';
 import { cn } from '@/lib/utils';
 
@@ -78,8 +79,8 @@ export function NavbarMobile({
       </div>
 
       {open && (
-        <div className="fixed inset-0 top-[57px] z-50 overflow-y-auto bg-background">
-          <div className="flex flex-col items-start space-y-4 p-4">
+        <div className="fixed inset-0 top-[57px] z-50 flex flex-col overflow-y-auto bg-background">
+          <div className="flex flex-1 flex-col items-start space-y-4 p-4">
             {!currentUser && (
               <div className="flex w-full flex-col gap-4">
                 <Link
@@ -102,7 +103,7 @@ export function NavbarMobile({
               </div>
             )}
 
-            <ul className="w-full space-y-1">
+            <ul className="w-full flex-1 space-y-1">
               {getNavbarLinks()?.map((item) => {
                 const isActive = item.href
                   ? item.href === '/'
@@ -193,6 +194,11 @@ export function NavbarMobile({
                 );
               })}
             </ul>
+
+            {/* bottom: theme switcher (horizontal) */}
+            <div className="flex w-full items-center justify-end border-t border-border/50 p-4">
+              <ModeSwitcherHorizontal />
+            </div>
           </div>
         </div>
       )}
