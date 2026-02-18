@@ -9,14 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WaitlistRouteImport } from './routes/waitlist'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ManifestDotjsonRouteImport } from './routes/manifest[.]json'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
@@ -27,6 +24,9 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AuthErrorRouteImport } from './routes/auth/error'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
+import { Route as pagesWaitlistRouteImport } from './routes/(pages)/waitlist'
+import { Route as pagesContactRouteImport } from './routes/(pages)/contact'
+import { Route as pagesAboutRouteImport } from './routes/(pages)/about'
 import { Route as legalsTermsRouteImport } from './routes/(legals)/terms'
 import { Route as legalsPrivacyRouteImport } from './routes/(legals)/privacy'
 import { Route as legalsCookieRouteImport } from './routes/(legals)/cookie'
@@ -42,11 +42,6 @@ import { Route as ApiNewsletterStatusRouteImport } from './routes/api/newsletter
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiAdminUsersRouteImport } from './routes/api/admin/users'
 
-const WaitlistRoute = WaitlistRouteImport.update({
-  id: '/waitlist',
-  path: '/waitlist',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -67,19 +62,9 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -130,6 +115,21 @@ const AuthErrorRoute = AuthErrorRouteImport.update({
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const pagesWaitlistRoute = pagesWaitlistRouteImport.update({
+  id: '/(pages)/waitlist',
+  path: '/waitlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const pagesContactRoute = pagesContactRouteImport.update({
+  id: '/(pages)/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const pagesAboutRoute = pagesAboutRouteImport.update({
+  id: '/(pages)/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const legalsTermsRoute = legalsTermsRouteImport.update({
@@ -209,17 +209,17 @@ const ApiAdminUsersRoute = ApiAdminUsersRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
-  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/manifest.json': typeof ManifestDotjsonRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/waitlist': typeof WaitlistRoute
   '/cookie': typeof legalsCookieRoute
   '/privacy': typeof legalsPrivacyRoute
   '/terms': typeof legalsTermsRoute
+  '/about': typeof pagesAboutRoute
+  '/contact': typeof pagesContactRoute
+  '/waitlist': typeof pagesWaitlistRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -243,16 +243,16 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
-  '/contact': typeof ContactRoute
   '/manifest.json': typeof ManifestDotjsonRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/waitlist': typeof WaitlistRoute
   '/cookie': typeof legalsCookieRoute
   '/privacy': typeof legalsPrivacyRoute
   '/terms': typeof legalsTermsRoute
+  '/about': typeof pagesAboutRoute
+  '/contact': typeof pagesContactRoute
+  '/waitlist': typeof pagesWaitlistRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -277,17 +277,17 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
-  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/manifest.json': typeof ManifestDotjsonRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/waitlist': typeof WaitlistRoute
   '/(legals)/cookie': typeof legalsCookieRoute
   '/(legals)/privacy': typeof legalsPrivacyRoute
   '/(legals)/terms': typeof legalsTermsRoute
+  '/(pages)/about': typeof pagesAboutRoute
+  '/(pages)/contact': typeof pagesContactRoute
+  '/(pages)/waitlist': typeof pagesWaitlistRoute
   '/api/contact': typeof ApiContactRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -313,17 +313,17 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/auth'
-    | '/contact'
     | '/dashboard'
     | '/manifest.json'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/waitlist'
     | '/cookie'
     | '/privacy'
     | '/terms'
+    | '/about'
+    | '/contact'
+    | '/waitlist'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -347,16 +347,16 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/auth'
-    | '/contact'
     | '/manifest.json'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/waitlist'
     | '/cookie'
     | '/privacy'
     | '/terms'
+    | '/about'
+    | '/contact'
+    | '/waitlist'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -380,17 +380,17 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/auth'
-    | '/contact'
     | '/dashboard'
     | '/manifest.json'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/waitlist'
     | '/(legals)/cookie'
     | '/(legals)/privacy'
     | '/(legals)/terms'
+    | '/(pages)/about'
+    | '/(pages)/contact'
+    | '/(pages)/waitlist'
     | '/api/contact'
     | '/auth/error'
     | '/auth/forgot-password'
@@ -415,17 +415,17 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRouteWithChildren
-  ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   ManifestDotjsonRoute: typeof ManifestDotjsonRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  WaitlistRoute: typeof WaitlistRoute
   legalsCookieRoute: typeof legalsCookieRoute
   legalsPrivacyRoute: typeof legalsPrivacyRoute
   legalsTermsRoute: typeof legalsTermsRoute
+  pagesAboutRoute: typeof pagesAboutRoute
+  pagesContactRoute: typeof pagesContactRoute
+  pagesWaitlistRoute: typeof pagesWaitlistRoute
   ApiContactRoute: typeof ApiContactRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -440,13 +440,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/waitlist': {
-      id: '/waitlist'
-      path: '/waitlist'
-      fullPath: '/waitlist'
-      preLoaderRoute: typeof WaitlistRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -475,25 +468,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -564,6 +543,27 @@ declare module '@tanstack/react-router' {
       path: '/api/contact'
       fullPath: '/api/contact'
       preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(pages)/waitlist': {
+      id: '/(pages)/waitlist'
+      path: '/waitlist'
+      fullPath: '/waitlist'
+      preLoaderRoute: typeof pagesWaitlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(pages)/contact': {
+      id: '/(pages)/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof pagesContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(pages)/about': {
+      id: '/(pages)/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof pagesAboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(legals)/terms': {
@@ -707,17 +707,17 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   AuthRoute: AuthRouteWithChildren,
-  ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   ManifestDotjsonRoute: ManifestDotjsonRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  WaitlistRoute: WaitlistRoute,
   legalsCookieRoute: legalsCookieRoute,
   legalsPrivacyRoute: legalsPrivacyRoute,
   legalsTermsRoute: legalsTermsRoute,
+  pagesAboutRoute: pagesAboutRoute,
+  pagesContactRoute: pagesContactRoute,
+  pagesWaitlistRoute: pagesWaitlistRoute,
   ApiContactRoute: ApiContactRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

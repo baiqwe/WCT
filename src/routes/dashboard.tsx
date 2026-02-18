@@ -9,17 +9,17 @@ import { useEffect } from 'react';
 
 export const Route = createFileRoute('/dashboard')({
   ssr: false,
-  component: DashboardLayout,
+  component: DashboardPage,
   server: {
     middleware: [authMiddleware],
   },
 });
 
-function DashboardLayout() {
+function DashboardPage() {
   return (
-    <DashboardLayoutWrapper>
+    <DashboardLayout>
       <Outlet />
-    </DashboardLayoutWrapper>
+    </DashboardLayout>
   );
 }
 
@@ -28,7 +28,7 @@ function DashboardLayout() {
  * @param children - The children to wrap
  * @returns A sidebar provider with the children wrapped in a sidebar inset
  */
-function DashboardLayoutWrapper({ children }: { children: React.ReactNode }) {
+function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isPending } = authClient.useSession();
   const navigate = useNavigate();
 

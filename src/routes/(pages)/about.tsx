@@ -10,7 +10,7 @@ import { IconBrandX, IconMail } from '@tabler/icons-react';
 
 const m = messages.about;
 
-export const Route = createFileRoute('/about')({
+export const Route = createFileRoute('/(pages)/about')({
   head: () => ({
     meta: [
       {
