@@ -16,7 +16,11 @@ export function UserAvatar({
 }) {
   return (
     <Avatar className={cn('size-8 border', className)}>
-      <AvatarImage alt={name ?? ''} src={image ?? undefined} />
+      <AvatarImage
+        alt={name ?? ''}
+        src={image ?? undefined}
+        referrerPolicy="no-referrer"
+      />
       <AvatarFallback>
         <span className="sr-only">{name ?? 'User'}</span>
         <IconUser className="size-4" />
