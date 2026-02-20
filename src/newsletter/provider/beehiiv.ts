@@ -22,7 +22,7 @@ export class BeehiivNewsletterProvider implements NewsletterProvider {
   }
 
   getProviderName(): string {
-    return 'Beehiiv';
+    return 'beehiiv';
   }
 
   async subscribe({ email }: SubscribeNewsletterParams): Promise<boolean> {

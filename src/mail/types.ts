@@ -1,17 +1,17 @@
 /**
- * Email template registry and mail types
+ * Supported mail provider names
+ * extend when adding new providers (e.g. 'cloudflare')
+ **/
+export type MailProviderName = 'resend';
+
+/**
+ * Email template names
  */
 export type EmailTemplate =
   | 'forgotPassword'
   | 'verifyEmail'
   | 'subscribeNewsletter'
   | 'contactMessage';
-
-/**
- * Supported mail provider names
- * extend when adding new providers (e.g. 'cloudflare')
- **/
-export type MailProviderName = 'resend';
 
 export interface SendEmailResult {
   success: boolean;

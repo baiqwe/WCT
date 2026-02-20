@@ -21,7 +21,7 @@ export class ResendNewsletterProvider implements NewsletterProvider {
   }
 
   getProviderName(): string {
-    return 'Resend';
+    return 'resend';
   }
 
   /**

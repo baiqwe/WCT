@@ -26,14 +26,10 @@ export class ResendProvider implements MailProvider {
   constructor(options: ResendProviderOptions) {
     const { apiKey, from } = options;
     if (!apiKey) {
-      throw new Error(
-        'Resend API key is required. Set RESEND_API_KEY in env or Cloudflare secrets.'
-      );
+      throw new Error('RESEND_API_KEY is required.');
     }
     if (!from) {
-      throw new Error(
-        'Default from email is required. Set mail.fromEmail in websiteConfig.'
-      );
+      throw new Error('mail.fromEmail is required.');
     }
     this.resend = new Resend(apiKey);
     this.from = from;
