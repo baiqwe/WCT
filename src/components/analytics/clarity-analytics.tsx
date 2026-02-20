@@ -1,4 +1,4 @@
-import { ClientScript } from '@/components/layout/client-script';
+import { ClientScript } from '@/components/shared/client-script';
 import { clientEnv } from '@/env/client';
 
 /**

@@ -1,5 +1,5 @@
 import { messages } from '@/messages';
-import { FormError } from '@/components/layout/form-error';
+import { FormError } from '@/components/shared/form-error';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {

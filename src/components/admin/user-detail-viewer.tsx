@@ -1,5 +1,5 @@
 import type { User } from '@/auth/auth-types';
-import { UserAvatar } from '@/components/layout/user-avatar';
+import { UserAvatar } from '@/components/shared/user-avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';

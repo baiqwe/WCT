@@ -13,7 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { UserAvatar } from '@/components/layout/user-avatar';
+import { UserAvatar } from '@/components/shared/user-avatar';
 
 interface UserButtonMobileProps {
   user: User;

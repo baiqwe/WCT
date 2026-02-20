@@ -1,4 +1,4 @@
-import { HeaderSection } from '@/components/layout/header-section';
+import { HeaderSection } from '@/components/shared/header-section';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 

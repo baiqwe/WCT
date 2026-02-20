@@ -1,6 +1,6 @@
 import { AuthCard } from '@/components/auth/auth-card';
-import { FormError } from '@/components/layout/form-error';
-import { FormSuccess } from '@/components/layout/form-success';
+import { FormError } from '@/components/shared/form-error';
+import { FormSuccess } from '@/components/shared/form-success';
 import { Button } from '@/components/ui/button';
 import {
   Form,

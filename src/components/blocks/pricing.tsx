@@ -1,4 +1,4 @@
-import { HeaderSection } from '@/components/layout/header-section';
+import { HeaderSection } from '@/components/shared/header-section';
 import { getPricePlans } from '@/config/price-config';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';

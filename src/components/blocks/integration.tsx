@@ -1,4 +1,4 @@
-import { HeaderSection } from '@/components/layout/header-section';
+import { HeaderSection } from '@/components/shared/header-section';
 import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Link } from '@tanstack/react-router';

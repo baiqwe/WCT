@@ -1,5 +1,5 @@
 import { messages } from '@/messages';
-import { FormError } from '@/components/layout/form-error';
+import { FormError } from '@/components/shared/form-error';
 import { Button } from '@/components/ui/button';
 import {
   Card,

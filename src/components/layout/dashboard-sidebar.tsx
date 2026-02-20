@@ -1,4 +1,4 @@
-import { Logo } from '@/components/layout/logo';
+import { Logo } from '@/components/shared/logo';
 import { SidebarMain } from '@/components/layout/sidebar-main';
 import { SidebarUser } from '@/components/layout/sidebar-user';
 import {

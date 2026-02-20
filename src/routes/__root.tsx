@@ -14,7 +14,7 @@ import { TailwindIndicator } from '@/integrations/tailwindcss/tailwind-indicator
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { NotFound } from '@/components/layout/not-found';
-import { Toaster } from '@/components/layout/toaster';
+import { Toaster } from '@/components/shared/toaster';
 import { websiteConfig } from '@/config/website';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 import appCss from '../styles.css?url';

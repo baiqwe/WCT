@@ -1,5 +1,5 @@
 import { BottomLink } from '@/components/auth/bottom-link';
-import { Logo } from '@/components/layout/logo';
+import { Logo } from '@/components/shared/logo';
 import {
   Card,
   CardContent,

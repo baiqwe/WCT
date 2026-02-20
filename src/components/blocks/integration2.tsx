@@ -1,4 +1,4 @@
-import { Logo } from '@/components/layout/logo';
+import { Logo } from '@/components/shared/logo';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';

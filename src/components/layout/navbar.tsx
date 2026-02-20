@@ -15,10 +15,10 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import Container from '@/components/layout/container';
-import { Logo } from '@/components/layout/logo';
+import { Logo } from '@/components/shared/logo';
 import { ModeSwitcher } from '@/components/theme/mode-switcher';
 import { NavbarMobile } from '@/components/layout/navbar-mobile';
-import { UserButton } from '@/components/layout/user-button';
+import { UserButton } from '@/components/shared/user-button';
 import { LoginWrapper } from '@/components/auth/login-wrapper';
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { Link, useLocation } from '@tanstack/react-router';

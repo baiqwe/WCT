@@ -1,5 +1,5 @@
 import { websiteConfig } from '@/config/website';
-import { FormError } from '@/components/layout/form-error';
+import { FormError } from '@/components/shared/form-error';
 import { Button } from '@/components/ui/button';
 import {
   Card,

@@ -1,7 +1,7 @@
 import { messages } from '@/messages';
 import { websiteConfig } from '@/config/website';
-import { HeaderSection } from '@/components/layout/header-section';
-import { FormError } from '@/components/layout/form-error';
+import { HeaderSection } from '@/components/shared/header-section';
+import { FormError } from '@/components/shared/form-error';
 import { Button } from '@/components/ui/button';
 import {
   Form,

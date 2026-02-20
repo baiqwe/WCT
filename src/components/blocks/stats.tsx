@@ -1,4 +1,4 @@
-import { HeaderSection } from '@/components/layout/header-section';
+import { HeaderSection } from '@/components/shared/header-section';
 
 export default function StatsSection() {
   return (
