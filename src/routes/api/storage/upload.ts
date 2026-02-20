@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { authApiMiddleware } from '@/middleware/auth-middleware';
 import { websiteConfig } from '@/config/website';
 import { MAX_FILE_SIZE } from '@/lib/constants';
-import { requireSession, unauthorizedResponse } from '@/lib/session';
 import { uploadFile } from '@/storage';
 import { StorageError } from '@/storage/types';
 
@@ -9,13 +9,9 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 export const Route = createFileRoute('/api/storage/upload')({
   server: {
+    middleware: [authApiMiddleware],
     handlers: {
       POST: async ({ request }) => {
-        const session = await requireSession(request);
-        if (!session) {
-          return unauthorizedResponse();
-        }
-
         if (!websiteConfig.storage?.enable) {
           return Response.json(
             { error: 'Storage is not enabled' },

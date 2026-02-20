@@ -19,3 +19,21 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 
   return await next();
 });
+
+/**
+ * Auth API middleware: same as authMiddleware but returns 401 JSON for API routes.
+ * Use with createFileRoute server: { middleware: [authApiMiddleware], handlers: { ... } }.
+ */
+export const authApiMiddleware = createMiddleware().server(async ({ next }) => {
+  const headers = getRequestHeaders();
+  const session = await auth.api.getSession({ headers });
+
+  if (!session?.user) {
+    return Response.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  return await next();
+});
