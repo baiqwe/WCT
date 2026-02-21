@@ -17,7 +17,7 @@ export interface DashboardBreadcrumbItem {
   isCurrentPage?: boolean;
 }
 
-export interface DashboardHeaderProps {
+interface DashboardHeaderProps {
   breadcrumbs: DashboardBreadcrumbItem[];
   actions?: ReactNode;
 }

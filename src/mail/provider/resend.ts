@@ -10,7 +10,7 @@ import { Resend } from 'resend';
 /**
  * Options to create Resend provider (API key from env or Cloudflare bindings).
  */
-export interface ResendProviderOptions {
+interface ResendProviderOptions {
   apiKey: string;
   from: string;
 }

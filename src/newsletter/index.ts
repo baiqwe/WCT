@@ -4,8 +4,6 @@ import { BeehiivNewsletterProvider } from './provider/beehiiv';
 import { ResendNewsletterProvider } from './provider/resend';
 import type { NewsletterProvider, NewsletterProviderName } from './types';
 
-export type { NewsletterProviderName } from './types';
-
 type ProviderFactory = () => NewsletterProvider;
 
 /**

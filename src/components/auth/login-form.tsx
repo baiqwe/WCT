@@ -27,7 +27,7 @@ import { SocialLoginButton } from './social-login-button';
 
 const m = messages.auth.login;
 
-export interface LoginFormProps {
+interface LoginFormProps {
   className?: string;
   callbackUrl?: string;
   onSuccess?: () => void;

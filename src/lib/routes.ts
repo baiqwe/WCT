@@ -41,11 +41,14 @@ export const Routes = {
   AdminUsers: '/admin/users',
 } as const;
 
+/**
+ * Default login redirect route
+ */
 export const DEFAULT_LOGIN_REDIRECT =
   websiteConfig.routes?.defaultLoginRedirect ?? Routes.Dashboard;
 
 /**
- * Returns whether the current pathname matches the given href (for nav active state).
+ * Whether the current pathname matches the given href
  */
 export function isPathActive(
   href: string | undefined,

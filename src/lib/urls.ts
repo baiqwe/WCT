@@ -35,11 +35,11 @@ export function getImageUrl(image: string): string {
 }
 
 /**
- * Get the Stripe dashboard customer URL
+ * Get the Stripe customer dashboard URL
  * @param customerId - The Stripe customer ID
- * @returns The Stripe dashboard customer URL
+ * @returns The Stripe customer dashboard URL
  */
-export function getStripeDashboardCustomerUrl(customerId: string): string {
+export function getStripeCustomerDashboardUrl(customerId: string): string {
   if (import.meta.env.DEV) {
     return `https://dashboard.stripe.com/test/customers/${customerId}`;
   }

@@ -8,14 +8,6 @@ import type {
 } from './types';
 import { ResendProvider } from './provider/resend';
 
-export { getTemplate } from './render';
-export type {
-  EmailTemplate,
-  MailProviderName,
-  SendTemplateParams,
-  SendRawEmailParams,
-} from './types';
-
 let mailProvider: MailProvider | null = null;
 
 type ProviderFactory = () => MailProvider;
