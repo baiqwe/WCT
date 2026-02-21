@@ -1,62 +1,20 @@
-import { getBaseUrl } from '@/lib/urls';
+import {
+  getNewsletterStatus,
+  subscribeNewsletter,
+  unsubscribeNewsletter,
+} from '@/api/newsletter';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-/** API response shapes (match routes/api/newsletter/*) */
-interface StatusResponse {
-  success?: boolean;
-  subscribed?: boolean;
-  error?: string;
-}
-interface ActionResponse {
-  success?: boolean;
-  error?: string;
-}
 
 export const newsletterKeys = {
   all: ['newsletter'] as const,
   status: (email: string) => [...newsletterKeys.all, 'status', email] as const,
 };
 
-async function fetchStatus(email: string): Promise<{ subscribed: boolean }> {
-  const url = `${getBaseUrl()}/api/newsletter/status?email=${encodeURIComponent(email)}`;
-  const res = await fetch(url);
-  const data = (await res.json()) as StatusResponse;
-  if (!res.ok) {
-    throw new Error(data.error ?? res.statusText ?? 'Failed to check status');
-  }
-  return { subscribed: Boolean(data.subscribed) };
-}
-
-async function subscribeEmail(email: string): Promise<void> {
-  const url = `${getBaseUrl()}/api/newsletter/subscribe`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
-  });
-  const data = (await res.json()) as ActionResponse;
-  if (!res.ok || !data.success) {
-    throw new Error(data.error ?? 'Failed to subscribe to the newsletter');
-  }
-}
-
-async function unsubscribeEmail(email: string): Promise<void> {
-  const url = `${getBaseUrl()}/api/newsletter/unsubscribe`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
-  });
-  const data = (await res.json()) as ActionResponse;
-  if (!res.ok || !data.success) {
-    throw new Error(data.error ?? 'Failed to unsubscribe from the newsletter');
-  }
-}
-
 export function useNewsletterStatus(email: string | undefined) {
   return useQuery({
     queryKey: newsletterKeys.status(email ?? ''),
-    queryFn: () => fetchStatus(email!),
+    queryFn: ({ signal }) =>
+      getNewsletterStatus({ data: { email: email! }, signal }),
     enabled: !!email,
     staleTime: 5 * 60 * 1000,
   });
@@ -65,7 +23,7 @@ export function useNewsletterStatus(email: string | undefined) {
 export function useSubscribeNewsletter() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: subscribeEmail,
+    mutationFn: (email: string) => subscribeNewsletter({ data: { email } }),
     onSuccess: (_, email) => {
       queryClient.invalidateQueries({ queryKey: newsletterKeys.status(email) });
     },
@@ -75,7 +33,7 @@ export function useSubscribeNewsletter() {
 export function useUnsubscribeNewsletter() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: unsubscribeEmail,
+    mutationFn: (email: string) => unsubscribeNewsletter({ data: { email } }),
     onSuccess: (_, email) => {
       queryClient.invalidateQueries({ queryKey: newsletterKeys.status(email) });
     },

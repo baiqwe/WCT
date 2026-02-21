@@ -183,7 +183,10 @@ export function FilesTable({
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-8 gap-1')}
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'sm' }),
+                'h-8 gap-1'
+              )}
             >
               <IconExternalLink className="size-3.5" />
               {t.openLink}

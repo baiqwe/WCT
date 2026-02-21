@@ -1,5 +1,6 @@
 import { messages } from '@/messages';
 import { websiteConfig } from '@/config/website';
+import { useSubscribeNewsletter } from '@/hooks/use-newsletter';
 import { HeaderSection } from '@/components/shared/header-section';
 import { FormError } from '@/components/shared/form-error';
 import { Button } from '@/components/ui/button';
@@ -30,34 +31,25 @@ export function NewsletterCard() {
   const enabled = websiteConfig.newsletter?.enable ?? false;
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState(false);
+  const subscribeMutation = useSubscribeNewsletter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { email: '' },
   });
 
-  const isPending = form.formState.isSubmitting;
+  const isPending = subscribeMutation.isPending;
 
   async function onSubmit(data: FormData) {
     setError(undefined);
     setSuccess(false);
     try {
-      const res = await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email }),
-      });
-      const json = (await res.json()) as { success?: boolean; error?: string };
-      if (json.success) {
-        setSuccess(true);
-        form.reset();
-      } else {
-        const errMsg = json.error ?? m.error;
-        setError(errMsg);
-      }
+      await subscribeMutation.mutateAsync(data.email);
+      setSuccess(true);
+      form.reset();
     } catch (err) {
-      console.error('Newsletter subscription error:', err);
-      setError(m.error);
+      const errMsg = err instanceof Error ? err.message : m.error;
+      setError(errMsg);
     }
   }
 

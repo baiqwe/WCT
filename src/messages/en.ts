@@ -308,8 +308,7 @@ export const messages = {
       description: 'Manage your uploaded files',
       uploadButton: 'Upload file',
       uploadDialogTitle: 'Upload file',
-      uploadDialogDescription:
-        'File will be stored under your account',
+      uploadDialogDescription: 'File will be stored under your account',
       fileLabel: 'File',
       isPublicLabel: 'Public (anyone with link can view)',
       descriptionLabel: 'Description',

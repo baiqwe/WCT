@@ -48,9 +48,6 @@ import { Route as legalsCookieRouteImport } from './routes/(legals)/cookie'
 import { Route as ApiUserFilesIdRouteImport } from './routes/api/user-files.$id'
 import { Route as ApiStorageUploadRouteImport } from './routes/api/storage/upload'
 import { Route as ApiStorageFileRouteImport } from './routes/api/storage/file'
-import { Route as ApiNewsletterUnsubscribeRouteImport } from './routes/api/newsletter/unsubscribe'
-import { Route as ApiNewsletterSubscribeRouteImport } from './routes/api/newsletter/subscribe'
-import { Route as ApiNewsletterStatusRouteImport } from './routes/api/newsletter/status'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiAdminUsersRouteImport } from './routes/api/admin/users'
 
@@ -249,22 +246,6 @@ const ApiStorageFileRoute = ApiStorageFileRouteImport.update({
   path: '/api/storage/file',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiNewsletterUnsubscribeRoute =
-  ApiNewsletterUnsubscribeRouteImport.update({
-    id: '/api/newsletter/unsubscribe',
-    path: '/api/newsletter/unsubscribe',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiNewsletterSubscribeRoute = ApiNewsletterSubscribeRouteImport.update({
-  id: '/api/newsletter/subscribe',
-  path: '/api/newsletter/subscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiNewsletterStatusRoute = ApiNewsletterStatusRouteImport.update({
-  id: '/api/newsletter/status',
-  path: '/api/newsletter/status',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -315,9 +296,6 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof SettingsIndexRoute
   '/api/admin/users': typeof ApiAdminUsersRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/newsletter/status': typeof ApiNewsletterStatusRoute
-  '/api/newsletter/subscribe': typeof ApiNewsletterSubscribeRoute
-  '/api/newsletter/unsubscribe': typeof ApiNewsletterUnsubscribeRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/storage/upload': typeof ApiStorageUploadRoute
   '/api/user-files/$id': typeof ApiUserFilesIdRoute
@@ -358,9 +336,6 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsIndexRoute
   '/api/admin/users': typeof ApiAdminUsersRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/newsletter/status': typeof ApiNewsletterStatusRoute
-  '/api/newsletter/subscribe': typeof ApiNewsletterSubscribeRoute
-  '/api/newsletter/unsubscribe': typeof ApiNewsletterUnsubscribeRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/storage/upload': typeof ApiStorageUploadRoute
   '/api/user-files/$id': typeof ApiUserFilesIdRoute
@@ -405,9 +380,6 @@ export interface FileRoutesById {
   '/settings/': typeof SettingsIndexRoute
   '/api/admin/users': typeof ApiAdminUsersRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/newsletter/status': typeof ApiNewsletterStatusRoute
-  '/api/newsletter/subscribe': typeof ApiNewsletterSubscribeRoute
-  '/api/newsletter/unsubscribe': typeof ApiNewsletterUnsubscribeRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/storage/upload': typeof ApiStorageUploadRoute
   '/api/user-files/$id': typeof ApiUserFilesIdRoute
@@ -453,9 +425,6 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/api/admin/users'
     | '/api/auth/$'
-    | '/api/newsletter/status'
-    | '/api/newsletter/subscribe'
-    | '/api/newsletter/unsubscribe'
     | '/api/storage/file'
     | '/api/storage/upload'
     | '/api/user-files/$id'
@@ -496,9 +465,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/api/admin/users'
     | '/api/auth/$'
-    | '/api/newsletter/status'
-    | '/api/newsletter/subscribe'
-    | '/api/newsletter/unsubscribe'
     | '/api/storage/file'
     | '/api/storage/upload'
     | '/api/user-files/$id'
@@ -542,9 +508,6 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/api/admin/users'
     | '/api/auth/$'
-    | '/api/newsletter/status'
-    | '/api/newsletter/subscribe'
-    | '/api/newsletter/unsubscribe'
     | '/api/storage/file'
     | '/api/storage/upload'
     | '/api/user-files/$id'
@@ -575,9 +538,6 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   ApiAdminUsersRoute: typeof ApiAdminUsersRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiNewsletterStatusRoute: typeof ApiNewsletterStatusRoute
-  ApiNewsletterSubscribeRoute: typeof ApiNewsletterSubscribeRoute
-  ApiNewsletterUnsubscribeRoute: typeof ApiNewsletterUnsubscribeRoute
   ApiStorageFileRoute: typeof ApiStorageFileRoute
   ApiStorageUploadRoute: typeof ApiStorageUploadRoute
 }
@@ -857,27 +817,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStorageFileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/newsletter/unsubscribe': {
-      id: '/api/newsletter/unsubscribe'
-      path: '/api/newsletter/unsubscribe'
-      fullPath: '/api/newsletter/unsubscribe'
-      preLoaderRoute: typeof ApiNewsletterUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/newsletter/subscribe': {
-      id: '/api/newsletter/subscribe'
-      path: '/api/newsletter/subscribe'
-      fullPath: '/api/newsletter/subscribe'
-      preLoaderRoute: typeof ApiNewsletterSubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/newsletter/status': {
-      id: '/api/newsletter/status'
-      path: '/api/newsletter/status'
-      fullPath: '/api/newsletter/status'
-      preLoaderRoute: typeof ApiNewsletterStatusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -996,9 +935,6 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   ApiAdminUsersRoute: ApiAdminUsersRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiNewsletterStatusRoute: ApiNewsletterStatusRoute,
-  ApiNewsletterSubscribeRoute: ApiNewsletterSubscribeRoute,
-  ApiNewsletterUnsubscribeRoute: ApiNewsletterUnsubscribeRoute,
   ApiStorageFileRoute: ApiStorageFileRoute,
   ApiStorageUploadRoute: ApiStorageUploadRoute,
 }

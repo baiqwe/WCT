@@ -1,4 +1,5 @@
 import { websiteConfig } from '@/config/website';
+import { useSubscribeNewsletter } from '@/hooks/use-newsletter';
 import { FormError } from '@/components/shared/form-error';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,31 +34,22 @@ type FormValues = z.infer<typeof schema>;
 
 export function WaitlistFormCard() {
   const [error, setError] = useState<string | undefined>();
+  const subscribeMutation = useSubscribeNewsletter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { email: '' },
   });
 
-  const isPending = form.formState.isSubmitting;
+  const isPending = subscribeMutation.isPending;
 
   async function onSubmit(values: FormValues) {
     setError(undefined);
     try {
-      const res = await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: values.email }),
-      });
-      const json = (await res.json()) as { success?: boolean; error?: string };
-      if (json.success) {
-        form.reset();
-        return;
-      }
-      setError(json.error ?? m.error);
+      await subscribeMutation.mutateAsync(values.email);
+      form.reset();
     } catch (err) {
-      console.error('Waitlist subscription error:', err);
-      setError(m.error);
+      setError(err instanceof Error ? err.message : m.error);
     }
   }
 
