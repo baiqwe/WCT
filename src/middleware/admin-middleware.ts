@@ -21,24 +21,26 @@ function unauthorizedResponse() {
 }
 
 /**
- * Admin middleware: requires authenticated user with role === 'admin'.
+ * Admin Route middleware: requires authenticated user with role === 'admin'.
  * Use after auth or alone (redirects to login if not signed in, then to dashboard if not admin).
  */
-export const adminMiddleware = createMiddleware().server(async ({ next }) => {
-  const headers = getRequestHeaders();
-  const session = await auth.api.getSession({ headers });
+export const adminRouteMiddleware = createMiddleware().server(
+  async ({ next }) => {
+    const headers = getRequestHeaders();
+    const session = await auth.api.getSession({ headers });
 
-  if (!session?.user) {
-    throw redirect({ to: Routes.Login });
+    if (!session?.user) {
+      throw redirect({ to: Routes.Login });
+    }
+
+    const role = session.user.role;
+    if (role !== ADMIN_ROLE) {
+      throw redirect({ to: Routes.Dashboard });
+    }
+
+    return await next();
   }
-
-  const role = session.user.role;
-  if (role !== ADMIN_ROLE) {
-    throw redirect({ to: Routes.Dashboard });
-  }
-
-  return await next();
-});
+);
 
 /**
  * Admin API middleware: same check as adminMiddleware but returns 401/403 Response for API routes.

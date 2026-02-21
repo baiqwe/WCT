@@ -5,20 +5,22 @@ import { getRequestHeaders } from '@tanstack/react-start/server';
 import { Routes } from '@/lib/routes';
 
 /**
- * Auth middleware: requires authenticated user.
+ * Auth Route middleware: requires authenticated user.
  * Use in route definitions via server: { middleware: [authMiddleware] }.
  * https://www.better-auth.com/docs/integrations/tanstack#middleware
  */
-export const authMiddleware = createMiddleware().server(async ({ next }) => {
-  const headers = getRequestHeaders();
-  const session = await auth.api.getSession({ headers });
+export const authRouteMiddleware = createMiddleware().server(
+  async ({ next }) => {
+    const headers = getRequestHeaders();
+    const session = await auth.api.getSession({ headers });
 
-  if (!session?.user) {
-    throw redirect({ to: Routes.Login });
+    if (!session?.user) {
+      throw redirect({ to: Routes.Login });
+    }
+
+    return await next();
   }
-
-  return await next();
-});
+);
 
 /**
  * Auth API middleware: same as authMiddleware but returns 401 JSON for API routes.

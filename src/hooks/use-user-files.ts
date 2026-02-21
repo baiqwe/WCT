@@ -73,7 +73,7 @@ export function useUploadUserFile() {
   });
 }
 
-/** 
+/**
  * Uploads a file to the avatars folder
  */
 export function useUploadAvatarFile() {
