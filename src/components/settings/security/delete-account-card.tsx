@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { messages } from '@/messages';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { toast } from 'sonner';

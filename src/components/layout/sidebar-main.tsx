@@ -10,7 +10,7 @@ import {
 import { getSidebarLinks } from '@/config/sidebar-config';
 import type { MenuItemConfig } from '@/types';
 import { Link, useRouterState } from '@tanstack/react-router';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { useMemo } from 'react';
 
 /**

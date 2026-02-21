@@ -1,4 +1,4 @@
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { listUsers } from '@/api/users';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ColumnSort } from '@tanstack/react-table';

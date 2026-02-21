@@ -1,4 +1,4 @@
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import type { ApiKey } from '@/db/types';
 import {
   keepPreviousData,

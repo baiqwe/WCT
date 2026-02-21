@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { websiteConfig } from '@/config/website';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { cn } from '@/lib/utils';
 import { uploadFileFromBrowser } from '@/storage/client';
 import { IconUser } from '@tabler/icons-react';

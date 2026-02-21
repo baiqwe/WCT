@@ -77,7 +77,7 @@ A full-stack web template built with **TanStack Start**, **React 19**, and **Vit
 │   │   ├── blog.ts             # getPostBySlug, getPaginatedPosts
 │   │   ├── pages.ts            # getPageBySlug
 │   │   ├── auth.ts             # Better Auth server config
-│   │   ├── auth-client.ts      # Better Auth client
+│   │   ├── client.ts           # Better Auth client
 │   │   └── utils.ts
 │   ├── mail/                   # Email templates (Resend) and render
 │   ├── newsletter/             # Newsletter providers (Resend, Beehiiv)

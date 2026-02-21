@@ -8,9 +8,9 @@ Authentication is built on [Better Auth](https://www.better-auth.com/). The serv
 
 ```
 src/auth/
-├── auth.ts        # Server: betterAuth instance (DB, email, social, plugins)
-├── auth-client.ts # Client: createAuthClient + plugins (admin, apiKey, inferAdditionalFields)
-└── auth-types.ts  # Session / User types inferred from auth
+├── auth.ts   # Server: betterAuth instance (DB, email, social, plugins)
+├── client.ts # Client: createAuthClient + plugins (admin, apiKey, inferAdditionalFields)
+└── types.ts  # Session / SessionUser types inferred from auth
 ```
 
 **Related (outside `src/auth/`):**
@@ -50,7 +50,7 @@ All email sending goes through the Mail module (no direct Resend dependency).
 
 ---
 
-## Client (auth-client.ts)
+## Client (client.ts)
 
 - `createAuthClient({ baseURL: getBaseUrl(), plugins: [adminClient(), apiKeyClient(), inferAdditionalFields<typeof auth>()] })` exported as **`authClient`**.
 - Typical usage:

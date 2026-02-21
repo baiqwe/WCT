@@ -17,7 +17,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { websiteConfig } from '@/config/website';
-import type { SessionUser } from '@/auth/auth-types';
+import type { SessionUser } from '@/auth/types';
 import {
   IconDeviceDesktop,
   IconLogout,
@@ -28,7 +28,7 @@ import {
 import { useState } from 'react';
 import { useTheme } from '@/components/theme/theme-provider';
 import { UserAvatar } from '@/components/shared/user-avatar';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { messages } from '@/messages';
 import { useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';

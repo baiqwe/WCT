@@ -3,7 +3,7 @@ import { DividerWithText } from '@/components/auth/divider-with-text';
 import { Button } from '@/components/ui/button';
 import { messages } from '@/messages';
 import { websiteConfig } from '@/config/website';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { getBaseUrl } from '@/lib/urls';
 import { DEFAULT_LOGIN_REDIRECT, Routes } from '@/lib/routes';
 import { IconBrandGoogleFilled, IconLoader2 } from '@tabler/icons-react';

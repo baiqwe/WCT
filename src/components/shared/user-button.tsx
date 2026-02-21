@@ -1,5 +1,5 @@
 import { getAvatarLinks } from '@/config/avatar-config';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { IconLogout } from '@tabler/icons-react';
 import { Link, useRouter } from '@tanstack/react-router';
 import {
@@ -13,7 +13,7 @@ import { UserAvatar } from './user-avatar';
 import { messages } from '@/messages';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import type { SessionUser } from '@/auth/auth-types';
+import type { SessionUser } from '@/auth/types';
 
 interface UserButtonProps {
   user: SessionUser;

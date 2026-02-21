@@ -1,5 +1,5 @@
 import { getNavbarLinks } from '@/config/navbar-config';
-import { authClient } from '@/auth/auth-client';
+import { authClient } from '@/auth/client';
 import { isPathActive } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { Routes } from '@/lib/routes';
