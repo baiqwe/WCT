@@ -54,6 +54,9 @@ src/storage/
 - **websiteConfig.storage** (`src/config/website.ts`)
   - `enable`: Whether storage is enabled. When false, the upload API and avatar card are disabled.
   - `provider`: `'r2'`.
+  - `maxFileSize`: Max file size in bytes (e.g. 4MB or 10MB). Used by upload validation and avatar card.
+  - `allowedTypes`: Allowed file extensions (e.g. `['.jpg', '.jpeg', '.png', '.webp']`).
+  - `userFilesFolder`: Parent folder for per-user files (e.g. `'userfiles'`); used by Settings → Files and upload API.
 
 - **wrangler.jsonc**
   - `r2_buckets`: Bind the R2 bucket with `binding: "FILES"` (and `bucket_name`). `getR2Bucket()` in `provider/r2.ts` reads `env.FILES` and is exported from `@/storage`.
@@ -74,7 +77,7 @@ No storage-specific environment variables are required. Files are always served 
 ## API routes
 
 - **POST /api/storage/upload**
-  - Requires session. Validates file size (max 4MB) and type (jpeg, png, webp). Uploads to R2 and returns `{ url, key }`. `url` is the same-origin proxy URL (`/api/storage/file?key=...` or full origin + path).
+  - Requires session. Validates file size (`websiteConfig.storage.maxFileSize`) and type (`allowedTypes`). Uploads to R2 and returns `{ url, key }`. `url` is the same-origin proxy URL (`/api/storage/file?key=...` or full origin + path).
 
 - **GET /api/storage/file?key=...**
   - Streams the object from R2. Keys are unguessable (e.g. `avatars/<uuid>.<ext>`).
@@ -82,10 +85,7 @@ No storage-specific environment variables are required. Files are always served 
 ## Consumers
 
 - **Settings → Profile** (`UpdateAvatarCard`): When `websiteConfig.storage.enable` and `websiteConfig.features.enableUpdateAvatar` are true, the user can upload an avatar; the client calls `uploadFileFromBrowser(file, 'avatars')` then updates `user.image` with the returned URL.
-
-## Configuration (continued)
-
-- **maxFileSize**: Configured in `websiteConfig.storage.maxFileSize` (e.g. 4MB). Used by upload validation and the avatar card client-side check.
+- **Settings → Files**: User file uploads use the same R2 bucket and upload API; files are stored under `userFilesFolder` (see `routes/api/user-files.ts`, `api/storage/upload.ts`).
 
 ## Notes
 

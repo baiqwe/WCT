@@ -44,46 +44,73 @@ A full-stack web template built with **TanStack Start**, **React 19**, and **Vit
 │   └── pages/                  # Static pages (about, terms, privacy, cookie)
 ├── content-collections.ts      # Content Collections config (blog + pages)
 ├── src/
+│   ├── api/                    # Server functions (TanStack Start)
+│   │   ├── users.ts            # listUsers (admin), user management
+│   │   └── newsletter.ts       # getNewsletterStatus, subscribe, unsubscribe
+│   ├── auth/                   # Better Auth
+│   │   ├── auth.ts             # Server: betterAuth instance (DB, email, social, plugins)
+│   │   ├── client.ts           # Client: createAuthClient + plugins (admin, apiKey)
+│   │   └── types.ts            # Session, SessionUser inferred from auth
 │   ├── config/                 # App configuration
-│   │   ├── website.ts          # Main site config (features, mail, newsletter, routes)
+│   │   ├── website.ts          # Main site config (features, mail, newsletter, auth, storage)
 │   │   ├── navbar-config.ts    # Navbar links
-│   │   ├── footer-config.ts    # Footer links
-│   │   ├── price-config.ts     # Pricing plans
-│   │   └── ...
+│   │   ├── footer-config.ts   # Footer links
+│   │   ├── sidebar-config.ts  # Dashboard sidebar links
+│   │   ├── price-config.ts    # Pricing plans
+│   │   └── avatar-config.ts   # Avatar provider config
 │   ├── routes/                 # File-based routes (TanStack Router)
 │   │   ├── __root.tsx          # Root layout
 │   │   ├── index.tsx           # Home
-│   │   ├── about.tsx           # About (static layout)
-│   │   ├── contact.tsx         # Contact form
-│   │   ├── waitlist.tsx        # Waitlist / newsletter signup
+│   │   ├── auth.tsx            # Auth layout
+│   │   ├── auth/               # login, register, forgot-password, reset-password, error
 │   │   ├── blog/               # Blog list + post by slug
-│   │   ├── terms.tsx           # Terms of Service (Markdown)
-│   │   ├── privacy.tsx         # Privacy Policy (Markdown)
-│   │   ├── cookie.tsx          # Cookie Policy (Markdown)
-│   │   ├── auth/               # Login, register, forgot/reset password
-│   │   ├── api/                # API routes (contact, newsletter, auth)
-│   │   └── demo/               # Demo pages (table, store, tanstack-query)
+│   │   ├── (pages)/            # about, contact, waitlist, changelog, roadmap
+│   │   ├── (legals)/           # terms, privacy, cookie (Markdown)
+│   │   ├── dashboard.tsx      # Dashboard layout
+│   │   ├── dashboard/          # Dashboard index, data
+│   │   ├── settings.tsx        # Settings layout
+│   │   ├── settings/           # profile, security, notifications, apikeys, files
+│   │   ├── admin.tsx           # Admin layout
+│   │   ├── admin/              # users, index
+│   │   └── api/                # auth/$, contact, storage (upload, file), user-files
 │   ├── components/
-│   │   ├── layout/             # Navbar, footer, container, theme, user menu
-│   │   ├── blocks/             # Marketing sections (hero, features, pricing, etc.)
-│   │   ├── blog/               # BlogCard, BlogGrid, MarkdownBody, pagination
-│   │   ├── page/               # PageMarkdown (legal/content pages)
+│   │   ├── layout/             # Navbar, footer, container, sidebar, dashboard, theme
+│   │   ├── blocks/             # Marketing sections (hero, features, pricing, newsletter, etc.)
+│   │   ├── blog/               # BlogCard, BlogGrid, pagination
+│   │   ├── page/               # MarkdownPage (legal/content pages)
 │   │   ├── contact/            # ContactFormCard
 │   │   ├── waitlist/           # WaitlistFormCard
-│   │   ├── auth/               # Login/register forms, auth card
+│   │   ├── auth/               # Login/register forms, auth card, error card
+│   │   ├── admin/              # Users table, user detail viewer
+│   │   ├── settings/           # Profile, security, notifications, apikeys, files
 │   │   ├── ui/                 # Shadcn UI primitives
-│   │   └── shared/             # FormError, FormSuccess, BackButtonSmall
+│   │   ├── shared/             # UserButton, UserAvatar, logo, etc.
+│   │   ├── data-table/         # DataTable components
+│   │   └── ...
+│   ├── db/                     # Drizzle ORM + D1
+│   │   ├── index.ts            # getDb(), re-exports schema
+│   │   ├── schema.ts           # Merged schema (auth + app)
+│   │   ├── auth.schema.ts      # Better Auth tables (user, session, account, verification, apikey)
+│   │   ├── app.schema.ts       # App tables (e.g. userFiles)
+│   │   ├── types.ts            # User, ApiKey, UserFiles ($inferSelect)
+│   │   └── migrations/         # Drizzle migrations
+│   ├── env/                    # Type-safe env (T3 Env)
+│   │   ├── client.ts           # clientEnv (VITE_* build-time)
+│   │   └── server.ts           # serverEnv (runtime secrets)
 │   ├── lib/                    # Utilities and data helpers
 │   │   ├── blog.ts             # getPostBySlug, getPaginatedPosts
 │   │   ├── pages.ts            # getPageBySlug
-│   │   ├── auth.ts             # Better Auth server config
-│   │   ├── client.ts           # Better Auth client
-│   │   └── utils.ts
+│   │   ├── urls.ts             # getBaseUrl, getCanonicalUrl
+│   │   ├── routes.ts           # Central route constants (Routes.*)
+│   │   ├── formatter.ts        # formatDate, etc.
+│   │   └── utils.ts            # cn, etc.
 │   ├── mail/                   # Email templates (Resend) and render
+│   ├── middleware/             # auth-middleware, admin-middleware
 │   ├── newsletter/             # Newsletter providers (Resend, Beehiiv)
-│   ├── db/                     # Drizzle schema and client
-│   ├── routes.ts               # Central route constants
-│   └── types/
+│   ├── storage/                # R2 upload, delete, client helpers
+│   ├── types/                  # index.d.ts (WebsiteConfig, etc.)
+│   ├── messages/              # i18n (en.ts, etc.)
+│   └── hooks/                  # use-auth, use-users, use-apikeys, use-newsletter, etc.
 ├── public/
 ├── .env.local.example
 ├── .env.production.example
@@ -224,10 +251,11 @@ Edit or add Markdown under `content/pages/` (e.g. `terms-of-service.md`, `privac
 ## Auth (Better Auth)
 
 1. Set `BETTER_AUTH_SECRET` in `.env.local` (e.g. `npx @better-auth/cli secret`).
-2. Optional: add a database (e.g. D1, PostgreSQL) in `src/lib/auth.ts` and run `npx @better-auth/cli migrate`.
+2. Database: D1 is configured in `src/auth/auth.ts` via `drizzleAdapter(getDb(), { provider: 'sqlite' })`. Run migrations with `pnpm db:generate` and `pnpm db:migrate:local` or `pnpm db:migrate:remote`.
 
 Auth routes: `/auth/login`, `/auth/register`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/error`.  
-API proxy: `src/routes/api/auth/$.ts` (handles Better Auth API).
+API proxy: `src/routes/api/auth/$.ts` (forwards to Better Auth handler).  
+Session/types: `src/auth/client.ts` (authClient), `src/auth/types.ts` (Session, SessionUser). See [docs/auth.md](docs/auth.md).
 
 ---
 
@@ -240,10 +268,9 @@ API proxy: `src/routes/api/auth/$.ts` (handles Better Auth API).
 
 ## Newsletter
 
-- **Subscribe** – POST `/api/newsletter/subscribe` with `{ email }`. Uses Resend or Beehiiv per `websiteConfig.newsletter`.
-- **Unsubscribe / status** – `/api/newsletter/unsubscribe`, `/api/newsletter/status`.
-
-Homepage and Waitlist page both use the same subscribe API.
+- **Server functions** – `src/api/newsletter.ts`: `getNewsletterStatus`, `subscribeNewsletter`, `unsubscribeNewsletter`. Uses Resend or Beehiiv per `websiteConfig.newsletter`.
+- **Hooks** – `use-newsletter.ts`: `useNewsletterStatus`, `useSubscribeNewsletter`, `useUnsubscribeNewsletter`.
+- **UI** – Homepage and Waitlist use `NewsletterCard`; Settings → Notifications uses `NewsletterFormCard` (logged-in users). See [docs/newsletter.md](docs/newsletter.md).
 
 ---
 

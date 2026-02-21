@@ -16,11 +16,11 @@ src/auth/
 **Related (outside `src/auth/`):**
 
 - **API route**: `src/routes/api/auth/$.ts` — forwards GET/POST to `auth.handler(request)`.
-- **Session helpers**: `src/lib/session.ts` — `requireSession(request)`, `unauthorizedResponse(message)`.
-- **Middleware**: `src/middleware/auth-middleware.ts`, `src/middleware/admin-middleware.ts`.
-- **Routes**: `src/routes/auth.tsx` (layout), `src/routes/auth/login.tsx`, `src/routes/auth/register.tsx`; error redirect uses `/auth/error`.
-- **Components**: `src/components/auth/` (login-form, register-form, forgot-password-form, auth-card, error-card, login-wrapper, etc.).
+- **Middleware**: `src/middleware/auth-middleware.ts`, `src/middleware/admin-middleware.ts`. Both use `auth.api.getSession({ headers })` to obtain the session; there is no separate `lib/session.ts`.
+- **Routes**: `src/routes/auth.tsx` (layout), `src/routes/auth/login.tsx`, `src/routes/auth/register.tsx`, `auth/forgot-password`, `auth/reset-password`, `auth/error`.
+- **Components**: `src/components/auth/` (login-form, register-form, forgot-password-form, auth-card, error-card, login-wrapper, social-login-button, etc.); `UserButton`, `SidebarUser` use `SessionUser` from `@/auth/types`.
 - **Hooks**: `src/hooks/use-auth.ts` — `useUserAccounts`, `useHasCredentialProvider`.
+- **DB user type**: `src/db/types.ts` exports `User` (table row); use for admin user list/detail. Use `SessionUser` from `@/auth/types` for current-session user (e.g. navbar, sidebar).
 
 ---
 
@@ -65,11 +65,12 @@ Requests go to `baseURL + /api/auth/*` and are handled by `auth.handler`.
 
 ## Session checks for protected APIs
 
-- **`src/lib/session.ts`**:
-  - **`requireSession(request)`**: calls `auth.api.getSession({ headers: request.headers })`, returns session or `null`.
-  - **`unauthorizedResponse(message?)`**: returns 401 JSON `{ error: message }` (default `"Unauthorized"`).
+Session is obtained with **`auth.api.getSession({ headers })`** (from `@/auth/auth`). There is no shared `lib/session.ts`; each protected API route and middleware calls `getSession` directly.
 
-APIs that require a logged-in user (e.g. `/api/storage/upload`, `/api/admin/users`) call `const session = await requireSession(request)` and return `unauthorizedResponse()` when `session` is null.
+- **Middleware** (`auth-middleware.ts`, `admin-middleware.ts`): call `await auth.api.getSession({ headers })`; redirect to login or dashboard when null or when role is not admin.
+- **API routes** (e.g. `routes/api/storage/upload.ts`, `api/user-files.ts`): call `auth.api.getSession({ headers })` and return 401 or redirect when session is null.
+
+Server functions that need a session (e.g. `listUsers` in `src/api/users.ts`) use middleware such as `adminApiMiddleware`, which runs on the server and obtains the session the same way.
 
 ---
 

@@ -6,28 +6,30 @@ The database uses **Drizzle ORM** with **Cloudflare D1** (SQLite). Table definit
 
 ```
 src/db/
-├── index.ts       # getDb(d1), re-exports from auth.schema, app.schema, and schema
-├── schema.ts      # Imports auth.schema + app.schema, exports merged schema
-├── auth.schema.ts # Better Auth: user, session, account, verification + relations
-├── app.schema.ts  # Application tables (add your tables here)
-└── migrations/   # Drizzle-generated SQL and meta
+├── index.ts       # getDb() using env.DB (cloudflare:workers), re-exports schema
+├── schema.ts      # Merges auth.schema + app.schema, exports schema and re-exports tables
+├── auth.schema.ts # Better Auth: user, session, account, verification, apikey + relations
+├── app.schema.ts  # Application tables (e.g. userFiles)
+├── types.ts       # User, ApiKey, UserFiles ($inferSelect from tables)
+└── migrations/    # Drizzle-generated SQL and meta
 ```
 
 ## Configuration
 
 - **wrangler.jsonc**
   - `d1_databases`: `binding: "DB"`, `database_id`, `database_name`, `migrations_dir: "./src/db/migrations"`.
-- At runtime the D1 instance is available as `env.DB` (Cloudflare Workers) and passed to `getDb(env.DB)`.
+- At runtime the D1 instance is available as `env.DB` (Cloudflare Workers). The project uses `import { env } from "cloudflare:workers"` in `getDb()`, so no argument is passed.
 
 ## Core API
 
-- **getDb(d1: D1Database)**
-  - Returns `drizzle(d1, { schema })` for all server-side DB access. The `schema` object is built in `schema.ts` from `auth.schema` and `app.schema`.
+- **getDb()**
+  - Returns `drizzle(env.DB, { schema })` for all server-side DB access. The `schema` is built in `schema.ts` from `auth.schema` and `app.schema`. Called without arguments (uses `env` from `cloudflare:workers`).
 
 - **Exports** (`index.ts`)
-  - `export * from "./auth.schema"` — Better Auth tables and relations.
-  - `export * from "./app.schema"` — Application tables.
-  - `export { schema } from "./schema"` — Merged schema for Drizzle and drizzle-kit.
+  - Re-exports from `schema.ts` (which re-exports `auth.schema` and `app.schema`). Import tables from `@/db` or `@/db/auth.schema` / `@/db/app.schema`.
+
+- **types.ts**
+  - `User`, `ApiKey`, `UserFiles` — inferred from table `$inferSelect`. Use for API responses and admin tables.
 
 ## Schema design
 
@@ -38,7 +40,7 @@ src/db/
   - Application-only tables. Define and export any new tables here (e.g. `sqliteTable('my_table', { ... })`). They are merged into the main schema via `schema.ts`.
 
 - **schema.ts**
-  - Imports `authSchema` and `appSchema` and exports `schema = { ...authSchema, ...appSchema }`. Used by `getDb` and drizzle-kit as the single schema entry point.
+  - Re-exports all tables from `auth.schema` and `app.schema`; exports `schema = { ...authSchema, ...appSchema }`. Used by `getDb()` and drizzle-kit as the single schema entry point.
 
 ## Migrations
 
@@ -53,8 +55,8 @@ src/db/
 
 ## Consumers
 
-- **Auth** (`src/auth/auth.ts`): `drizzleAdapter(getDb(env.DB), { provider: 'sqlite' })`; Better Auth reads/writes user, session, account, verification.
-- Other server logic: `import { getDb } from '@/db'` and call `getDb(env.DB)` where `env` is available, then run queries. Import individual tables from `@/db` if needed.
+- **Auth** (`src/auth/auth.ts`): `drizzleAdapter(getDb(), { provider: 'sqlite' })`; Better Auth reads/writes user, session, account, verification, apikey.
+- Other server logic: `import { getDb } from '@/db'` and call `getDb()`, then run queries. Import tables from `@/db` or `@/db/auth.schema` / `@/db/app.schema` as needed.
 
 ## Notes
 

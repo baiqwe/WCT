@@ -12,19 +12,19 @@ Email subscribe / unsubscribe / status, driven by **Resend** or **Beehiiv**. Con
 
 ```
 src/newsletter/
-├── index.ts           # subscribe, unsubscribe, isSubscribed, getNewsletterProvider; providerRegistry, createProvider
-├── types.ts           # NewsletterProviderName, NewsletterProvider, Subscribe/Unsubscribe/CheckStatus params & handler types
+├── index.ts           # subscribe, unsubscribe, isSubscribed, getNewsletterProvider; providerRegistry
+├── types.ts           # NewsletterProviderName, NewsletterProvider, params & handler types
 └── provider/
     ├── resend.ts      # ResendNewsletterProvider (Resend Audiences contacts)
     └── beehiiv.ts     # BeehiivNewsletterProvider (@beehiiv/sdk)
 ```
 
-**API routes** (`src/routes/api/newsletter/`): `subscribe.ts`, `unsubscribe.ts`, `status.ts`.
+**Server functions** (`src/api/newsletter.ts`): TanStack Start `createServerFn` — `getNewsletterStatus`, `subscribeNewsletter`, `unsubscribeNewsletter`. These are called by the client directly (no separate REST routes under `routes/api/newsletter/`).
 
 **Client** (outside `src/newsletter/`):
-- `src/hooks/use-newsletter.ts` — `useNewsletterStatus`, `useSubscribeNewsletter`, `useUnsubscribeNewsletter`, `newsletterKeys`
-- `src/components/settings/notification/newsletter-form-card.tsx` — logged-in user toggle (Switch) in settings
-- `src/components/blocks/newsletter-card.tsx` — public email form (e.g. landing page)
+- `src/hooks/use-newsletter.ts` — `useNewsletterStatus`, `useSubscribeNewsletter`, `useUnsubscribeNewsletter`, `newsletterKeys` (calls server functions from `@/api/newsletter`)
+- `src/components/settings/notification/newsletter-form-card.tsx` — logged-in user toggle (Switch) in Settings → Notifications
+- `src/components/blocks/newsletter-card.tsx` — public email form (e.g. homepage, waitlist)
 
 ---
 
@@ -70,15 +70,17 @@ Env is defined in `serverEnv` (runtime: `process.env`; Worker vars/secrets popul
 
 ---
 
-## API routes
+## Server functions (API surface)
 
-| Method | Path | Body / Query | Behavior |
-|--------|------|--------------|----------|
-| POST | `/api/newsletter/subscribe` | `{ email }` | Validate email → `subscribe(email)` → optional welcome email (Mail module, 3s delay when `mail.fromEmail` set). |
-| POST | `/api/newsletter/unsubscribe` | `{ email }` | Validate email → `unsubscribe(email)`. |
-| GET | `/api/newsletter/status` | `?email=` | Validate email → `isSubscribed(email)` → `{ success, subscribed }`. |
+Newsletter is exposed as **TanStack Start server functions** in `src/api/newsletter.ts`, not as REST routes. The client calls them via the generated RPC layer.
 
-All return 400 when newsletter is disabled or email invalid; 500 on provider/network errors with `{ success: false, error }`.
+| Server function | Input | Behavior |
+|-----------------|--------|----------|
+| `getNewsletterStatus` | `{ email }` | Calls `isSubscribed(email)`; returns `{ subscribed }`. |
+| `subscribeNewsletter` | `{ email }` | Validates email → `subscribe(email)` → optional welcome email (Mail module when `mail.fromEmail` set). |
+| `unsubscribeNewsletter` | `{ email }` | Validates email → `unsubscribe(email)`. |
+
+All return 400 when newsletter is disabled or email invalid; throw or return errors on provider/network failures. The hooks in `use-newsletter.ts` invoke these server functions.
 
 ---
 
