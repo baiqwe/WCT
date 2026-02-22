@@ -3,18 +3,16 @@ import Container from '@/components/layout/container';
 import { ContactFormCard } from '@/components/contact/contact-form-card';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 const m = messages.contact;
 
 export const Route = createFileRoute('/(pages)/contact')({
-  head: () => ({
-    meta: [
-      { title: `${m.title} | ${websiteConfig.metadata?.name}` },
-      { name: 'description', content: m.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/contact') }],
-  }),
+  head: () =>
+    seo('/contact', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: ContactPage,
 });
 

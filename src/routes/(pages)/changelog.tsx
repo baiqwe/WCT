@@ -2,7 +2,7 @@ import { ReleaseCard } from '@/components/changelog/release-card';
 import Container from '@/components/layout/container';
 import { websiteConfig } from '@/config/website';
 import { getChangelogReleases } from '@/lib/changelog';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 import { messages } from '@/messages';
 import { createFileRoute, notFound } from '@tanstack/react-router';
 
@@ -14,15 +14,11 @@ export const Route = createFileRoute('/(pages)/changelog')({
     if (!releases?.length) throw notFound();
     return releases;
   },
-  head: () => ({
-    meta: [
-      {
-        title: `${m.title} | ${websiteConfig.metadata?.name}`,
-      },
-      { name: 'description', content: m.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/changelog') }],
-  }),
+  head: () =>
+    seo('/changelog', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: ChangelogPage,
 });
 

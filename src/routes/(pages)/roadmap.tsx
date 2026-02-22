@@ -3,18 +3,16 @@ import Container from '@/components/layout/container';
 import { Roadmap } from '@/components/roadmap/roadmap';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 const m = messages.roadmap;
 
 export const Route = createFileRoute('/(pages)/roadmap')({
-  head: () => ({
-    meta: [
-      { title: `${m.title} | ${websiteConfig.metadata?.name}` },
-      { name: 'description', content: m.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/roadmap') }],
-  }),
+  head: () =>
+    seo('/roadmap', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: RoadmapPage,
 });
 

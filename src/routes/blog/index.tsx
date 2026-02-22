@@ -5,7 +5,7 @@ import { BlogPagination } from '@/components/blog/blog-pagination';
 import { getPaginatedPosts } from '@/lib/blog';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/blog/')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -16,15 +16,11 @@ export const Route = createFileRoute('/blog/')({
     const page = Number(new URLSearchParams(location.search).get('page')) || 1;
     return getPaginatedPosts(page);
   },
-  head: () => ({
-    meta: [
-      {
-        title: `${messages.blog.title} | ${websiteConfig.metadata?.name}`,
-      },
-      { name: 'description', content: messages.blog.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/blog') }],
-  }),
+  head: () =>
+    seo('/blog', {
+      title: `${messages.blog.title} | ${websiteConfig.metadata?.name}`,
+      description: messages.blog.description,
+    }),
   component: BlogListPage,
 });
 

@@ -4,22 +4,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl, getMailtoUrl } from '@/lib/urls';
+import { getMailtoUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import { IconBrandX, IconMail } from '@tabler/icons-react';
 
 const m = messages.about;
 
 export const Route = createFileRoute('/(pages)/about')({
-  head: () => ({
-    meta: [
-      {
-        title: `${m.title} | ${websiteConfig.metadata?.name}`,
-      },
-      { name: 'description', content: m.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/about') }],
-  }),
+  head: () =>
+    seo('/about', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: AboutPage,
 });
 
@@ -37,7 +34,7 @@ function AboutPage() {
               <div className="flex items-center gap-8">
                 <Avatar className="size-32 p-0.5">
                   <AvatarImage
-                    className="rounded-full border-4 border-border"
+                    className="rounded-full border-border"
                     src="/logo.png"
                     alt="Avatar"
                   />

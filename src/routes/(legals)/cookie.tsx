@@ -3,7 +3,7 @@ import Container from '@/components/layout/container';
 import { MarkdownPage } from '@/components/page/markdown-page';
 import { getPageBySlug } from '@/lib/pages';
 import { websiteConfig } from '@/config/website';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/(legals)/cookie')({
   loader: () => {
@@ -14,13 +14,10 @@ export const Route = createFileRoute('/(legals)/cookie')({
   head: ({ loaderData }) => {
     const p = loaderData?.page;
     if (!p) return {};
-    return {
-      meta: [
-        { title: `${p.title} | ${websiteConfig.metadata?.name}` },
-        { name: 'description', content: p.description },
-      ],
-      links: [{ rel: 'canonical', href: getCanonicalUrl('/cookie') }],
-    };
+    return seo('/cookie', {
+      title: `${p.title} | ${websiteConfig.metadata?.name}`,
+      description: p.description,
+    });
   },
   component: CookiePage,
 });

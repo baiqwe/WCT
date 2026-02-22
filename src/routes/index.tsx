@@ -14,6 +14,7 @@ import TestimonialsSection from '@/components/blocks/testimonials';
 import { NewsletterCard } from '@/components/blocks/newsletter-card';
 import { websiteConfig } from '@/config/website';
 import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/')({
   head: () => {
@@ -28,9 +29,9 @@ export const Route = createFileRoute('/')({
       description,
       url,
     };
+    const head = seo('/', { title, description });
     return {
-      meta: [{ title }, { name: 'description', content: description }],
-      links: [{ rel: 'canonical', href: url }],
+      ...head,
       scripts: [
         {
           type: 'application/ld+json',

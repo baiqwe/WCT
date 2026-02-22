@@ -3,18 +3,16 @@ import Container from '@/components/layout/container';
 import { WaitlistFormCard } from '@/components/waitlist/waitlist-form-card';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 const m = messages.waitlist;
 
 export const Route = createFileRoute('/(pages)/waitlist')({
-  head: () => ({
-    meta: [
-      { title: `${m.title} | ${websiteConfig.metadata?.name}` },
-      { name: 'description', content: m.description },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/waitlist') }],
-  }),
+  head: () =>
+    seo('/waitlist', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: WaitlistPage,
 });
 

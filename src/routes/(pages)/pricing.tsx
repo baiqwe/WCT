@@ -4,24 +4,17 @@ import { PricingTable } from '@/components/pricing/pricing-table';
 import { websiteConfig } from '@/config/website';
 import { useCurrentPlan } from '@/hooks/use-payment';
 import { authClient } from '@/auth/client';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 import { messages } from '@/messages';
 
 const m = messages.pricing;
 
 export const Route = createFileRoute('/(pages)/pricing')({
-  head: () => ({
-    meta: [
-      {
-        title: `${m.title} | ${websiteConfig.metadata?.name}`,
-      },
-      {
-        name: 'description',
-        content: m.description,
-      },
-    ],
-    links: [{ rel: 'canonical', href: getCanonicalUrl('/pricing') }],
-  }),
+  head: () =>
+    seo('/pricing', {
+      title: `${m.title} | ${websiteConfig.metadata?.name}`,
+      description: m.description,
+    }),
   component: PricingPage,
 });
 

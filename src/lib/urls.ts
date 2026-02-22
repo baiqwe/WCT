@@ -1,4 +1,5 @@
 import { clientEnv } from '@/env/client';
+import { websiteConfig } from '@/config/website';
 
 /**
  * Site origin (build-time). Safe to call from both client and server:
@@ -32,6 +33,14 @@ export function getImageUrl(image: string): string {
     return `${getBaseUrl()}${image}`;
   }
   return `${getBaseUrl()}/${image}`;
+}
+
+/**
+ * OG image absolute URL from website config.
+ */
+export function getOgImage(): string | undefined {
+  const path = websiteConfig.metadata?.images?.ogImage;
+  return path ? getImageUrl(path) : undefined;
 }
 
 /**

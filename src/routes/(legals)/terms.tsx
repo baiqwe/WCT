@@ -3,7 +3,7 @@ import Container from '@/components/layout/container';
 import { MarkdownPage } from '@/components/page/markdown-page';
 import { getPageBySlug } from '@/lib/pages';
 import { websiteConfig } from '@/config/website';
-import { getCanonicalUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/(legals)/terms')({
   loader: () => {
@@ -14,13 +14,10 @@ export const Route = createFileRoute('/(legals)/terms')({
   head: ({ loaderData }) => {
     const p = loaderData?.page;
     if (!p) return {};
-    return {
-      meta: [
-        { title: `${p.title} | ${websiteConfig.metadata?.name}` },
-        { name: 'description', content: p.description },
-      ],
-      links: [{ rel: 'canonical', href: getCanonicalUrl('/terms') }],
-    };
+    return seo('/terms', {
+      title: `${p.title} | ${websiteConfig.metadata?.name}`,
+      description: p.description,
+    });
   },
   component: TermsPage,
 });

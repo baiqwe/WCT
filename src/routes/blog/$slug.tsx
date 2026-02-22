@@ -4,7 +4,8 @@ import { Markdown } from '@/components/markdown/markdown';
 import { getPostBySlug } from '@/lib/blog';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
-import { getCanonicalUrl, getImageUrl } from '@/lib/urls';
+import { getImageUrl } from '@/lib/urls';
+import { seo } from '@/lib/seo';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { formatDate } from '@/lib/formatter';
 
@@ -17,46 +18,12 @@ export const Route = createFileRoute('/blog/$slug')({
   head: ({ loaderData, params }) => {
     const post = loaderData;
     if (!post) return {};
-    const title = `${post.title} | ${websiteConfig.metadata?.name}`;
-    const description =
-      post.description ?? websiteConfig.metadata?.description ?? '';
-    const url = getCanonicalUrl(`/blog/${params.slug}`);
-    const image = post.image ? getImageUrl(post.image) : undefined;
-    const siteName = websiteConfig.metadata?.name ?? '';
-    const articleJsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: post.title,
-      description,
-      ...(image ? { image } : {}),
-      datePublished: post.date,
-      url,
-      publisher: {
-        '@type': 'Organization',
-        name: siteName,
-      },
-    };
-    return {
-      meta: [
-        { title },
-        { name: 'description', content: description },
-        { property: 'og:title', content: title },
-        { property: 'og:description', content: description },
-        { property: 'og:type', content: 'article' as const },
-        ...(image ? [{ property: 'og:image', content: image }] : []),
-        { name: 'twitter:card', content: 'summary_large_image' as const },
-        { name: 'twitter:title', content: title },
-        { name: 'twitter:description', content: description },
-        ...(image ? [{ name: 'twitter:image', content: image }] : []),
-      ],
-      links: [{ rel: 'canonical', href: url }],
-      scripts: [
-        {
-          type: 'application/ld+json',
-          children: JSON.stringify(articleJsonLd),
-        },
-      ],
-    };
+    return seo(`/blog/${params.slug}`, {
+      title: `${post.title} | ${websiteConfig.metadata?.name}`,
+      description: post.description ?? websiteConfig.metadata?.description ?? '',
+      image: post.image ? getImageUrl(post.image) : undefined,
+      type: 'article',
+    });
   },
   component: BlogPostPage,
 });
