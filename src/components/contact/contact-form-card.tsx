@@ -113,10 +113,7 @@ export function ContactFormCard() {
             <FormError message={error} />
           </CardContent>
           <CardFooter className="mt-6 flex items-center justify-between rounded-none border-t bg-muted px-6 py-4">
-            <Button
-              type="submit"
-              disabled={isPending}
-            >
+            <Button type="submit" disabled={isPending}>
               {isPending ? m.sending : m.send}
             </Button>
           </CardFooter>

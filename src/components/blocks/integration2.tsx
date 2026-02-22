@@ -83,7 +83,9 @@ export default function Integration2Section() {
                 </Link>
                 <Link
                   to="/"
-                  className={cn(buttonVariants({ size: 'lg', variant: 'outline' }))}
+                  className={cn(
+                    buttonVariants({ size: 'lg', variant: 'outline' })
+                  )}
                 >
                   <span>{m.secondaryButton}</span>
                 </Link>

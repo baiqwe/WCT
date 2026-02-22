@@ -171,10 +171,7 @@ export function UpdatePasswordCard({ className }: UpdatePasswordCardProps) {
           </CardContent>
           <CardFooter className="mt-6 px-6 py-4 flex justify-between items-center bg-muted rounded-none">
             <p className="text-sm text-muted-foreground">{m.hint}</p>
-            <Button
-              type="submit"
-              disabled={isSaving}
-            >
+            <Button type="submit" disabled={isSaving}>
               {isSaving ? m.saving : m.save}
             </Button>
           </CardFooter>

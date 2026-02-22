@@ -24,28 +24,68 @@ export function getSocialLinks(): MenuItemConfig[] {
   const config = websiteConfig.social;
 
   if (config?.github) {
-    social.push({ title: 'GitHub', href: config.github, icon: IconBrandGithub, external: true });
+    social.push({
+      title: 'GitHub',
+      href: config.github,
+      icon: IconBrandGithub,
+      external: true,
+    });
   }
   if (config?.twitter) {
-    social.push({ title: 'Twitter', href: config.twitter, icon: IconBrandX, external: true });
+    social.push({
+      title: 'Twitter',
+      href: config.twitter,
+      icon: IconBrandX,
+      external: true,
+    });
   }
   if (config?.blueSky) {
-    social.push({ title: 'Bluesky', href: config.blueSky, icon: IconBrandBluesky, external: true });
+    social.push({
+      title: 'Bluesky',
+      href: config.blueSky,
+      icon: IconBrandBluesky,
+      external: true,
+    });
   }
   if (config?.mastodon) {
-    social.push({ title: 'Mastodon', href: config.mastodon, icon: IconBrandMastodon, external: true });
+    social.push({
+      title: 'Mastodon',
+      href: config.mastodon,
+      icon: IconBrandMastodon,
+      external: true,
+    });
   }
   if (config?.discord) {
-    social.push({ title: 'Discord', href: config.discord, icon: IconBrandDiscord, external: true });
+    social.push({
+      title: 'Discord',
+      href: config.discord,
+      icon: IconBrandDiscord,
+      external: true,
+    });
   }
   if (config?.youtube) {
-    social.push({ title: 'YouTube', href: config.youtube, icon: IconBrandYoutube, external: true });
+    social.push({
+      title: 'YouTube',
+      href: config.youtube,
+      icon: IconBrandYoutube,
+      external: true,
+    });
   }
   if (config?.linkedin) {
-    social.push({ title: 'LinkedIn', href: config.linkedin, icon: IconBrandLinkedin, external: true });
+    social.push({
+      title: 'LinkedIn',
+      href: config.linkedin,
+      icon: IconBrandLinkedin,
+      external: true,
+    });
   }
   if (config?.facebook) {
-    social.push({ title: 'Facebook', href: config.facebook, icon: IconBrandFacebook, external: true });
+    social.push({
+      title: 'Facebook',
+      href: config.facebook,
+      icon: IconBrandFacebook,
+      external: true,
+    });
   }
   if (config?.instagram) {
     social.push({
@@ -56,14 +96,29 @@ export function getSocialLinks(): MenuItemConfig[] {
     });
   }
   if (config?.tiktok) {
-    social.push({ title: 'TikTok', href: config.tiktok, icon: IconBrandTiktok, external: true });
+    social.push({
+      title: 'TikTok',
+      href: config.tiktok,
+      icon: IconBrandTiktok,
+      external: true,
+    });
   }
   if (config?.telegram) {
-    social.push({ title: 'Telegram', href: config.telegram, icon: IconBrandTelegram, external: true });
+    social.push({
+      title: 'Telegram',
+      href: config.telegram,
+      icon: IconBrandTelegram,
+      external: true,
+    });
   }
   const supportEmail = getMailtoUrl(websiteConfig.mail?.supportEmail);
   if (supportEmail) {
-    social.push({ title: 'Email', href: supportEmail, icon: IconMail, external: true });
+    social.push({
+      title: 'Email',
+      href: supportEmail,
+      icon: IconMail,
+      external: true,
+    });
   }
   return social;
 }

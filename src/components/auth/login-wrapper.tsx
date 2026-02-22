@@ -80,9 +80,5 @@ export function LoginWrapper({
     );
   }
 
-  return (
-    <span onClick={handleRedirect}>
-      {children}
-    </span>
-  );
+  return <span onClick={handleRedirect}>{children}</span>;
 }

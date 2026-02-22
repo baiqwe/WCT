@@ -33,21 +33,15 @@ export function ModeSwitcher() {
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={() => setTheme('light')}
-          >
+        <DropdownMenuItem onClick={() => setTheme('light')}>
           <IconSun className="mr-2 size-4" />
           {m.mode.light}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme('dark')}
-          >
+        <DropdownMenuItem onClick={() => setTheme('dark')}>
           <IconMoon className="mr-2 size-4" />
           {m.mode.dark}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme('system')}
-          >
+        <DropdownMenuItem onClick={() => setTheme('system')}>
           <IconDeviceDesktop className="mr-2 size-4" />
           {m.mode.system}
         </DropdownMenuItem>

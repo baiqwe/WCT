@@ -122,7 +122,10 @@ export default function FeaturesSection() {
 
           <div className="relative flex w-full overflow-hidden rounded-2xl border bg-background p-2 lg:col-span-7 lg:h-auto">
             <div className="relative w-full rounded-2xl aspect-76/59 bg-background">
-              <div key={activeItem} className="size-full overflow-hidden rounded-2xl border bg-zinc-900 shadow-md">
+              <div
+                key={activeItem}
+                className="size-full overflow-hidden rounded-2xl border bg-zinc-900 shadow-md"
+              >
                 <img
                   src={images[activeItem].image}
                   alt={images[activeItem].alt}

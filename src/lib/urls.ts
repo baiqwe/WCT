@@ -61,7 +61,9 @@ export function getFileAccessUrl(r2Key: string): string {
  * @param email - Plain email or "Display Name <email>"
  * @returns mailto href, or undefined if email is empty
  */
-export function getMailtoUrl(email: string | undefined | null): string | undefined {
+export function getMailtoUrl(
+  email: string | undefined | null
+): string | undefined {
   if (!email?.trim()) return undefined;
   const trimmed = email.trim();
   return trimmed.includes('<')

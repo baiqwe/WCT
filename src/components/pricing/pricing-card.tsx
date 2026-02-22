@@ -165,7 +165,7 @@ export function PricingCard({
 
       <CardContent className="space-y-4">
         <hr className="border-dashed" />
-        
+
         <ul className="list-outside space-y-4 text-sm">
           {plan.features?.map((feature, i) => (
             <li key={i} className="flex items-center gap-2">

@@ -158,7 +158,7 @@ export type PaymentProviderName = 'stripe';
 export interface PaymentProvider {
   /**
    * Create a checkout session
-   */ 
+   */
   createCheckout(params: CreateCheckoutParams): Promise<CheckoutResult>;
   
   /**

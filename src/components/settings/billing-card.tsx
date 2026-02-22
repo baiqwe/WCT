@@ -28,7 +28,7 @@ const cardClass = cn('w-full overflow-hidden pt-6 pb-0 flex flex-col');
 
 /** Footer: right-aligned primary action, muted background */
 const footerClass = cn(
-  'mt-2 px-6 py-4 flex justify-end items-center bg-muted rounded-none',
+  'mt-2 px-6 py-4 flex justify-end items-center bg-muted rounded-none'
 );
 
 /**
@@ -111,10 +111,7 @@ export function BillingCard() {
           </div>
         </CardContent>
         <CardFooter className={footerClass}>
-          <Button
-            variant="outline"
-            onClick={handleRetry}
-          >
+          <Button variant="outline" onClick={handleRetry}>
             <IconRefresh className="size-4 mr-1" />
             {m.retry}
           </Button>
@@ -134,9 +131,7 @@ export function BillingCard() {
           <CardDescription>{m.currentPlanDescription}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-sm text-muted-foreground">
-            {m.noPlan}
-          </div>
+          <div className="text-sm text-muted-foreground">{m.noPlan}</div>
         </CardContent>
         <CardFooter className={footerClass}>
           <Link
@@ -154,9 +149,7 @@ export function BillingCard() {
   return (
     <Card className={cardClass}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          {m.currentPlan}
-        </CardTitle>
+        <CardTitle className="text-lg font-semibold">{m.currentPlan}</CardTitle>
         <CardDescription>{m.currentPlanDescription}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 flex-1">

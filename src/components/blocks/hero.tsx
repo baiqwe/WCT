@@ -9,7 +9,7 @@ const m = messages.homePage.hero;
 export default function HeroSection() {
   const linkIntroduction = 'https://x.com/tanstackstarter';
   const linkSecondary = 'https://demo.tanstackstarter.dev';
-  
+
   return (
     <main id="hero" className="overflow-hidden">
       {/* background, light shadows on top of the hero section */}
@@ -33,7 +33,9 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="hover:bg-accent group mx-auto flex w-fit items-center gap-2 rounded-full border p-1 pl-4"
               >
-                <span className="text-foreground text-sm">{m.introduction}</span>
+                <span className="text-foreground text-sm">
+                  {m.introduction}
+                </span>
                 <div className="size-6 overflow-hidden rounded-full duration-500">
                   <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
                     <span className="flex size-6">

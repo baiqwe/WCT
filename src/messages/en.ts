@@ -72,7 +72,8 @@ export const messages = {
   },
 
   footer: {
-    tagline: 'The complete Tanstack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, blog, database, storage, email, newsletter, dashboard, SEO and more, deployed on Cloudflare Workers',
+    tagline:
+      'The complete Tanstack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, blog, database, storage, email, newsletter, dashboard, SEO and more, deployed on Cloudflare Workers',
     rightsReserved: 'All Rights Reserved',
   },
 
@@ -106,11 +107,26 @@ export const messages = {
       description: 'Connect to the tools you already use',
       learnMore: 'Learn More',
       items: {
-        'item-1': { title: 'AI & LLMs', description: 'Connect to OpenAI, Anthropic, and more.' },
-        'item-2': { title: 'Replit', description: 'Deploy and run in the cloud.' },
-        'item-3': { title: 'Magic UI', description: 'Beautiful animated components.' },
-        'item-4': { title: 'VS Codium', description: 'AI-powered code editor.' },
-        'item-5': { title: 'MediaWiki', description: 'Knowledge base integration.' },
+        'item-1': {
+          title: 'AI & LLMs',
+          description: 'Connect to OpenAI, Anthropic, and more.',
+        },
+        'item-2': {
+          title: 'Replit',
+          description: 'Deploy and run in the cloud.',
+        },
+        'item-3': {
+          title: 'Magic UI',
+          description: 'Beautiful animated components.',
+        },
+        'item-4': {
+          title: 'VS Codium',
+          description: 'AI-powered code editor.',
+        },
+        'item-5': {
+          title: 'MediaWiki',
+          description: 'Knowledge base integration.',
+        },
         'item-6': { title: 'Google PaLM', description: 'Google AI models.' },
       },
     },
@@ -162,12 +178,30 @@ export const messages = {
       subtitle: 'Built for developers',
       description: 'Developer experience first',
       items: {
-        'item-1': { title: 'Fast', description: 'Optimized for speed and low latency.' },
-        'item-2': { title: 'Scalable', description: 'Handles growth from zero to millions.' },
-        'item-3': { title: 'Secure', description: 'Auth and encryption built in.' },
-        'item-4': { title: 'Customizable', description: 'Theme and extend to fit your brand.' },
-        'item-5': { title: 'Configurable', description: 'Environment-based configuration.' },
-        'item-6': { title: 'AI-ready', description: 'Integrate LLMs and agents easily.' },
+        'item-1': {
+          title: 'Fast',
+          description: 'Optimized for speed and low latency.',
+        },
+        'item-2': {
+          title: 'Scalable',
+          description: 'Handles growth from zero to millions.',
+        },
+        'item-3': {
+          title: 'Secure',
+          description: 'Auth and encryption built in.',
+        },
+        'item-4': {
+          title: 'Customizable',
+          description: 'Theme and extend to fit your brand.',
+        },
+        'item-5': {
+          title: 'Configurable',
+          description: 'Environment-based configuration.',
+        },
+        'item-6': {
+          title: 'AI-ready',
+          description: 'Integrate LLMs and agents easily.',
+        },
       },
     },
     pricing: {
@@ -186,7 +220,8 @@ export const messages = {
         },
         'item-2': {
           question: 'What payment methods do you accept?',
-          answer: 'We accept all major credit cards, PayPal, and wire transfer for annual plans.',
+          answer:
+            'We accept all major credit cards, PayPal, and wire transfer for annual plans.',
         },
         'item-3': {
           question: 'Is there a free trial?',
@@ -195,17 +230,20 @@ export const messages = {
         },
         'item-4': {
           question: 'What is your refund policy?',
-          answer: 'We offer a 30-day money-back guarantee. Contact support for a full refund.',
+          answer:
+            'We offer a 30-day money-back guarantee. Contact support for a full refund.',
         },
         'item-5': {
           question: 'How do I get support?',
-          answer: 'Email support is included for all plans. Pro and above get priority support.',
+          answer:
+            'Email support is included for all plans. Pro and above get priority support.',
         },
       },
     },
     calltoaction: {
       title: 'Ready to get started?',
-      description: 'Join thousands of teams building with Tanstack Starter today',
+      description:
+        'Join thousands of teams building with Tanstack Starter today',
       primaryButton: 'Get started free',
       secondaryButton: 'View pricing',
     },
@@ -217,19 +255,22 @@ export const messages = {
           name: 'Jane Doe',
           role: 'CTO, Acme Inc',
           image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
-          quote: 'MkFast saved us months of development. We shipped our MVP in 2 weeks.',
+          quote:
+            'MkFast saved us months of development. We shipped our MVP in 2 weeks.',
         },
         'item-2': {
           name: 'John Smith',
           role: 'Founder, Startup',
           image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-          quote: 'The best SaaS starter we evaluated. Auth and billing just work.',
+          quote:
+            'The best SaaS starter we evaluated. Auth and billing just work.',
         },
         'item-3': {
           name: 'Alex Chen',
           role: 'Engineer, Tech Co',
           image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
-          quote: 'Clean code, great DX. We extended it for our use case easily.',
+          quote:
+            'Clean code, great DX. We extended it for our use case easily.',
         },
       },
     },

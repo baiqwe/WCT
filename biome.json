@@ -25,6 +25,10 @@
       "!tailwind.config.ts",
       "!src/db",
       "!src/types/index.d.ts",
+      "!src/mail/types.ts",
+      "!src/newsletter/types.ts",
+      "!src/payment/types.ts",
+      "!src/storage/types.ts",
       "!src/routeTree.gen.ts",
       "!src/components/ui",
       "!src/components/data-table"

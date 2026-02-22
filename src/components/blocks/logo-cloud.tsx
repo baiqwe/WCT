@@ -3,25 +3,53 @@ import { messages } from '@/messages';
 const m = messages.homePage.logocloud;
 
 const logos = [
-  { src: 'https://cdn.mksaas.com/svg/nvidia.svg', alt: 'Nvidia Logo', h: 'h-5' },
-  { src: 'https://cdn.mksaas.com/svg/column.svg', alt: 'Column Logo', h: 'h-4' },
-  { src: 'https://cdn.mksaas.com/svg/github.svg', alt: 'GitHub Logo', h: 'h-4' },
+  {
+    src: 'https://cdn.mksaas.com/svg/nvidia.svg',
+    alt: 'Nvidia Logo',
+    h: 'h-5',
+  },
+  {
+    src: 'https://cdn.mksaas.com/svg/column.svg',
+    alt: 'Column Logo',
+    h: 'h-4',
+  },
+  {
+    src: 'https://cdn.mksaas.com/svg/github.svg',
+    alt: 'GitHub Logo',
+    h: 'h-4',
+  },
   { src: 'https://cdn.mksaas.com/svg/nike.svg', alt: 'Nike Logo', h: 'h-5' },
-  { src: 'https://cdn.mksaas.com/svg/laravel.svg', alt: 'Laravel Logo', h: 'h-4' },
+  {
+    src: 'https://cdn.mksaas.com/svg/laravel.svg',
+    alt: 'Laravel Logo',
+    h: 'h-4',
+  },
   { src: 'https://cdn.mksaas.com/svg/lilly.svg', alt: 'Lilly Logo', h: 'h-7' },
   {
     src: 'https://cdn.mksaas.com/svg/lemonsqueezy.svg',
     alt: 'Lemon Squeezy Logo',
     h: 'h-5',
   },
-  { src: 'https://cdn.mksaas.com/svg/openai.svg', alt: 'OpenAI Logo', h: 'h-6' },
+  {
+    src: 'https://cdn.mksaas.com/svg/openai.svg',
+    alt: 'OpenAI Logo',
+    h: 'h-6',
+  },
   {
     src: 'https://cdn.mksaas.com/svg/tailwindcss.svg',
     alt: 'Tailwind CSS Logo',
     h: 'h-4',
   },
-  { src: 'https://cdn.mksaas.com/svg/vercel.svg', alt: 'Vercel Logo', h: 'h-5' },
-  { src: 'https://cdn.mksaas.com/svg/zapier.svg', alt: 'Zapier Logo', h: 'h-5' },
+  {
+    src: 'https://cdn.mksaas.com/svg/vercel.svg',
+    alt: 'Vercel Logo',
+    h: 'h-5',
+  },
+  {
+    src: 'https://cdn.mksaas.com/svg/zapier.svg',
+    alt: 'Zapier Logo',
+    h: 'h-5',
+  },
 ];
 
 export default function LogoCloudSection() {

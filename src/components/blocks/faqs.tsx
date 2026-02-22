@@ -10,11 +10,31 @@ import { messages } from '@/messages';
 const m = messages.homePage.faqs;
 
 const faqItems = [
-  { id: 'item-1', question: m.items['item-1'].question, answer: m.items['item-1'].answer },
-  { id: 'item-2', question: m.items['item-2'].question, answer: m.items['item-2'].answer },
-  { id: 'item-3', question: m.items['item-3'].question, answer: m.items['item-3'].answer },
-  { id: 'item-4', question: m.items['item-4'].question, answer: m.items['item-4'].answer },
-  { id: 'item-5', question: m.items['item-5'].question, answer: m.items['item-5'].answer },
+  {
+    id: 'item-1',
+    question: m.items['item-1'].question,
+    answer: m.items['item-1'].answer,
+  },
+  {
+    id: 'item-2',
+    question: m.items['item-2'].question,
+    answer: m.items['item-2'].answer,
+  },
+  {
+    id: 'item-3',
+    question: m.items['item-3'].question,
+    answer: m.items['item-3'].answer,
+  },
+  {
+    id: 'item-4',
+    question: m.items['item-4'].question,
+    answer: m.items['item-4'].answer,
+  },
+  {
+    id: 'item-5',
+    question: m.items['item-5'].question,
+    answer: m.items['item-5'].answer,
+  },
 ] as const;
 
 export default function FaqSection() {

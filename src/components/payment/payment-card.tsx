@@ -21,10 +21,16 @@ const m = messages.settings.payment;
 
 type PaymentStatus = 'processing' | 'success' | 'failed' | 'timeout';
 
-function getStatusContent(status: PaymentStatus): { title: string; description: string } {
+function getStatusContent(status: PaymentStatus): {
+  title: string;
+  description: string;
+} {
   switch (status) {
     case 'processing':
-      return { title: m.processing.title, description: m.processing.description };
+      return {
+        title: m.processing.title,
+        description: m.processing.description,
+      };
     case 'success':
       return { title: m.success.title, description: m.success.description };
     case 'failed':
@@ -63,7 +69,10 @@ type PaymentCardProps = {
 /**
  * Payment result card: polls for completion, shows status, invalidates plan cache and redirects on success.
  */
-export function PaymentCard({ sessionId, callback = '/settings/billing' }: PaymentCardProps) {
+export function PaymentCard({
+  sessionId,
+  callback = '/settings/billing',
+}: PaymentCardProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<PaymentStatus>(() =>

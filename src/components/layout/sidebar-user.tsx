@@ -85,7 +85,9 @@ export function SidebarUser({ user }: SidebarUserProps) {
                 />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </span>
                 </div>
                 <IconSelector className="ml-auto size-4" />
               </SidebarMenuButton>
@@ -106,8 +108,12 @@ export function SidebarUser({ user }: SidebarUserProps) {
                     className="size-8 border"
                   />
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold text-foreground">{user.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+                    <span className="truncate font-semibold text-foreground">
+                      {user.name}
+                    </span>
+                    <span className="truncate text-xs text-muted-foreground">
+                      {user.email}
+                    </span>
                   </div>
                 </div>
               </DropdownMenuLabel>
@@ -121,21 +127,15 @@ export function SidebarUser({ user }: SidebarUserProps) {
                       {m.mode.theme}
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItem
-                        onClick={() => setTheme('light')}
-                      >
+                      <DropdownMenuItem onClick={() => setTheme('light')}>
                         <IconSun className="mr-2 size-4" />
                         {m.mode.light}
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => setTheme('dark')}
-                      >
+                      <DropdownMenuItem onClick={() => setTheme('dark')}>
                         <IconMoon className="mr-2 size-4" />
                         {m.mode.dark}
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => setTheme('system')}
-                      >
+                      <DropdownMenuItem onClick={() => setTheme('system')}>
                         <IconDeviceDesktop className="mr-2 size-4" />
                         {m.mode.system}
                       </DropdownMenuItem>

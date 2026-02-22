@@ -7,10 +7,7 @@ import type {
   StorageProviderName,
   UploadFileResult,
 } from './types';
-import {
-  DEFAULT_ALLOWED_TYPES,
-  DEFAULT_MAX_FILE_SIZE
-} from './types';
+import { DEFAULT_ALLOWED_TYPES, DEFAULT_MAX_FILE_SIZE } from './types';
 
 function buildStorageConfig(): StorageConfig {
   const config = websiteConfig.storage;

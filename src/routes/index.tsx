@@ -29,10 +29,7 @@ export const Route = createFileRoute('/')({
       url,
     };
     return {
-      meta: [
-        { title },
-        { name: 'description', content: description },
-      ],
+      meta: [{ title }, { name: 'description', content: description }],
       links: [{ rel: 'canonical', href: url }],
       scripts: [
         {

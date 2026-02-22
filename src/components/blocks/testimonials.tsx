@@ -20,7 +20,7 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
   return result;
 }
 
-export default function TestimonialsSection() {  
+export default function TestimonialsSection() {
   const testimonials: Testimonial[] = [
     {
       name: m.items['item-1'].name,
