@@ -263,7 +263,7 @@ export const messages = {
           role: 'Founder, Startup',
           image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
           quote:
-            'TanStack Starter saved us months of development. We shipped our MVP in 2 weeks.',
+            'TanStack Starter really saved us months of development. We shipped our MVP in just 2 weeks.',
         },
         'item-3': {
           name: 'Alex Chen',

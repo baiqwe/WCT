@@ -6,6 +6,7 @@ import { useCurrentPlan } from '@/hooks/use-payment';
 import { authClient } from '@/auth/client';
 import { seo } from '@/lib/seo';
 import { messages } from '@/messages';
+import FaqSection from '@/components/blocks/faqs';
 
 const m = messages.pricing;
 
@@ -35,6 +36,7 @@ function PricingPage() {
           currentPlan={currentPlan}
           metadata={userId ? { userId } : undefined}
         />
+        <FaqSection />
       </div>
     </Container>
   );
