@@ -1,4 +1,3 @@
-import { websiteConfig } from '@/config/website';
 import { clientEnv } from '@/env/client';
 import { Crisp } from 'crisp-sdk-web';
 import { useEffect } from 'react';
@@ -9,13 +8,8 @@ import { useEffect } from 'react';
  */
 export function CrispChat() {
   useEffect(() => {
-    if (!websiteConfig.features?.enableCrispChat) {
-      return;
-    }
-
     const websiteId = clientEnv.VITE_CRISP_WEBSITE_ID;
     if (!websiteId) {
-      console.warn('Crisp website ID is not configured');
       return;
     }
 

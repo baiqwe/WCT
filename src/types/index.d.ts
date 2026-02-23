@@ -6,11 +6,10 @@ export interface WebsiteConfig {
   ui?: UiConfig;
   metadata?: MetadataConfig;
   social?: SocialConfig;
-  features?: FeaturesConfig;
   routes?: RoutesConfig;
-  analytics?: AnalyticsConfig;
   auth?: AuthConfig;
   blog?: BlogConfig;
+  affiliates?: AffiliatesConfig;
   mail?: MailConfig;
   newsletter?: NewsletterConfig;
   notification?: NotificationConfig;
@@ -57,24 +56,9 @@ export interface SocialConfig {
   telegram?: string;
 }
 
-/** Website features */
-export interface FeaturesConfig {
-  enableUpgradeCard?: boolean;       // Whether to enable the upgrade card in the sidebar
-  enableUpdateAvatar?: boolean;     // Whether to enable the update avatar in settings
-  enableCrispChat?: boolean;         // Whether to enable the crisp chat
-  enableTurnstileCaptcha?: boolean; // Whether to enable turnstile captcha
-  enableAffonsoAffiliate?: boolean;   // Whether to enable Affonso (PromosKit) affiliate
-  enablePromotekitAffiliate?: boolean; // Whether to enable PromoteKit affiliate
-}
-
 /** Routes configuration */
 export interface RoutesConfig {
   defaultLoginRedirect?: string;    // The default login redirect route
-}
-
-/** Analytics configuration */
-export interface AnalyticsConfig {
-  enable: boolean;                  // Whether to enable the analytics
 }
 
 /** Auth configuration */
@@ -90,6 +74,12 @@ export interface BlogConfig {
   enable: boolean;           // Whether to enable the blog
   paginationSize?: number;   // Number of posts per page
   relatedPostsSize?: number; // Number of related posts to show
+}
+
+/** Affiliates configuration */
+export interface AffiliatesConfig {
+  enable: boolean;                     // Whether to enable the affiliates
+  provider?: 'affonso' | 'promotekit'; // The affiliate provider, supports affonso and promotekit
 }
 
 /** Mail configuration */

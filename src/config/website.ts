@@ -30,19 +30,8 @@ export const websiteConfig: WebsiteConfig = {
     linkedin: 'https://mksaas.link/linkedin',
     youtube: 'https://mksaas.link/youtube',
   },
-  features: {
-    enableUpgradeCard: true,
-    enableUpdateAvatar: true,
-    enableCrispChat: false,
-    enableTurnstileCaptcha: false,
-    enableAffonsoAffiliate: false,
-    enablePromotekitAffiliate: false,
-  },
   routes: {
     defaultLoginRedirect: '/dashboard',
-  },
-  analytics: {
-    enable: true,
   },
   auth: {
     enable: true,
@@ -54,6 +43,10 @@ export const websiteConfig: WebsiteConfig = {
     enable: true,
     paginationSize: 6,
     relatedPostsSize: 3,
+  },
+  affiliates: {
+    enable: false,
+    provider: 'affonso',
   },
   mail: {
     enable: true,

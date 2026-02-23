@@ -26,13 +26,10 @@ interface UpdateAvatarCardProps {
 const m = messages.settings.profile.avatar;
 
 /**
- * Renders when storage and enableUpdateAvatar are enabled
+ * Update user avatar card
  */
 export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
-  if (
-    !websiteConfig.storage?.enable ||
-    !websiteConfig.features?.enableUpdateAvatar
-  ) {
+  if (!websiteConfig.storage?.enable) {
     return null;
   }
 
