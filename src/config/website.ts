@@ -24,11 +24,9 @@ export const websiteConfig: WebsiteConfig = {
   },
   social: {
     github: 'https://github.com/MkFastHQ',
-    twitter: 'https://mksaas.link/twitter',
-    blueSky: 'https://mksaas.link/bsky',
     discord: 'https://mksaas.link/discord',
-    linkedin: 'https://mksaas.link/linkedin',
-    youtube: 'https://mksaas.link/youtube',
+    twitter: 'https://x.com/TanstackStarter',
+    youtube: 'https://www.youtube.com/@TanstackStarter',
   },
   routes: {
     defaultLoginRedirect: '/dashboard',
