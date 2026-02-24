@@ -5,7 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { PAYMENT_MAX_POLL_TIME, PAYMENT_POLL_INTERVAL } from '@/lib/constants';
+import {
+  PAYMENT_MAX_POLL_TIME,
+  PAYMENT_POLL_INTERVAL,
+} from '@/payment/constants';
 import { messages } from '@/messages';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';

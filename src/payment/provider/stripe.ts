@@ -5,7 +5,7 @@ import type { Payment } from '@/db/types';
 import {
   PAYMENT_RECORD_RETRY_ATTEMPTS,
   PAYMENT_RECORD_RETRY_DELAY,
-} from '@/lib/constants';
+} from '@/payment/constants';
 import { findPlanByPlanId, findPriceInPlan } from '@/lib/price-plan';
 import { sendPaymentNotification } from '@/notification';
 import { desc, eq } from 'drizzle-orm';
