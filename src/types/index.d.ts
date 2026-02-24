@@ -36,9 +36,9 @@ export interface MetadataConfig {
 
 /** Website metadata */
 export interface ImagesConfig {
-  ogImage?: string;     // The image as Open Graph image
-  logoLight?: string;   // The light logo image
-  logoDark?: string;    // The dark logo image
+  ogImage?: string;     // The Open Graph image
+  logoLight?: string;   // The logo image in light mode
+  logoDark?: string;    // The logo image in dark mode
 }
 
 /** Social media configuration */
@@ -66,7 +66,7 @@ export interface AuthConfig {
   enable: boolean;                 // Whether to enable the auth
   enableGoogleLogin?: boolean;     // Whether to enable google login
   enableCredentialLogin?: boolean; // Whether to enable email/password login
-  enableDeleteUser?: boolean;      // Whether to enable user deletion
+  enableDeleteAccount?: boolean;   // Whether to enable account deletion
 }
 
 /** Blog configuration */
@@ -85,8 +85,8 @@ export interface AffiliatesConfig {
 export interface MailConfig {
   enable: boolean;          // Whether to enable the mail
   provider?: 'resend';      // The email provider, only resend is supported for now
-  fromEmail?: string;       // The email address to send from
-  supportEmail?: string;    // The email address to send support emails to
+  fromEmail?: string;       // The email address to send notification emails from
+  supportEmail?: string;    // The email address to send support or contact emails to
 }
 
 /** Newsletter configuration */

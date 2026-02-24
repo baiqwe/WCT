@@ -48,7 +48,8 @@ export function RegisterForm({
   const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const credentialLoginEnabled = websiteConfig.auth?.enableCredentialLogin;
+  const credentialLoginEnabled =
+    websiteConfig.auth?.enableCredentialLogin ?? true;
 
   const RegisterSchema = z.object({
     email: z.string().email({ message: m.emailRequired }),

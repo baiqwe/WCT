@@ -17,8 +17,8 @@ function SecurityPage() {
     { label: m.title, isCurrentPage: true },
   ];
   const credentialLoginEnabled =
-    websiteConfig.auth?.enableCredentialLogin ?? true;
-  const deleteUserEnabled = websiteConfig.auth?.enableDeleteUser ?? false;
+    websiteConfig.auth?.enableCredentialLogin ?? false;
+  const deleteAccountEnabled = websiteConfig.auth?.enableDeleteAccount ?? false;
 
   return (
     <DashboardLayout
@@ -32,7 +32,7 @@ function SecurityPage() {
             <PasswordCardWrapper />
           </div>
         )}
-        {deleteUserEnabled && (
+        {deleteAccountEnabled && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <DeleteAccountCard />
           </div>

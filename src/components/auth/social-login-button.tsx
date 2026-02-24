@@ -56,22 +56,20 @@ export function SocialLoginButton({
   return (
     <div className="w-full flex flex-col gap-4">
       {showDivider && <DividerWithText text={m.or} />}
-      {websiteConfig.auth.enableGoogleLogin && (
-        <Button
-          size="lg"
-          className="w-full"
-          variant="outline"
-          onClick={() => onClick('google')}
-          disabled={isLoading === 'google'}
-        >
-          {isLoading === 'google' ? (
-            <IconLoader2 className="mr-2 size-4 animate-spin" />
-          ) : (
-            <IconBrandGoogleFilled className="size-4 mr-2" />
-          )}
-          <span>{m.signInWithGoogle}</span>
-        </Button>
-      )}
+      <Button
+        size="lg"
+        className="w-full"
+        variant="outline"
+        onClick={() => onClick('google')}
+        disabled={isLoading === 'google'}
+      >
+        {isLoading === 'google' ? (
+          <IconLoader2 className="mr-2 size-4 animate-spin" />
+        ) : (
+          <IconBrandGoogleFilled className="size-4 mr-2" />
+        )}
+        <span>{m.signInWithGoogle}</span>
+      </Button>
     </div>
   );
 }
