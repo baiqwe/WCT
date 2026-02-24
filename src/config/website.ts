@@ -30,8 +30,8 @@ export const websiteConfig: WebsiteConfig = {
   social: {
     github: 'https://github.com/MkFastHQ',
     discord: 'https://mksaas.link/discord',
-    twitter: 'https://x.com/TanstackStarter',
-    youtube: 'https://www.youtube.com/@TanstackStarter',
+    twitter: 'https://x.com/TanStarter',
+    youtube: 'https://www.youtube.com/@TanStarter',
   },
   routes: {
     defaultLoginRedirect: '/dashboard',
@@ -53,8 +53,8 @@ export const websiteConfig: WebsiteConfig = {
   mail: {
     enable: true,
     provider: 'resend',
-    fromEmail: 'TanStack Starter <noreply@example.com>',
-    supportEmail: 'TanStack Starter <support@example.com>',
+    fromEmail: 'TanStarter <noreply@example.com>',
+    supportEmail: 'TanStarter <support@example.com>',
   },
   newsletter: {
     enable: true,

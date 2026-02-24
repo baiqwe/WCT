@@ -7,7 +7,7 @@ const m = {
   title: 'Ship Faster, Cost Less',
   description:
     'The complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, database, storage, email, newsletter, blog, dashboard, SEO and more, fully deployed on Cloudflare Workers',
-  introduction: 'Introducing TanStack Starter',
+  introduction: 'Introducing TanStarter',
   primary: 'Get Started',
   secondary: 'View Pricing',
 };
@@ -31,7 +31,7 @@ export default function HeroSection() {
             <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
               {/* introduction */}
               <a
-                href="https://x.com"
+                href="https://x.com/tanstarter"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:bg-accent group mx-auto flex w-fit items-center gap-2 rounded-full border p-1 pl-4"

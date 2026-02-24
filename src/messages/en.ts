@@ -4,10 +4,10 @@
  */
 export const messages = {
   site: {
-    name: 'TanStack Starter',
-    title: 'TanStack Starter - Ship Faster, Cost Less',
+    name: 'TanStarter',
+    title: 'TanStarter - Ship Faster, Cost Less',
     description:
-      'TanStack Starter is the complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, storage, email, newsletter, blog, dashboard, SEO and more, fully deployed on Cloudflare Workers',
+      'TanStarter is the complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, storage, email, newsletter, blog, dashboard, SEO and more, fully deployed on Cloudflare Workers',
   },
 
   nav: {
@@ -525,7 +525,7 @@ export const messages = {
     description: 'Learn more about our mission and how we can help you',
     bio: 'We help you build SaaS faster',
     introduction:
-      '👋 Hi there! This is TanStack Starter, the complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, blog, storage, newsletter, dashboard, SEO and more. If you have any questions, please welcome to contact us for free.',
+      '👋 Hi there! This is TanStarter, the complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, payments, blog, storage, newsletter, dashboard, SEO and more. If you have any questions, please welcome to contact us for free.',
     followUs: 'Follow us on X',
     contactUs: 'Contact us',
   },

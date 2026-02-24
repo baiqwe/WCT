@@ -1,6 +1,6 @@
 ---
 title: Deploy to Production
-description: How to build and deploy your TanStack Starter app to Cloudflare Workers.
+description: How to build and deploy your TanStarter app to Cloudflare Workers.
 date: 2026-02-13
 category: Guide
 image: https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80

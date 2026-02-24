@@ -1,12 +1,12 @@
 ---
-title: Getting Started with TanStack Starter
-description: Quick guide to set up and run the TanStack Starter template.
+title: Getting Started with TanStarter
+description: Quick guide to set up and run the TanStarter template.
 date: 2026-02-12
 category: Guide
 image: https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80
 ---
 
-This post walks you through the basics of running and customizing the TanStack Starter template.
+This post walks you through the basics of running and customizing the TanStarter template.
 
 ## Prerequisites
 
