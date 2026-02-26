@@ -10,7 +10,11 @@ import { seo } from '@/lib/seo';
 export const Route = createFileRoute('/blog/')({
   validateSearch: (search: Record<string, unknown>) => ({
     page:
-      typeof search.page === 'number' ? search.page : Number(search.page) || 1,
+      typeof search.page === 'number'
+        ? search.page
+        : typeof search.page === 'string'
+          ? Number(search.page) || undefined
+          : undefined,
   }),
   loader: ({ location }) => {
     const page = Number(new URLSearchParams(location.search).get('page')) || 1;

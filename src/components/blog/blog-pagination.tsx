@@ -21,7 +21,7 @@ export function BlogPagination({
       {currentPage > 1 ? (
         <Link
           to="/blog"
-          search={{ page: prevPage }}
+          search={prevPage <= 1 ? { page: undefined } : { page: prevPage }}
           className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted"
         >
           {messages.blog.previous}
