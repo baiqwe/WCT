@@ -47,7 +47,6 @@ export const listUsers = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const db = getDb();
     const { pageIndex, pageSize, search, sortDesc, role, status } = data;
-    console.log('listUsers input', data);
     const offset = pageIndex * pageSize;
     const sortId = normalizeSortId(data.sortId);
 
@@ -85,11 +84,6 @@ export const listUsers = createServerFn({ method: 'GET' })
       .limit(pageSize)
       .offset(offset);
     const countQuery = db.select({ count: countFn() }).from(user).where(where);
-
-    const selectSql = selectQuery.toSQL();
-    const countSql = countQuery.toSQL();
-    console.log('listUsers SELECT:', selectSql.sql, selectSql.params);
-    console.log('listUsers COUNT:', countSql.sql, countSql.params);
 
     const [items, [{ count }]] = await Promise.all([selectQuery, countQuery]);
 
