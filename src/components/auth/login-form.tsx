@@ -14,7 +14,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { websiteConfig } from '@/config/website';
 import { authClient } from '@/auth/client';
-import { getBaseUrl } from '@/lib/urls';
 import { cn } from '@/lib/utils';
 import { DEFAULT_LOGIN_REDIRECT, Routes } from '@/lib/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,11 +41,11 @@ export function LoginForm({
     typeof window !== 'undefined'
       ? new URLSearchParams(window.location.search).get('callbackUrl')
       : null;
-  const defaultCallbackUrl = `${getBaseUrl()}${DEFAULT_LOGIN_REDIRECT}`;
+  const defaultCallbackUrl = DEFAULT_LOGIN_REDIRECT;
   const callbackUrl =
     propCallbackUrl ??
     (paramCallbackUrl
-      ? `${getBaseUrl()}${paramCallbackUrl}`
+      ? paramCallbackUrl
       : defaultCallbackUrl);
 
   const [error, setError] = useState<string | undefined>('');
