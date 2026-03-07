@@ -81,7 +81,12 @@ export function ResetPasswordForm() {
           router.navigate({ to: Routes.Login });
         },
         onError: (ctx) => {
-          setError(`${ctx.error.status}: ${ctx.error.message}`);
+          const code = ctx.error.code;
+          const friendlyMessage =
+            code && messages.auth.error.codes[code]
+              ? messages.auth.error.codes[code]
+              : ctx.error.message;
+          setError(friendlyMessage);
         },
       }
     );
