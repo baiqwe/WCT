@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import type { Icon } from '@tabler/icons-react';
 import {
   IconChartBar,
   IconDatabase,
@@ -42,6 +43,13 @@ const m = {
 };
 
 type ImageKey = 'item-1' | 'item-2' | 'item-3' | 'item-4';
+
+const icons: Record<ImageKey, Icon> = {
+  'item-1': IconDatabase,
+  'item-2': IconFingerprint,
+  'item-3': IconId,
+  'item-4': IconChartBar,
+};
 
 const images: Record<
   ImageKey,
@@ -98,50 +106,22 @@ export default function FeaturesSection() {
               }
               className="w-full"
             >
-              <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <div className="flex items-center gap-2 text-base">
-                    <IconDatabase className="size-4" />
-                    {m.items['item-1'].title}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {m.items['item-1'].description}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>
-                  <div className="flex items-center gap-2 text-base">
-                    <IconFingerprint className="size-4" />
-                    {m.items['item-2'].title}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {m.items['item-2'].description}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>
-                  <div className="flex items-center gap-2 text-base">
-                    <IconId className="size-4" />
-                    {m.items['item-3'].title}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {m.items['item-3'].description}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger>
-                  <div className="flex items-center gap-2 text-base">
-                    <IconChartBar className="size-4" />
-                    {m.items['item-4'].title}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {m.items['item-4'].description}
-                </AccordionContent>
-              </AccordionItem>
+              {(Object.keys(m.items) as ImageKey[]).map((key) => {
+                const ItemIcon = icons[key];
+                return (
+                  <AccordionItem key={key} value={key}>
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-2 text-base">
+                        <ItemIcon className="size-4" />
+                        {m.items[key].title}
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {m.items[key].description}
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
             </Accordion>
           </div>
 
