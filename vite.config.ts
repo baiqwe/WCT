@@ -13,9 +13,6 @@ import contentCollections from '@content-collections/vite';
  * https://vite.dev/config/
  */
 const config = defineConfig({
-  build: {
-    sourcemap: 'hidden',
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
