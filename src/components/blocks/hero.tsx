@@ -96,16 +96,16 @@ export default function HeroSection() {
                   src="https://cdn.mksaas.com/blocks/music.png"
                   alt="website screenshot"
                   fetchPriority="high"
-                  width={1200}
-                  height={750}
+                  width={2796}
+                  height={2008}
                 />
                 <img
                   className="z-2 border-border/25 relative rounded-2xl border dark:hidden w-full"
                   src="https://cdn.mksaas.com/blocks/music-light.png"
                   alt="website screenshot"
                   fetchPriority="high"
-                  width={1200}
-                  height={750}
+                  width={2796}
+                  height={2008}
                 />
               </div>
             </div>
