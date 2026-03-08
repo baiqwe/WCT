@@ -28,7 +28,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
             <p className="text-muted-foreground text-base py-2 md:pr-12">
               {messages.footer.tagline}
             </p>
-            <div className="flex items-center gap-4 pt-6">
+            <nav aria-label="Social links" className="flex items-center gap-4 pt-6">
               {socialLinks?.map((link) => {
                 const Icon = link.icon;
                 return (
@@ -38,13 +38,13 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={link.title}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-200"
+                    className="inline-flex size-8 items-center justify-center rounded-full border border-border hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-200"
                   >
                     {Icon ? <Icon className="size-4" /> : null}
                   </a>
                 );
               })}
-            </div>
+            </nav>
           </div>
 
           {footerLinks?.map((section) => (
@@ -96,7 +96,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
       <div className="border-t py-8">
         <Container className="px-4 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <span className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} {websiteConfig.metadata?.name}{' '}
+            &copy; {new Date().getFullYear()} {websiteConfig.metadata?.name}.{' '}
             {messages.footer.rightsReserved}
           </span>
           <BuiltWithButton />

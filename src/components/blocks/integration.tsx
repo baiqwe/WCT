@@ -93,11 +93,9 @@ function IntegrationCard({
   color: string;
 }) {
   return (
-    <Card className="bg-transparent p-6 transition-all duration-200 hover:bg-accent hover:-translate-y-0.5 dark:hover:bg-card">
+    <Card className="bg-transparent p-6 transition-colors duration-200 hover:bg-accent dark:hover:bg-card">
       <div className="relative">
-        <div className="*:size-10">
-          <Icon className="size-10 shrink-0" style={{ color }} />
-        </div>
+        <Icon className="size-10 shrink-0" style={{ color }} />
 
         <div className="space-y-2 py-6">
           <h3 className="text-base font-medium">{title}</h3>

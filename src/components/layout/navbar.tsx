@@ -102,6 +102,14 @@ export function Navbar({ scroll = true }: NavbarProps) {
                             <li key={sub.title}>
                               <NavigationMenuLink
                                 closeOnClick
+                                className={cn(
+                                  'group flex select-none flex-row items-center gap-4 rounded-md',
+                                  'p-2 leading-none no-underline outline-hidden transition-colors',
+                                  'hover:bg-accent hover:text-accent-foreground',
+                                  'focus:bg-accent focus:text-accent-foreground',
+                                  isLinkActive(sub.href, pathname) &&
+                                    'bg-accent text-accent-foreground'
+                                )}
                                 render={
                                   <Link
                                     to={sub.href ?? '#'}
