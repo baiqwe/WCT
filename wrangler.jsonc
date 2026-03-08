@@ -63,7 +63,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "mkfast_template",
+      "database_name": "mkfast-template",
       "database_id": "dc34f04a-3445-4b5c-bf61-c4ec2328e239",
       "migrations_dir": "./src/db/migrations"
     }
