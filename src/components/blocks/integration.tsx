@@ -124,7 +124,7 @@ function IntegrationCard({
 export default function IntegrationSection() {
   return (
     <section id="integration" className="px-4 py-16 md:py-24">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <ScrollReveal>
           <HeaderSection
             title={m.title}
