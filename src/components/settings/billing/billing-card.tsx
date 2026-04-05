@@ -44,7 +44,7 @@ export function BillingCard() {
     isLoading: isLoadingPayment,
     error: loadPaymentError,
     refetch: refetchPayment,
-  } = useCurrentPlan(currentUser?.id);
+  } = useCurrentPlan(!!currentUser?.id);
 
   const currentPlan = paymentData?.currentPlan ?? null;
   const subscription = paymentData?.subscription ?? null;
