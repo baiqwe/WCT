@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**TanStarter** (mkfast-template) — a full-stack SaaS boilerplate built with TanStack Start + React 19, deployed on Cloudflare Workers. Includes auth (Better Auth), payments (Stripe), email (Cloudflare Email), storage (R2), database (D1/SQLite via Drizzle ORM), blog (Content Collections), and admin dashboard.
+**TanStarter** (mkfast-template) — a full-stack SaaS boilerplate built with TanStack Start + React 19, deployed on Cloudflare Workers. Includes auth (Better Auth), payments (Stripe), email (Cloudflare Email), storage (Cloudflare R2), database (Cloudflare D1 via Drizzle ORM), blog (Content Collections), and admin dashboard.
 
 ## Commands
 

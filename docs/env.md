@@ -23,19 +23,22 @@ Values are read by Vite from `.env*` during `pnpm dev` / `pnpm build` and inline
 |----------|---------|----------|--------|
 | **Base** | | | |
 | `VITE_BASE_URL` | Site origin (e.g. `getBaseUrl()`) | No | Default: `http://localhost:3000` |
+| **Payment** | | | |
+| `VITE_PAYMENT_PROVIDER` | Payment provider (`stripe` or `creem`) | Yes | Selects active payment provider |
 | **Payment (Stripe)** | | | |
 | `VITE_STRIPE_PRICE_PRO_MONTHLY` | Stripe Price ID (Pro monthly) | No | Required for pricing/checkout when using Stripe |
 | `VITE_STRIPE_PRICE_PRO_YEARLY` | Stripe Price ID (Pro yearly) | No | |
 | `VITE_STRIPE_PRICE_LIFETIME` | Stripe Price ID (Lifetime) | No | |
+| **Payment (Creem)** | | | |
+| `VITE_CREEM_PRODUCT_PRO_MONTHLY` | Creem Product ID (Pro monthly) | No | Required for pricing/checkout when using Creem |
+| `VITE_CREEM_PRODUCT_PRO_YEARLY` | Creem Product ID (Pro yearly) | No | |
+| `VITE_CREEM_PRODUCT_LIFETIME` | Creem Product ID (Lifetime) | No | |
 | **Analytics** | | | |
 | `VITE_GOOGLE_ANALYTICS_ID` | Google Analytics | No | |
 | `VITE_CLARITY_PROJECT_ID` | Microsoft Clarity | No | |
-| `VITE_PLAUSIBLE_DOMAIN` | Plausible Analytics | No | |
 | `VITE_PLAUSIBLE_SCRIPT` | Plausible script URL | No | |
 | `VITE_UMAMI_WEBSITE_ID` | Umami Analytics | No | |
 | `VITE_UMAMI_SCRIPT` | Umami script URL | No | |
-| `VITE_DATAFAST_DOMAIN` | DataFast Analytics | No | |
-| `VITE_DATAFAST_WEBSITE_ID` | DataFast website ID | No | |
 | **Chat & support** | | | |
 | `VITE_CRISP_WEBSITE_ID` | Crisp chat | No | Requires `features.enableCrispChat: true` in `src/config/website.ts` |
 | **Affiliate** | | | |
@@ -62,15 +65,19 @@ Read at **Worker request time**. Used for secrets, API keys, and server-only con
 | `BETTER_AUTH_SECRET` | Better Auth session signing | Yes (prod) | Auth; default only for CLI; [Mail](./mail.md) for verification/reset |
 | `GOOGLE_CLIENT_ID` | Google OAuth | No | Auth when Google login enabled |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth | No | Auth when Google login enabled |
-| **Mail & newsletter** | | | |
+| **Newsletter** | | | |
 | `BEEHIIV_API_KEY` | Beehiiv API | No | Newsletter when provider is Beehiiv |
 | `BEEHIIV_PUBLICATION_ID` | Beehiiv publication | No | Newsletter when provider is Beehiiv |
 | **Notification** | | | |
 | `DISCORD_WEBHOOK_URL` | Discord webhook | No | Notification (Discord) |
 | `FEISHU_WEBHOOK_URL` | Feishu webhook | No | Notification (Feishu) |
-| **Payment** | | | |
-| `STRIPE_SECRET_KEY` | Stripe API key | No | [Payment](./payment.md) |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing | No | Payment webhook |
+| **Payment (Stripe)** | | | |
+| `STRIPE_SECRET_KEY` | Stripe API key | No | [Payment](./payment.md); required when using Stripe |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing | No | Payment webhook (Stripe) |
+| **Payment (Creem)** | | | |
+| `CREEM_API_KEY` | Creem API key | No | [Payment](./payment.md); required when using Creem |
+| `CREEM_WEBHOOK_SECRET` | Creem webhook signing | No | Payment webhook (Creem) |
+| `CREEM_DEBUG` | Use Creem sandbox API | No | Set to `true` for test mode (`test-api.creem.io`) |
 
 ---
 
