@@ -1,6 +1,6 @@
 # Payment (Stripe / Creem)
 
-Subscription and one-time payment support via a **provider pattern** — switch between Stripe and Creem by setting the `VITE_PAYMENT_PROVIDER` env var (`'stripe'` or `'creem'`). Both providers implement the same `PaymentProvider` interface, so all downstream code (checkout, billing, webhooks) is provider-agnostic. See [Env](./env.md) for all variables.
+Subscription and one-time payment support via a **provider pattern** — switch between Stripe and Creem by setting the `VITE_PAYMENT_PROVIDER` env var (`'stripe'` or `'creem'`). Set it to `''` (empty, the default) to disable payment entirely. Both providers implement the same `PaymentProvider` interface, so all downstream code (checkout, billing, webhooks) is provider-agnostic. See [Env](./env.md) for all variables.
 
 ### Shared routes
 

@@ -7,10 +7,9 @@ import {
   DEFAULT_USER_FILES_FOLDER,
 } from '@/storage/constants';
 
-// Set `enable: true` to enable payment, `enable: false` to disable.
-const isPaymentEnabled = true;
-// Payment provider from env var: 'stripe' | 'creem'
+// Payment provider controlled by env var: 'stripe' | 'creem' | '' (empty means disabled)
 const paymentProvider = clientEnv.VITE_PAYMENT_PROVIDER;
+const isPaymentEnabled = paymentProvider !== '';
 const isCreemPayment = paymentProvider === 'creem';
 
 // Resolve price/product IDs based on the active payment provider
@@ -92,7 +91,7 @@ export const websiteConfig: WebsiteConfig = {
   },
   payment: {
     enable: isPaymentEnabled,
-    provider: paymentProvider,
+    provider: isPaymentEnabled ? paymentProvider : undefined,
     price: {
       plans: {
         free: {

@@ -24,7 +24,7 @@ Values are read by Vite from `.env*` during `pnpm dev` / `pnpm build` and inline
 | **Base** | | | |
 | `VITE_BASE_URL` | Site origin (e.g. `getBaseUrl()`) | No | Default: `http://localhost:3000` |
 | **Payment** | | | |
-| `VITE_PAYMENT_PROVIDER` | Payment provider (`stripe` or `creem`) | Yes | Selects active payment provider |
+| `VITE_PAYMENT_PROVIDER` | Payment provider (`stripe`, `creem`, or `''`) | No | Default: `''` (payment disabled); set to `stripe` or `creem` to enable |
 | **Payment (Stripe)** | | | |
 | `VITE_STRIPE_PRICE_PRO_MONTHLY` | Stripe Price ID (Pro monthly) | No | Required for pricing/checkout when using Stripe |
 | `VITE_STRIPE_PRICE_PRO_YEARLY` | Stripe Price ID (Pro yearly) | No | |
