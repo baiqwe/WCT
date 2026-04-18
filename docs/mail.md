@@ -1,6 +1,6 @@
 # Mail module
 
-Transactional email (verification, password reset, contact form, subscription welcome). Runs in Cloudflare Worker; **Cloudflare Email Service** is the built-in provider. Design allows adding other providers via a provider registry without changing callers.
+Transactional email (verification, password reset, contact form, subscription welcome). Uses **Cloudflare Email Service** REST API as the built-in provider — works in Workers, CI/CD, or any Node.js environment. Design allows adding other providers via a provider registry without changing callers.
 
 **Consumers:** Auth (`sendVerificationEmail`, `sendResetPassword`), contact form (`sendContactMessage` in `src/api/contact.ts`), newsletter subscribe — all use `sendEmail(...)` only.
 
@@ -34,7 +34,8 @@ src/mail/
 | `websiteConfig.mail` | `provider` | `'cloudflare'`. Extend in `src/types/index.d.ts` when adding providers. |
 | | `fromEmail` | Sender address (required for sending). |
 | | `supportEmail` | Used by contact form target. |
-| Wrangler binding | `EMAIL` | Required when using the **Cloudflare** provider. Configured via `send_email` binding in `wrangler.jsonc`. |
+| Env var | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID. |
+| | `CLOUDFLARE_API_TOKEN` | Cloudflare API token. |
 
 ---
 
@@ -42,23 +43,19 @@ src/mail/
 
 ### Cloudflare Email Service
 
-Uses the [Cloudflare Email Service Workers API](https://developers.cloudflare.com/email-service/get-started/send-emails/) via the `send_email` binding. No API key needed — authentication is handled by the Worker binding.
+Uses the [Cloudflare Email Service REST API](https://developers.cloudflare.com/email-service/api/send-emails/rest-api/). Works in any Node.js environment (Workers, CI/CD, scheduled scripts) — no Workers binding required.
 
 **Prerequisites:**
 1. Your domain must be using Cloudflare DNS.
 2. Onboard your domain in the Cloudflare dashboard under **Email Sending**.
-3. Add the `send_email` binding in `wrangler.jsonc` (already included in the template):
+3. Create an API token with `com.cloudflare.api.token.Email.Send` permission in the Cloudflare dashboard.
 
-```jsonc
-// wrangler.jsonc
-"send_email": [
-  {
-    "name": "EMAIL"
-  }
-]
+**Environment variables:**
+
+```bash
+CLOUDFLARE_ACCOUNT_ID=your_account_id
+CLOUDFLARE_API_TOKEN=your_api_token
 ```
-
-4. Run `pnpm cf-typegen` to regenerate Worker types.
 
 **Usage:**
 
@@ -114,5 +111,4 @@ Callers continue using `sendEmail(...)` only.
 
 ## Dependencies
 
-- **cloudflare:workers** — Cloudflare Workers env binding (when using Cloudflare provider; no extra npm dependency).
 - **React / react-dom/server** — Template rendering (`renderToReadableStream` or `renderToStaticMarkup`).

@@ -65,6 +65,9 @@ Read at **Worker request time**. Used for secrets, API keys, and server-only con
 | `BETTER_AUTH_SECRET` | Better Auth session signing | Yes (prod) | Auth; default only for CLI; [Mail](./mail.md) for verification/reset |
 | `GOOGLE_CLIENT_ID` | Google OAuth | No | Auth when Google login enabled |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth | No | Auth when Google login enabled |
+| **Mail (Cloudflare Email)** | | | |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID | No | [Mail](./mail.md); required when using Cloudflare provider |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API token | No | [Mail](./mail.md); required when using Cloudflare provider |
 | **Newsletter** | | | |
 | `BEEHIIV_API_KEY` | Beehiiv API | No | Newsletter when provider is Beehiiv |
 | `BEEHIIV_PUBLICATION_ID` | Beehiiv publication | No | Newsletter when provider is Beehiiv |
