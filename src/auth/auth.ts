@@ -61,6 +61,7 @@ export const auth = betterAuth({
         context: { url, name: user.name ?? '' },
       });
     },
+    sendOnSignIn: true,
   },
   socialProviders: {
     // https://www.better-auth.com/docs/authentication/google

@@ -23,6 +23,13 @@ export const authRouteMiddleware = createMiddleware().server(
       throw redirect({ to: Routes.Login });
     }
 
+    if (!session.user.emailVerified) {
+      throw redirect({
+        to: Routes.Login,
+        search: { error: 'email_not_verified' },
+      });
+    }
+
     return await next();
   }
 );
@@ -39,6 +46,13 @@ export const authApiMiddleware = createMiddleware().server(async ({ next }) => {
     return Response.json(
       { error: 'Unauthorized' },
       { status: 401, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  if (!session.user.emailVerified) {
+    return Response.json(
+      { error: 'Email not verified', code: 'email_not_verified' },
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
     );
   }
 

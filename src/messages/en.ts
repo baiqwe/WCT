@@ -106,6 +106,12 @@ export const messages = {
         state_mismatch: 'Session expired or invalid. Please try again.',
         state_not_found: 'Session not found. Please try again.',
         invalid_callback_request: 'Invalid sign-in request. Please try again.',
+        verification_token_expired:
+          'This verification link has expired. Please request a new one.',
+        verification_failed:
+          'Invalid verification token. Please request a new verification email.',
+        email_not_verified:
+          'Email is not verified. Please sign in again to receive a new verification email.',
       } as Record<string, string>,
     },
     social: {

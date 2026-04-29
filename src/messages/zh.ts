@@ -103,6 +103,10 @@ export const messages = {
         state_mismatch: '会话已过期或无效，请重试。',
         state_not_found: '未找到会话，请重试。',
         invalid_callback_request: '登录请求无效，请重试。',
+        verification_token_expired: '验证链接已失效，请重新获取。',
+        verification_failed: '验证失败，请重新获取验证邮件。',
+        email_not_verified:
+          '邮箱地址未验证。请重新登录，系统会发送新的验证邮件。',
       } as Record<string, string>,
     },
     social: {
