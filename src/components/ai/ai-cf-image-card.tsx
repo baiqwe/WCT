@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { IconDownload, IconLoader2, IconPhoto } from '@tabler/icons-react';
-import { generateAiImage } from '@/api/ai';
+import { IconDownload, IconLoader2, IconSparkles } from '@tabler/icons-react';
+import { generateCfImage } from '@/api/ai';
 import { Button } from '@/components/ui/button';
 import { downloadFile } from '@/lib/download';
 import {
@@ -21,30 +21,32 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
-type FalModel =
-  | 'fal-ai/flux/schnell'
-  | 'fal-ai/gemini-25-flash-image'
-  | 'openai/gpt-image-2';
+type CfImageModel =
+  | '@cf/black-forest-labs/flux-1-schnell'
+  | '@cf/bytedance/stable-diffusion-xl-lightning'
+  | '@cf/lykon/dreamshaper-8-lcm';
 
-const FAL_MODELS: {
-  value: FalModel;
+const CF_MODELS: {
+  value: CfImageModel;
   label: string;
   hint: string;
+  beta?: boolean;
 }[] = [
   {
-    value: 'fal-ai/gemini-25-flash-image',
-    label: 'Gemini 2.5 Flash · Nano Banana',
-    hint: "Google's image model · ~$0.039 / image",
+    value: '@cf/black-forest-labs/flux-1-schnell',
+    label: 'Flux.1 Schnell',
+    hint: 'Default · 12B distilled flow transformer',
   },
   {
-    value: 'fal-ai/flux/schnell',
-    label: 'Flux Schnell',
-    hint: 'Fast & cheap · ~$0.003 / image',
+    value: '@cf/bytedance/stable-diffusion-xl-lightning',
+    label: 'SDXL Lightning',
+    hint: 'Lightning-fast 1024px generations',
+    beta: true,
   },
   {
-    value: 'openai/gpt-image-2',
-    label: 'GPT Image 2',
-    hint: "OpenAI's premium model · sharp text & photoreal · slower (~30s, quality=low)",
+    value: '@cf/lykon/dreamshaper-8-lcm',
+    label: 'DreamShaper 8 LCM',
+    hint: 'Photorealistic Stable Diffusion fine-tune',
   },
 ];
 
@@ -83,17 +85,19 @@ const PROMPT_PRESETS = [
 
 type PresetId = (typeof PROMPT_PRESETS)[number]['id'];
 
-export function AiImageCard() {
+export function AiCfImageCard() {
   const [activePreset, setActivePreset] = useState<PresetId | null>(
     PROMPT_PRESETS[0].id
   );
   const [prompt, setPrompt] = useState<string>(PROMPT_PRESETS[0].prompt);
-  const [model, setModel] = useState<FalModel>('fal-ai/gemini-25-flash-image');
+  const [model, setModel] = useState<CfImageModel>(
+    '@cf/black-forest-labs/flux-1-schnell'
+  );
   const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isPending, setIsPending] = useState(false);
 
-  const activeModel = FAL_MODELS.find((m) => m.value === model);
+  const activeModel = CF_MODELS.find((m) => m.value === model);
 
   function onSelectPreset(id: PresetId) {
     const preset = PROMPT_PRESETS.find((p) => p.id === id);
@@ -113,7 +117,7 @@ export function AiImageCard() {
     setImageUrl(undefined);
     setIsPending(true);
     try {
-      const result = await generateAiImage({ data: { prompt, model } });
+      const result = await generateCfImage({ data: { prompt, model } });
       setImageUrl(result.imageUrl);
     } catch (err) {
       setError(
@@ -128,13 +132,13 @@ export function AiImageCard() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <IconPhoto className="size-5 text-primary" />
-          Image Generation · fal.ai
+          <IconSparkles className="size-5 text-primary" />
+          Image Generation · Workers AI
         </CardTitle>
         <CardDescription>
-          Powered by fal.ai with switchable models{' '}
+          Powered by Cloudflare Workers AI{' '}
           <code className="rounded bg-muted px-1 py-0.5 text-xs">{model}</code>{' '}
-          to generate vivid images from text prompts.
+          to generate images directly from a text prompt.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -143,16 +147,17 @@ export function AiImageCard() {
           <Select
             value={model}
             onValueChange={(value) => {
-              if (value) setModel(value as FalModel);
+              if (value) setModel(value as CfImageModel);
             }}
           >
             <SelectTrigger className="w-72" size="sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {FAL_MODELS.map((m) => (
+              {CF_MODELS.map((m) => (
                 <SelectItem key={m.value} value={m.value}>
                   {m.label}
+                  {m.beta ? ' (Beta)' : ''}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -163,7 +168,7 @@ export function AiImageCard() {
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="ai-image-prompt">Prompt</Label>
+            <Label htmlFor="ai-cf-image-prompt">Prompt</Label>
             <div className="flex flex-wrap gap-2">
               {PROMPT_PRESETS.map((preset) => {
                 const isActive = activePreset === preset.id;
@@ -185,7 +190,7 @@ export function AiImageCard() {
               })}
             </div>
             <Textarea
-              id="ai-image-prompt"
+              id="ai-cf-image-prompt"
               rows={6}
               value={prompt}
               onChange={(event) => onPromptChange(event.target.value)}
@@ -221,7 +226,7 @@ export function AiImageCard() {
                   onClick={() =>
                     downloadFile(
                       imageUrl,
-                      `fal-${model.replace(/[/]/g, '-')}-${Date.now()}.jpg`
+                      `cf-${model.replace(/[@/]/g, '-')}-${Date.now()}.jpg`
                     )
                   }
                 >

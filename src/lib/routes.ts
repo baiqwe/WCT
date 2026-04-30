@@ -12,6 +12,13 @@ export const Routes = {
   Contact: '/contact',
   Waitlist: '/waitlist',
   Ai: '/ai',
+  AiSummarization: '/ai#text-summarization',
+  AiTranslation: '/ai#translation',
+  AiTagline: '/ai#tagline-generator',
+  AiTts: '/ai#text-to-speech',
+  AiImageFal: '/ai#image-generator-fal',
+  AiImageCf: '/ai#image-generator-cloudflare',
+  AiCaption: '/ai#image-captioning',
 
   // Auth routes
   Auth: '/auth',

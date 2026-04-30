@@ -51,6 +51,37 @@ export const messages = {
       title: '更新日志',
       description: '查看我们产品的更新历史，查看最新动态',
     },
+    ai: {
+      title: 'AI',
+      summarization: {
+        title: '文本摘要',
+        description: '使用 BART 浓缩长文章',
+      },
+      translation: {
+        title: '机器翻译',
+        description: '在 10 种语言间翻译文本',
+      },
+      tagline: {
+        title: '广告语生成',
+        description: '使用 Llama 3.1 头脑风暴广告语',
+      },
+      tts: {
+        title: '语音合成',
+        description: '使用 Deepgram Aura 合成语音',
+      },
+      caption: {
+        title: '图像描述',
+        description: '使用 LLaVA 描述图像内容',
+      },
+      imageFal: {
+        title: '图像生成 · fal.ai',
+        description: '通过 fal.ai 调用 Flux / Gemini / GPT Image 2',
+      },
+      imageCf: {
+        title: '图像生成 · Workers AI',
+        description: '在 Cloudflare 上运行 Flux 与 SDXL',
+      },
+    },
   },
 
   changelog: {

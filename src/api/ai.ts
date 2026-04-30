@@ -16,11 +16,22 @@ import { serverEnv } from '@/env/server';
  * - Tagline generation (Chat): Cloudflare Workers AI
  *   (`@cf/meta/llama-3.1-8b-instruct`) — system + user messages.
  *
- * - Image generation: fal.ai (`fal-ai/flux/schnell`) via the
- *   `@tanstack/ai-fal` adapter.
+ * - Image generation (fal): fal.ai via the `@tanstack/ai-fal` adapter.
+ *   Supports switching between `fal-ai/flux/schnell`,
+ *   `fal-ai/gemini-25-flash-image` (Nano Banana), and `openai/gpt-image-2`.
+ *
+ * - Image generation (Cloudflare): Workers AI text-to-image models such as
+ *   `@cf/black-forest-labs/flux-1-schnell` and
+ *   `@cf/bytedance/stable-diffusion-xl-lightning`. These return the image
+ *   either as base64 inside a JSON envelope or as a raw binary body — we
+ *   detect via `Content-Type` and return a data URL either way.
  *
  * - Text-to-Speech: Cloudflare Workers AI (`@cf/deepgram/aura-1`) — returns
  *   the MP3 audio inline as a base64 data URL.
+ *
+ * - Image captioning (Image-to-Text): Cloudflare Workers AI
+ *   (`@cf/llava-hf/llava-1.5-7b-hf`) — accepts a base64 image plus a prompt,
+ *   returns a caption / answer about the image.
  *
  * Required env (Worker secrets):
  * - CLOUDFLARE_ACCOUNT_ID  (for Workers AI calls)
@@ -70,11 +81,34 @@ const taglineSchema = z.object({
     .max(400, 'Description is too long, please keep it under 400 characters.'),
 });
 
+const FAL_IMAGE_MODELS = [
+  'fal-ai/flux/schnell',
+  'fal-ai/gemini-25-flash-image',
+  'openai/gpt-image-2',
+] as const;
+
 const imageGenerationSchema = z.object({
   prompt: z
     .string()
     .min(10, 'Prompt is too short.')
     .max(500, 'Prompt is too long, please keep it under 500 characters.'),
+  model: z.enum(FAL_IMAGE_MODELS).default('fal-ai/gemini-25-flash-image'),
+});
+
+const CF_IMAGE_MODELS = [
+  '@cf/black-forest-labs/flux-1-schnell',
+  '@cf/bytedance/stable-diffusion-xl-lightning',
+  '@cf/lykon/dreamshaper-8-lcm',
+] as const;
+
+const cfImageGenerationSchema = z.object({
+  prompt: z
+    .string()
+    .min(10, 'Prompt is too short.')
+    .max(500, 'Prompt is too long, please keep it under 500 characters.'),
+  model: z
+    .enum(CF_IMAGE_MODELS)
+    .default('@cf/black-forest-labs/flux-1-schnell'),
 });
 
 const TTS_SPEAKERS = [
@@ -98,6 +132,22 @@ const ttsSchema = z.object({
     .min(1, 'Please provide some text to synthesize.')
     .max(1000, 'Text is too long, please keep it under 1000 characters.'),
   speaker: z.enum(TTS_SPEAKERS),
+});
+
+const captionSchema = z.object({
+  /**
+   * Image as base64-encoded bytes (no `data:` prefix). The client strips the
+   * data URL prefix before sending. We cap the encoded length so the JSON
+   * payload to the server function stays under ~1.4 MB.
+   */
+  imageBase64: z
+    .string()
+    .min(100, 'Image data is too small.')
+    .max(1_400_000, 'Image is too large (please use one under ~1 MB).'),
+  prompt: z
+    .string()
+    .min(1, 'Please provide a prompt.')
+    .max(300, 'Prompt is too long, please keep it under 300 characters.'),
 });
 
 /**
@@ -247,7 +297,8 @@ function parseTaglines(text: string): string[] {
 }
 
 /**
- * Generate an image from a text prompt using fal.ai (Flux Schnell).
+ * Generate an image from a text prompt using fal.ai. Caller picks the model
+ * (Flux Schnell, Gemini 2.5 Flash / Nano Banana, or GPT Image 2).
  * Returns the hosted image URL produced by fal.
  */
 export const generateAiImage = createServerFn({ method: 'POST' })
@@ -260,9 +311,22 @@ export const generateAiImage = createServerFn({ method: 'POST' })
       );
     }
 
-    const adapter = falImage('fal-ai/flux/schnell', { apiKey });
+    const adapter = falImage(data.model, { apiKey });
 
-    const result = await generateImage({ adapter, prompt: data.prompt });
+    // GPT Image 2 defaults to high quality which can take 60–75s and may
+    // exhaust the Cloudflare Worker subrequest budget while polling fal's
+    // queue. Force the cheaper / faster `low` quality + jpeg encoding so it
+    // completes in ~30s for the demo.
+    const modelOptions =
+      data.model === 'openai/gpt-image-2'
+        ? { quality: 'low' as const, output_format: 'jpeg' as const }
+        : undefined;
+
+    const result = await generateImage({
+      adapter,
+      prompt: data.prompt,
+      ...(modelOptions ? { modelOptions } : {}),
+    });
 
     const image = result.images?.[0];
     const imageUrl = image?.url;
@@ -270,7 +334,7 @@ export const generateAiImage = createServerFn({ method: 'POST' })
       throw new Error('Image generation failed: empty response.');
     }
 
-    return { imageUrl };
+    return { imageUrl, model: data.model };
   });
 
 /**
@@ -331,4 +395,119 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
     binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
   }
   return btoa(binary);
+}
+
+/**
+ * Generate an image from a text prompt using a Cloudflare Workers AI
+ * text-to-image model. Different models return different shapes:
+ *
+ * - JSON `{ result: { image: <base64 jpeg> } }` (e.g. `flux-1-schnell`)
+ * - Raw binary image body (e.g. `stable-diffusion-xl-lightning`)
+ *
+ * We branch on `Content-Type` and always return a `data:` URL the browser
+ * can render directly.
+ */
+export const generateCfImage = createServerFn({ method: 'POST' })
+  .inputValidator(cfImageGenerationSchema)
+  .handler(async ({ data }) => {
+    const accountId = serverEnv.CLOUDFLARE_ACCOUNT_ID;
+    const apiKey = serverEnv.CLOUDFLARE_API_TOKEN;
+    if (!accountId || !apiKey) {
+      throw new Error(
+        'Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN env.'
+      );
+    }
+
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${data.model}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: data.prompt }),
+      }
+    );
+
+    if (!response.ok) {
+      const errBody = await response.text().catch(() => '');
+      throw new Error(
+        `Workers AI request failed (${response.status}): ${errBody.slice(
+          0,
+          200
+        )}`
+      );
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+
+    if (contentType.includes('application/json')) {
+      const payload = (await response.json()) as {
+        success?: boolean;
+        result?: { image?: string };
+        errors?: Array<{ message?: string }>;
+      };
+      const base64 = payload.result?.image;
+      if (!payload.success || !base64) {
+        const message =
+          payload.errors?.[0]?.message ?? 'Empty response from Workers AI.';
+        throw new Error(`Workers AI error: ${message}`);
+      }
+      return {
+        imageUrl: `data:image/jpeg;base64,${base64}`,
+        model: data.model,
+      };
+    }
+
+    // Binary image body — content-type may be image/png, image/jpeg, etc.
+    const buffer = await response.arrayBuffer();
+    const base64 = arrayBufferToBase64(buffer);
+    const mime = contentType.startsWith('image/') ? contentType : 'image/jpeg';
+    return {
+      imageUrl: `data:${mime};base64,${base64}`,
+      model: data.model,
+    };
+  });
+
+/**
+ * Generate a caption (or answer a custom prompt) for an image using
+ * Cloudflare Workers AI LLaVA 1.5 (`@cf/llava-hf/llava-1.5-7b-hf`).
+ *
+ * The model expects `image` as an array of byte values plus an optional
+ * `prompt`; the client uploads a file, base64-encodes it, and we decode +
+ * forward the bytes here.
+ */
+export const captionImage = createServerFn({ method: 'POST' })
+  .inputValidator(captionSchema)
+  .handler(async ({ data }) => {
+    const bytes = base64ToBytes(data.imageBase64);
+
+    const result = await runWorkersAi<{ description?: string }>(
+      '@cf/llava-hf/llava-1.5-7b-hf',
+      {
+        image: Array.from(bytes),
+        prompt: data.prompt,
+        max_tokens: 256,
+      }
+    );
+
+    if (!result.description) {
+      throw new Error('Image captioning returned an empty response.');
+    }
+
+    return { description: result.description.trim() };
+  });
+
+/**
+ * Decode a base64 string into a Uint8Array. Mirrors the `arrayBufferToBase64`
+ * helper above and works in the Workers runtime without Node `Buffer`.
+ */
+function base64ToBytes(base64: string): Uint8Array {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
 }

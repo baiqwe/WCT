@@ -52,6 +52,37 @@ export const messages = {
       title: 'Changelog',
       description: 'See what we shipped recently',
     },
+    ai: {
+      title: 'AI',
+      summarization: {
+        title: 'Text Summarization',
+        description: 'Condense long articles with BART',
+      },
+      translation: {
+        title: 'Translation',
+        description: 'Translate text across 10 languages',
+      },
+      tagline: {
+        title: 'Tagline Generator',
+        description: 'Brainstorm taglines with Llama 3.1',
+      },
+      tts: {
+        title: 'Text to Speech',
+        description: 'Synthesize speech with Deepgram Aura',
+      },
+      caption: {
+        title: 'Image Captioning',
+        description: 'Describe an image with LLaVA',
+      },
+      imageFal: {
+        title: 'Image Generator · fal.ai',
+        description: 'Flux, Gemini, GPT Image 2 via fal.ai',
+      },
+      imageCf: {
+        title: 'Image Generator · Workers AI',
+        description: 'Run Flux & SDXL on Cloudflare',
+      },
+    },
   },
 
   changelog: {

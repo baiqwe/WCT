@@ -2,13 +2,20 @@ import { Routes } from '@/lib/routes';
 import { messages } from '@/messages';
 import {
   IconBuilding,
+  IconBulb,
   IconCookie,
   IconFileText,
+  IconLanguage,
   IconListCheck,
   IconMail,
   IconMailbox,
+  IconMicrophone,
+  IconPhoto,
+  IconPhotoScan,
   IconRoute,
   IconShieldCheck,
+  IconSparkles,
+  IconWand,
 } from '@tabler/icons-react';
 import type { MenuItemConfig } from '../types';
 import { websiteConfig } from './website';
@@ -28,6 +35,60 @@ export function getNavbarLinks(): MenuItemConfig[] {
   if (websiteConfig.blog?.enable) {
     links.push({ title: m.blog, href: Routes.Blog, external: false });
   }
+  links.push({
+    title: m.ai.title,
+    items: [
+      {
+        title: m.ai.summarization.title,
+        description: m.ai.summarization.description,
+        href: Routes.AiSummarization,
+        icon: IconWand,
+        external: false,
+      },
+      {
+        title: m.ai.translation.title,
+        description: m.ai.translation.description,
+        href: Routes.AiTranslation,
+        icon: IconLanguage,
+        external: false,
+      },
+      {
+        title: m.ai.tagline.title,
+        description: m.ai.tagline.description,
+        href: Routes.AiTagline,
+        icon: IconBulb,
+        external: false,
+      },
+      {
+        title: m.ai.tts.title,
+        description: m.ai.tts.description,
+        href: Routes.AiTts,
+        icon: IconMicrophone,
+        external: false,
+      },
+      {
+        title: m.ai.caption.title,
+        description: m.ai.caption.description,
+        href: Routes.AiCaption,
+        icon: IconPhotoScan,
+        external: false,
+      },
+      {
+        title: m.ai.imageCf.title,
+        description: m.ai.imageCf.description,
+        href: Routes.AiImageCf,
+        icon: IconSparkles,
+        external: false,
+      },
+      {
+        title: m.ai.imageFal.title,
+        description: m.ai.imageFal.description,
+        href: Routes.AiImageFal,
+        icon: IconPhoto,
+        external: false,
+      },
+    ],
+  });
   links.push({
     title: m.pages,
     items: [
