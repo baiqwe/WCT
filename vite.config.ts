@@ -14,7 +14,9 @@ import contentCollections from '@content-collections/vite';
  */
 const config = defineConfig({
   server: {
-    allowedHosts: ['.trycloudflare.com', '.tanstarter.dev'],
+    port: Number(process.env.PORT) || undefined,
+    host: '127.0.0.1',
+    allowedHosts: ['.localhost'],
   },
   resolve: {
     alias: {
