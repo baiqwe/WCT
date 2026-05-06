@@ -40,9 +40,9 @@ const DEPLOY_YML = path.join(
 const BUILD_PREFIXES = ['VITE_', 'CLOUDFLARE_'];
 
 function syncDeployYml(): void {
-  const envExamplePath = path.join(__dirname, '..', '.env.example');
-  if (!fs.existsSync(envExamplePath)) {
-    console.log('⚠️  .env.example not found, skipping deploy.yml sync\n');
+  const envPath = path.join(__dirname, '..', '.env.production');
+  if (!fs.existsSync(envPath)) {
+    console.log('⚠️  .env.production not found, skipping deploy.yml sync\n');
     return;
   }
   if (!fs.existsSync(DEPLOY_YML)) {
@@ -50,9 +50,9 @@ function syncDeployYml(): void {
     return;
   }
 
-  // Collect build-time var names from .env.example
-  const envExample = parseEnvFile(envExamplePath);
-  const requiredKeys = Object.keys(envExample).filter((k) =>
+  // Collect build-time var names from .env.production
+  const envVars = parseEnvFile(envPath);
+  const requiredKeys = Object.keys(envVars).filter((k) =>
     BUILD_PREFIXES.some((p) => k.startsWith(p))
   );
 
@@ -115,9 +115,9 @@ function syncDeployYml(): void {
       BUILD_PREFIXES.some((p) => k.startsWith(p)) && !requiredKeys.includes(k)
   );
 
-  console.log('🔄 Syncing deploy.yml job-level env with .env.example...');
+  console.log('🔄 Syncing deploy.yml job-level env with .env.production...');
   console.log(
-    `   .env.example: ${requiredKeys.length} build-time vars | deploy.yml: ${existingKeys.size} vars`
+    `   .env.production: ${requiredKeys.length} build-time vars | deploy.yml: ${existingKeys.size} vars`
   );
 
   if (missing.length === 0 && extra.length === 0) {
@@ -127,7 +127,7 @@ function syncDeployYml(): void {
 
   if (extra.length > 0) {
     console.log(
-      `   ⚠️  In deploy.yml but not in .env.example: ${extra.join(', ')}`
+      `   ⚠️  In deploy.yml but not in .env.production: ${extra.join(', ')}`
     );
   }
 
@@ -304,7 +304,7 @@ async function setSecret(
 }
 
 async function main() {
-  // Step 1: Sync deploy.yml env block with .env.example
+  // Step 1: Sync deploy.yml env block with .env.production
   syncDeployYml();
 
   // Step 2: Push secrets to GitHub
