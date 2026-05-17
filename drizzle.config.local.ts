@@ -9,10 +9,14 @@ import { pathToFileURL } from 'node:url';
  */
 function getLocalD1DB() {
   try {
-    const basePath = path.resolve('.wrangler');
+    const basePath = path.resolve(
+      '.wrangler/state/v3/d1/miniflare-D1DatabaseObject'
+    );
     const dbFile = fs
-      .readdirSync(basePath, { encoding: 'utf-8', recursive: true })
-      .find((f) => f.endsWith('.sqlite') && !f.startsWith('metadata'));
+      .readdirSync(basePath, { encoding: 'utf-8' })
+      .find(
+        (f) => f.endsWith('.sqlite') && !path.basename(f).startsWith('metadata')
+      );
 
     if (!dbFile) {
       return undefined;
