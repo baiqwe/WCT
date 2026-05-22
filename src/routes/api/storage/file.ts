@@ -1,15 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { getRequestHeaders } from '@tanstack/react-start/server';
+import { eq } from 'drizzle-orm';
 import { auth } from '@/auth/auth';
 import { getDb } from '@/db';
 import { userFiles } from '@/db/app.schema';
-import { eq } from 'drizzle-orm';
 import { getFile } from '@/storage';
+import { isPublicFolder } from '@/storage/utils';
 import { ConfigurationError } from '@/storage/types';
 
 /**
  * Serves a file by key via the storage provider (same-origin proxy URL).
- * Checks ownership for private files.
+ * Shared asset folders stay public; private user files require ownership.
  */
 export const Route = createFileRoute('/api/storage/file')({
   server: {
@@ -25,6 +26,7 @@ export const Route = createFileRoute('/api/storage/file')({
           const headers = getRequestHeaders();
           const session = await auth.api.getSession({ headers });
           const userId = session?.user?.id;
+          const isPublicKey = isPublicFolder(key);
 
           const db = getDb();
           const [fileRecord] = await db
@@ -33,11 +35,13 @@ export const Route = createFileRoute('/api/storage/file')({
             .where(eq(userFiles.r2Key, key))
             .limit(1);
 
-          if (fileRecord) {
-            if (!fileRecord.isPublic) {
-              if (!userId || fileRecord.userId !== userId) {
-                return new Response('Forbidden', { status: 403 });
-              }
+          if (!fileRecord && !isPublicKey) {
+            return new Response('Not Found', { status: 404 });
+          }
+
+          if (fileRecord && !fileRecord.isPublic) {
+            if (!userId || fileRecord.userId !== userId) {
+              return new Response('Forbidden', { status: 403 });
             }
           }
 
@@ -58,9 +62,13 @@ export const Route = createFileRoute('/api/storage/file')({
             'image/svg+xml',
             'application/pdf',
           ];
+          const isPublicFile = fileRecord?.isPublic === true || isPublicKey;
           const responseHeaders: Record<string, string> = {
             'Content-Type': file.contentType,
-            'Cache-Control': 'public, max-age=31536000, immutable',
+            'Cache-Control': isPublicFile
+              ? 'public, max-age=31536000, immutable'
+              : 'private, no-store',
+            'X-Content-Type-Options': 'nosniff',
           };
           if (!safeInlineTypes.includes(file.contentType)) {
             responseHeaders['Content-Disposition'] = 'attachment';
