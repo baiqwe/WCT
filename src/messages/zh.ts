@@ -573,6 +573,7 @@ export const messages = {
     messageMax: '消息不超过 500 个字符',
     send: '发送',
     sending: '发送中…',
+    success: '消息发送成功',
     error: '发送消息失败',
   },
 

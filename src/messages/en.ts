@@ -588,6 +588,7 @@ export const messages = {
     messageMax: 'Message must not exceed 500 characters',
     send: 'Send',
     sending: 'Sending…',
+    success: 'Message sent successfully',
     error: 'Failed to send the message',
   },
 

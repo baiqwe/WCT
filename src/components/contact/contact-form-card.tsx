@@ -22,6 +22,7 @@ import { messages } from '@/messages';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const m = messages.contact;
@@ -48,10 +49,12 @@ export function ContactFormCard() {
     setError(undefined);
     try {
       await sendContactMessage({ data: values });
+      toast.success(m.success);
       form.reset();
     } catch (err) {
       const msg = err instanceof Error ? err.message : m.error;
       setError(msg);
+      toast.error(msg);
     }
   }
 
