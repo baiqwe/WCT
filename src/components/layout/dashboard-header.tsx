@@ -1,6 +1,7 @@
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -9,11 +10,13 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ModeSwitcher } from '@/components/theme/mode-switcher';
 import { websiteConfig } from '@/config/website';
+import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import React from 'react';
 
 export interface DashboardBreadcrumbItem {
   label: string;
+  href?: string;
   isCurrentPage?: boolean;
 }
 
@@ -58,6 +61,10 @@ export function DashboardHeader({
                 >
                   {item.isCurrentPage ? (
                     <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                  ) : item.href ? (
+                    <BreadcrumbLink render={<Link to={item.href} />}>
+                      {item.label}
+                    </BreadcrumbLink>
                   ) : (
                     item.label
                   )}
