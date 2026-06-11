@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { websiteConfig } from '@/config/website';
+import { defaultLocale, getPagePath } from '@/lib/world-cup-content';
 
 /**
  * Dynamic Web App Manifest (PWA)
@@ -12,11 +13,12 @@ export const Route = createFileRoute('/manifest.json')({
     handlers: {
       GET: async () => {
         const metadata = websiteConfig.metadata;
+        const startUrl = getPagePath(defaultLocale, 'home');
         const body = {
           name: metadata?.name,
           short_name: metadata?.name,
           description: metadata?.description,
-          start_url: '/',
+          start_url: startUrl,
           scope: '/',
           display: 'standalone',
           // Keep in sync with <meta name="theme-color"> in src/routes/__root.tsx

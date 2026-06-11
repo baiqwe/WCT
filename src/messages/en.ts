@@ -4,10 +4,11 @@
  */
 export const messages = {
   site: {
-    name: 'TanStarter Demo',
-    title: 'TanStarter - Ship Faster with TanStack, Cost Less with Cloudflare',
+    name: 'World Cup 2026 Simulator',
+    title:
+      'World Cup 2026 Simulator - Bracket Predictor & Group Stage Calculator',
     description:
-      'TanStarter is the complete TanStack Start boilerplate for building profitable SaaS, packed with AI, auth, database, storage, blog, email, newsletter, payments, dashboard, SEO, and more, fully deployed on Cloudflare Workers',
+      'Simulate the World Cup 2026 tournament, rank every group, calculate the best third-place teams, generate the Round of 32 bracket, and share your prediction.',
   },
 
   nav: {
@@ -107,7 +108,7 @@ export const messages = {
   },
 
   footer: {
-    tagline: 'Ship Faster with TanStack, Cost Less with Cloudflare',
+    tagline: 'Free World Cup 2026 simulator, bracket predictor, and group stage calculator',
     rightsReserved: 'All Rights Reserved',
   },
 

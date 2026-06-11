@@ -8,11 +8,20 @@ import { seo } from '@/lib/seo';
 const m = messages.waitlist;
 
 export const Route = createFileRoute('/(pages)/waitlist')({
-  head: () =>
-    seo('/waitlist', {
+  head: () => {
+    const metadata = seo('/waitlist', {
       title: `${m.title} | ${websiteConfig.metadata?.name}`,
       description: m.description,
-    }),
+    });
+    return {
+      ...metadata,
+      meta: metadata.meta.map((item) =>
+        item.name === 'robots'
+          ? { ...item, content: 'noindex, follow' }
+          : item
+      ),
+    };
+  },
   component: WaitlistPage,
 });
 

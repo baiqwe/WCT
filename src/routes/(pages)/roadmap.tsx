@@ -8,11 +8,20 @@ import { seo } from '@/lib/seo';
 const m = messages.roadmap;
 
 export const Route = createFileRoute('/(pages)/roadmap')({
-  head: () =>
-    seo('/roadmap', {
+  head: () => {
+    const metadata = seo('/roadmap', {
       title: `${m.title} | ${websiteConfig.metadata?.name}`,
       description: m.description,
-    }),
+    });
+    return {
+      ...metadata,
+      meta: metadata.meta.map((item) =>
+        item.name === 'robots'
+          ? { ...item, content: 'noindex, follow' }
+          : item
+      ),
+    };
+  },
   component: RoadmapPage,
 });
 

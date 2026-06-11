@@ -21,6 +21,7 @@ import { DefaultCatchBoundary } from '@/components/layout/default-catch-boundary
 import { Routes } from '@/lib/routes';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { lazy } from 'react';
+import { getLocaleConfig, normalizeLocale } from '@/lib/world-cup-content';
 
 const DevTools = import.meta.env.DEV
   ? lazy(() => import('@/integrations/devtools'))
@@ -51,6 +52,10 @@ export const Route = createRootRouteWithContext<{
       {
         name: 'theme-color',
         content: '#09090b',
+      },
+      {
+        name: 'robots',
+        content: 'index, follow, max-image-preview:large',
       },
     ],
     links: [
@@ -127,8 +132,12 @@ function RootComponent() {
  * Root document
  */
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname }) ?? '';
+  const localeSegment = pathname.split('/').filter(Boolean)[0];
+  const lang = getLocaleConfig(normalizeLocale(localeSegment)).htmlLang;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

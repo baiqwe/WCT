@@ -16,6 +16,8 @@ Disallow: /auth
 Disallow: /dashboard
 Disallow: /settings
 Disallow: /admin
+Disallow: /*/share/
+Disallow: /*/pool/
 
 Sitemap: ${base}/sitemap.xml`;
 

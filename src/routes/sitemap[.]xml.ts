@@ -1,7 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { getBaseUrl } from '@/lib/urls';
 import { getSortedPosts } from '@/lib/blog';
 import { websiteConfig } from '@/config/website';
+import { getBaseUrl } from '@/lib/urls';
+import {
+  buildWorldCupSitemapXml,
+  type SitemapEntry,
+} from '@/lib/world-cup-sitemap';
 
 /**
  * Dynamic sitemap.xml
@@ -17,12 +21,8 @@ export const Route = createFileRoute('/sitemap.xml')({
           changefreq?: string;
           priority?: string;
         }[] = [
-          { path: '/', changefreq: 'daily', priority: '1.0' },
           { path: '/about', changefreq: 'monthly' },
-          { path: '/changelog', changefreq: 'weekly' },
-          { path: '/roadmap', changefreq: 'monthly' },
           { path: '/contact', changefreq: 'monthly' },
-          { path: '/waitlist', changefreq: 'monthly' },
           { path: '/terms', changefreq: 'monthly' },
           { path: '/privacy', changefreq: 'monthly' },
           { path: '/cookie', changefreq: 'monthly' },
@@ -35,46 +35,21 @@ export const Route = createFileRoute('/sitemap.xml')({
           staticUrls.push({ path: '/pricing', changefreq: 'weekly' });
         }
 
-        const urlEntry = (
-          path: string,
-          opts?: { changefreq?: string; priority?: string; lastmod?: string }
-        ) => {
-          const lastmod = opts?.lastmod
-            ? `\n    <lastmod>${opts.lastmod}</lastmod>`
-            : '';
-          const changefreq = opts?.changefreq
-            ? `\n    <changefreq>${opts.changefreq}</changefreq>`
-            : '';
-          const priority = opts?.priority
-            ? `\n    <priority>${opts.priority}</priority>`
-            : '';
-          return `  <url>\n    <loc>${base}${path}</loc>${lastmod}${changefreq}${priority}\n  </url>`;
-        };
-
-        const staticPart = staticUrls
-          .map((u) =>
-            urlEntry(u.path, { changefreq: u.changefreq, priority: u.priority })
-          )
-          .join('\n');
-
-        let blogPart = '';
+        let blogUrls: SitemapEntry[] = [];
         if (websiteConfig.blog?.enable) {
           const posts = getSortedPosts();
-          blogPart = posts
-            .map((p) =>
-              urlEntry(`/blog/${p.slug}`, {
-                changefreq: 'weekly',
-                lastmod: new Date(p.date).toISOString().slice(0, 10),
-              })
-            )
-            .join('\n');
+          blogUrls = posts.map((p) => ({
+            path: `/blog/${p.slug}`,
+            changefreq: 'weekly',
+            lastmod: new Date(p.date).toISOString().slice(0, 10),
+          }));
         }
 
-        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${staticPart}
-${blogPart ? `\n${blogPart}` : ''}
-</urlset>`;
+        const sitemap = buildWorldCupSitemapXml({
+          baseUrl: base,
+          blogUrls,
+          staticUrls,
+        });
 
         return new Response(sitemap, {
           headers: {

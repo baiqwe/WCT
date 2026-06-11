@@ -52,6 +52,7 @@ export const metadata = ({
     { title },
     ...(description ? [{ name: 'description', content: description }] : []),
     ...(keywords ? [{ name: 'keywords', content: keywords }] : []),
+    { name: 'robots', content: 'index, follow, max-image-preview:large' },
     // OG metadata
     { property: 'og:type', content: type },
     { property: 'og:site_name', content: websiteConfig.metadata?.name ?? '' },

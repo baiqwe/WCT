@@ -4,14 +4,15 @@ import { isLinkActive } from '@/lib/urls';
 import { cn } from '@/lib/utils';
 import Container from '@/components/layout/container';
 import { Logo } from '@/components/shared/logo';
-import BuiltWithButton from '@/components/shared/built-with-button';
 import { Link, useLocation } from '@tanstack/react-router';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
+import { normalizeLocale } from '@/lib/world-cup-content';
 
 export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = useLocation().pathname;
-  const footerLinks = getFooterLinks();
+  const localeSegment = pathname.split('/').filter(Boolean)[0];
+  const footerLinks = getFooterLinks(normalizeLocale(localeSegment));
   const socialLinks = getSocialLinks();
 
   return (
@@ -102,7 +103,9 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
             &copy; {new Date().getFullYear()} {websiteConfig.metadata?.name}.{' '}
             {messages.footer.rightsReserved}
           </span>
-          <BuiltWithButton />
+          <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+            48 teams · 104 matches · 12 groups
+          </span>
         </Container>
       </div>
     </footer>

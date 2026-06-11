@@ -26,6 +26,7 @@ import { Link, useLocation } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { websiteConfig } from '@/config/website';
 import { messages } from '@/messages';
+import { normalizeLocale } from '@/lib/world-cup-content';
 
 interface NavbarProps {
   scroll?: boolean;
@@ -34,7 +35,8 @@ interface NavbarProps {
 export function Navbar({ scroll = true }: NavbarProps) {
   const pathname = useLocation().pathname;
   const scrolled = useScroll(50);
-  const menuLinks = getNavbarLinks();
+  const localeSegment = pathname.split('/').filter(Boolean)[0];
+  const menuLinks = getNavbarLinks(normalizeLocale(localeSegment));
   const [mounted, setMounted] = useState(false);
   const [menuValue, setMenuValue] = useState<string | null>(null);
   const { data: session, isPending } = authClient.useSession();

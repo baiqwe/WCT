@@ -1,29 +1,16 @@
-import { websiteConfig } from '@/config/website';
 import { cn } from '@/lib/utils';
+import { IconTrophy } from '@tabler/icons-react';
 
 export function Logo({ className }: { className?: string }) {
-  const name = websiteConfig.metadata?.name ?? 'App';
-  const logoLight = websiteConfig.metadata?.images?.logoLight ?? '/logo.png';
-  const logoDark = websiteConfig.metadata?.images?.logoDark ?? logoLight;
-
   return (
-    <>
-      <img
-        src={logoLight}
-        alt={`${name} logo`}
-        className={cn('size-8 rounded-md dark:hidden', className)}
-        width={32}
-        height={32}
-        decoding="async"
-      />
-      <img
-        src={logoDark}
-        alt={`${name} logo`}
-        className={cn('size-8 rounded-md hidden dark:block', className)}
-        width={32}
-        height={32}
-        decoding="async"
-      />
-    </>
+    <span
+      className={cn(
+        'grid size-8 place-items-center rounded-md border border-[#c7ff57]/30 bg-[#c7ff57] text-[#071007] shadow-[0_0_28px_rgba(199,255,87,0.26)]',
+        className
+      )}
+      aria-hidden="true"
+    >
+      <IconTrophy className="size-4" />
+    </span>
   );
 }

@@ -14,11 +14,20 @@ export const Route = createFileRoute('/(pages)/changelog')({
     if (!releases?.length) throw notFound();
     return releases;
   },
-  head: () =>
-    seo('/changelog', {
+  head: () => {
+    const metadata = seo('/changelog', {
       title: `${m.title} | ${websiteConfig.metadata?.name}`,
       description: m.description,
-    }),
+    });
+    return {
+      ...metadata,
+      meta: metadata.meta.map((item) =>
+        item.name === 'robots'
+          ? { ...item, content: 'noindex, follow' }
+          : item
+      ),
+    };
+  },
   component: ChangelogPage,
 });
 

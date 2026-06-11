@@ -26,8 +26,16 @@
   // Enables Workers Trace Events Logpush for a Worker
   "logpush": true,
 
+  // Keep workers.dev available as a fallback preview URL while the custom domain is active.
+  "workers_dev": true,
+
   // Whether Wrangler should keep variables configured in the dashboard on deploy
   "keep_vars": true,
+
+  "vars": {
+    "VITE_BASE_URL": "https://worldcuptool.com",
+    "VITE_GOOGLE_ANALYTICS_ID": "G-CVER3C3VPV"
+  },
 
   // Enables automatically ingest, store, filter, and analyze logging data emitted from Cloudflare Workers
   "observability": {
@@ -46,8 +54,8 @@
   // https://developers.cloudflare.com/workers/configuration/routing/custom-domains/
   "routes": [
     {
-      "pattern": "demo.tanstarter.dev",
-      "custom_domain": true
+      "pattern": "worldcuptool.com/*",
+      "zone_name": "worldcuptool.com"
     }
   ],
 
@@ -64,7 +72,7 @@
     {
       "binding": "DB",
       "database_name": "mkfast-template",
-      "database_id": "dc34f04a-3445-4b5c-bf61-c4ec2328e239",
+      "database_id": "f0096530-08af-4f30-b87d-0f56fb2d77dc",
       "migrations_dir": "./src/db/migrations"
     }
   ],

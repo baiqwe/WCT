@@ -1,162 +1,57 @@
-import { Routes } from '@/lib/routes';
-import { messages } from '@/messages';
 import {
-  IconBuilding,
-  IconBulb,
-  IconCookie,
-  IconFileText,
   IconLanguage,
-  IconListCheck,
-  IconMail,
-  IconMailbox,
-  IconMicrophone,
-  IconPhoto,
-  IconPhotoEdit,
-  IconPhotoScan,
-  IconRoute,
-  IconShieldCheck,
-  IconSparkles,
-  IconWand,
+  IconUsersGroup,
+  IconWorld,
 } from '@tabler/icons-react';
 import type { MenuItemConfig } from '../types';
-import { websiteConfig } from './website';
-
-const m = messages.nav;
+import {
+  defaultLocale,
+  getPagePath,
+  getWorldCupContent,
+  languageLabels,
+  localeConfigs,
+  publicLocales,
+  type Locale,
+} from '@/lib/world-cup-content';
 
 /**
  * Navbar links
  */
-export function getNavbarLinks(): MenuItemConfig[] {
-  const links: MenuItemConfig[] = [
-    { title: m.features, href: Routes.Features, external: false },
+export function getNavbarLinks(locale: Locale = defaultLocale): MenuItemConfig[] {
+  const t = getWorldCupContent(locale);
+  return [
+    { title: t.nav.home, href: getPagePath(locale, 'home'), external: false },
+    { title: t.nav.predictor, href: getPagePath(locale, 'predictor'), external: false },
+    { title: t.nav.bracket, href: getPagePath(locale, 'bracket'), external: false },
+    { title: t.nav.groupStage, href: getPagePath(locale, 'groupStage'), external: false },
+    { title: t.nav.thirdPlace, href: getPagePath(locale, 'thirdPlace'), external: false },
+    {
+      title: getLanguageMenuTitle(locale),
+      items: publicLocales.map((candidate, index) => ({
+        title: languageLabels[candidate],
+        description: localeConfigs[candidate].htmlLang,
+        href: getPagePath(candidate, 'home'),
+        icon: index % 3 === 0 ? IconWorld : index % 3 === 1 ? IconLanguage : IconUsersGroup,
+        external: false,
+      })),
+    },
   ];
-  if (websiteConfig.payment?.enable) {
-    links.push({ title: m.pricing, href: Routes.Pricing, external: false });
-  }
-  if (websiteConfig.blog?.enable) {
-    links.push({ title: m.blog, href: Routes.Blog, external: false });
-  }
-  links.push({
-    title: m.ai.title,
-    items: [
-      {
-        title: m.ai.summarization.title,
-        description: m.ai.summarization.description,
-        href: Routes.AiSummarization,
-        icon: IconWand,
-        external: false,
-      },
-      {
-        title: m.ai.translation.title,
-        description: m.ai.translation.description,
-        href: Routes.AiTranslation,
-        icon: IconLanguage,
-        external: false,
-      },
-      {
-        title: m.ai.tagline.title,
-        description: m.ai.tagline.description,
-        href: Routes.AiTagline,
-        icon: IconBulb,
-        external: false,
-      },
-      {
-        title: m.ai.tts.title,
-        description: m.ai.tts.description,
-        href: Routes.AiTts,
-        icon: IconMicrophone,
-        external: false,
-      },
-      {
-        title: m.ai.caption.title,
-        description: m.ai.caption.description,
-        href: Routes.AiCaption,
-        icon: IconPhotoScan,
-        external: false,
-      },
-      {
-        title: m.ai.imageCf.title,
-        description: m.ai.imageCf.description,
-        href: Routes.AiImageCf,
-        icon: IconSparkles,
-        external: false,
-      },
-      {
-        title: m.ai.imageFal.title,
-        description: m.ai.imageFal.description,
-        href: Routes.AiImageFal,
-        icon: IconPhoto,
-        external: false,
-      },
-      {
-        title: m.ai.imageEdit.title,
-        description: m.ai.imageEdit.description,
-        href: Routes.AiImageEdit,
-        icon: IconPhotoEdit,
-        external: false,
-      },
-    ],
-  });
-  links.push({
-    title: m.pages,
-    items: [
-      {
-        title: m.about.title,
-        description: m.about.description,
-        href: Routes.About,
-        icon: IconBuilding,
-        external: false,
-      },
-      {
-        title: m.contact.title,
-        description: m.contact.description,
-        href: Routes.Contact,
-        icon: IconMail,
-        external: false,
-      },
-      {
-        title: m.waitlist.title,
-        description: m.waitlist.description,
-        href: Routes.Waitlist,
-        icon: IconMailbox,
-        external: false,
-      },
-      {
-        title: m.changelog.title,
-        description: m.changelog.description,
-        href: Routes.Changelog,
-        icon: IconListCheck,
-        external: false,
-      },
-      {
-        title: m.roadmap.title,
-        description: m.roadmap.description,
-        href: Routes.Roadmap,
-        icon: IconRoute,
-        external: false,
-      },
-      {
-        title: m.cookiePolicy.title,
-        description: m.cookiePolicy.description,
-        href: Routes.CookiePolicy,
-        icon: IconCookie,
-        external: false,
-      },
-      {
-        title: m.privacyPolicy.title,
-        description: m.privacyPolicy.description,
-        href: Routes.PrivacyPolicy,
-        icon: IconShieldCheck,
-        external: false,
-      },
-      {
-        title: m.termsOfService.title,
-        description: m.termsOfService.description,
-        href: Routes.TermsOfService,
-        icon: IconFileText,
-        external: false,
-      },
-    ],
-  });
-  return links;
+}
+
+function getLanguageMenuTitle(locale: Locale) {
+  const group = localeConfigs[locale].languageGroup;
+  return (
+    {
+      en: 'Languages',
+      es: 'Idiomas',
+      pt: 'Idiomas',
+      fr: 'Langues',
+      de: 'Sprachen',
+      it: 'Lingue',
+      nl: 'Talen',
+      ja: '言語',
+      ko: '언어',
+      zh: '语言',
+    } satisfies Record<typeof group, string>
+  )[group];
 }

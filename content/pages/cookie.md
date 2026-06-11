@@ -1,58 +1,62 @@
 ---
 title: Cookie Policy
-description: How we use cookies and similar technologies on our website
-date: 2026-02-15
+description: How World Cup 2026 Simulator uses cookies for site operation, analytics, language preferences, and advertising technologies
+date: 2026-06-11
 ---
 
-## Introduction
+## Overview
 
-This Cookie Policy explains how we use cookies and similar technologies on our website. By using our website, you consent to the use of cookies as described in this policy.
+This Cookie Policy explains how World Cup 2026 Simulator may use cookies and similar technologies. Cookies are small files stored on your device that help websites remember information, measure usage, and provide a reliable experience.
 
-## What Are Cookies
+The core World Cup simulator can be used without creating an account.
 
-Cookies are small text files that are stored on your device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.
-
-## How We Use Cookies
-
-We use cookies for the following purposes:
-
-- **Essential Cookies**: These cookies are necessary for the website to function properly and cannot be switched off in our systems.
-- **Performance Cookies**: These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site.
-- **Functional Cookies**: These cookies enable the website to provide enhanced functionality and personalization.
-- **Targeting Cookies**: These cookies may be set through our site by our advertising partners to build a profile of your interests.
-
-## Types of Cookies We Use
+## Types Of Cookies We May Use
 
 ### Essential Cookies
-- Session cookies for maintaining user sessions
-- Security cookies for protecting against fraud and abuse
 
-### Performance Cookies
-- Analytics cookies to understand how visitors interact with our website
-- Load balancing cookies to distribute traffic to servers
+Essential cookies help the site load correctly, route traffic, protect against abuse, remember security-related settings, and keep basic interface features working.
 
-### Functional Cookies
-- Preference cookies to remember your settings and choices
-- Language cookies to remember your language preference
+### Preference Cookies
 
-### Targeting Cookies
-- Advertising cookies to deliver relevant advertisements
-- Social media cookies to enable sharing content on social platforms
+Preference cookies may remember choices such as language, region, or display settings so the site feels consistent when you return.
 
-## Managing Cookies
+### Analytics Cookies
 
-Most web browsers allow you to control cookies through their settings. You can:
+Analytics cookies help us understand which tools and pages are useful. For example, we may measure visits to the World Cup simulator, group prediction pages, team pages, and bracket tools.
 
-- Delete cookies from your device
-- Block cookies by activating the setting on your browser that allows you to refuse all or some cookies
-- Set your browser to notify you when you receive a cookie
+We may use Google Analytics or similar services. These tools help us improve page structure, performance, and content quality.
 
-Please note that if you choose to block or delete cookies, you may not be able to access certain areas or features of our website.
+### Advertising Cookies
 
-## Changes to This Cookie Policy
+If advertising is enabled, advertising partners may use cookies or similar technologies to deliver ads, measure ad performance, limit repeated views, detect invalid traffic, and support personalized or non-personalized advertising.
 
-We may update our Cookie Policy from time to time. We will notify you of any changes by posting the new Cookie Policy on this page.
+Google advertising services may use cookies such as ad measurement and personalization cookies when ads are displayed, depending on your consent choices and location.
 
-## Contact Us
+## Consent
 
-If you have any questions about this Cookie Policy, please [contact us](/contact).
+Where required by law, including in the European Economic Area, the United Kingdom, and Switzerland, we will ask for consent before using non-essential cookies or personalized advertising technologies.
+
+You may be able to manage or withdraw cookie choices through a consent banner or privacy settings shown on the site. You can also control cookies through your browser settings.
+
+## Managing Cookies In Your Browser
+
+Most browsers allow you to:
+
+- Delete existing cookies
+- Block cookies from all websites or specific websites
+- Receive a warning before cookies are stored
+- Browse in a private or incognito mode
+
+Blocking some cookies may affect preferences, analytics accuracy, or future ad personalization, but the main simulator should remain usable.
+
+## Third-Party Links
+
+This website may link to third-party websites, including official tournament, team, or policy resources. Those websites may use their own cookies and privacy practices.
+
+## Updates
+
+We may update this Cookie Policy as the website adds new tools, analytics, consent controls, or advertising features.
+
+## Contact
+
+If you have questions about this Cookie Policy, please [contact us](/contact).

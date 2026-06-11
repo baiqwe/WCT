@@ -20,6 +20,7 @@ import { UserButtonMobile } from '@/components/shared/user-button-mobile';
 import { LoginWrapper } from '@/components/auth/login-wrapper';
 import { messages } from '@/messages';
 import { websiteConfig } from '@/config/website';
+import { normalizeLocale } from '@/lib/world-cup-content';
 
 const mobileLinkClass =
   'flex w-full items-center rounded-md p-2 text-base text-muted-foreground transition-colors duration-150 hover:text-foreground';
@@ -35,7 +36,8 @@ export function NavbarMobile({ className, ...props }: NavbarMobileProps) {
   const [mounted, setMounted] = useState(false);
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  const menuLinks = getNavbarLinks();
+  const localeSegment = pathname.split('/').filter(Boolean)[0];
+  const menuLinks = getNavbarLinks(normalizeLocale(localeSegment));
 
   // Sync mount (avoid hydration mismatch) and close drawer on route change
   useEffect(() => {

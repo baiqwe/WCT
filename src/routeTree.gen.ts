@@ -16,6 +16,7 @@ import { Route as ManifestDotjsonRouteImport } from './routes/manifest[.]json'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -48,10 +49,13 @@ import { Route as pagesAboutRouteImport } from './routes/(pages)/about'
 import { Route as legalsTermsRouteImport } from './routes/(legals)/terms'
 import { Route as legalsPrivacyRouteImport } from './routes/(legals)/privacy'
 import { Route as legalsCookieRouteImport } from './routes/(legals)/cookie'
+import { Route as LocalePageRouteImport } from './routes/$locale/$page'
 import { Route as ApiWebhooksStripeRouteImport } from './routes/api/webhooks/stripe'
 import { Route as ApiWebhooksCreemRouteImport } from './routes/api/webhooks/creem'
 import { Route as ApiStorageFileRouteImport } from './routes/api/storage/file'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as LocaleTeamsTeamRouteImport } from './routes/$locale/teams/$team'
+import { Route as LocaleGroupsGroupRouteImport } from './routes/$locale/groups/$group'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -86,6 +90,11 @@ const AuthRoute = AuthRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocaleRoute = LocaleRouteImport.update({
+  id: '/$locale',
+  path: '/$locale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -248,6 +257,11 @@ const legalsCookieRoute = legalsCookieRouteImport.update({
   path: '/cookie',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocalePageRoute = LocalePageRouteImport.update({
+  id: '/$page',
+  path: '/$page',
+  getParentRoute: () => LocaleRoute,
+} as any)
 const ApiWebhooksStripeRoute = ApiWebhooksStripeRouteImport.update({
   id: '/api/webhooks/stripe',
   path: '/api/webhooks/stripe',
@@ -268,9 +282,20 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocaleTeamsTeamRoute = LocaleTeamsTeamRouteImport.update({
+  id: '/teams/$team',
+  path: '/teams/$team',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleGroupsGroupRoute = LocaleGroupsGroupRouteImport.update({
+  id: '/groups/$group',
+  path: '/groups/$group',
+  getParentRoute: () => LocaleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$locale': typeof LocaleRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
@@ -278,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/settings': typeof SettingsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/$locale/$page': typeof LocalePageRoute
   '/cookie': typeof legalsCookieRoute
   '/privacy': typeof legalsPrivacyRoute
   '/terms': typeof legalsTermsRoute
@@ -309,6 +335,8 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/$locale/groups/$group': typeof LocaleGroupsGroupRoute
+  '/$locale/teams/$team': typeof LocaleTeamsTeamRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/webhooks/creem': typeof ApiWebhooksCreemRoute
@@ -316,10 +344,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$locale': typeof LocaleRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/manifest.json': typeof ManifestDotjsonRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/$locale/$page': typeof LocalePageRoute
   '/cookie': typeof legalsCookieRoute
   '/privacy': typeof legalsPrivacyRoute
   '/terms': typeof legalsTermsRoute
@@ -351,6 +381,8 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/$locale/groups/$group': typeof LocaleGroupsGroupRoute
+  '/$locale/teams/$team': typeof LocaleTeamsTeamRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/webhooks/creem': typeof ApiWebhooksCreemRoute
@@ -359,6 +391,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$locale': typeof LocaleRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
@@ -366,6 +399,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/settings': typeof SettingsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/$locale/$page': typeof LocalePageRoute
   '/(legals)/cookie': typeof legalsCookieRoute
   '/(legals)/privacy': typeof legalsPrivacyRoute
   '/(legals)/terms': typeof legalsTermsRoute
@@ -397,6 +431,8 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/$locale/groups/$group': typeof LocaleGroupsGroupRoute
+  '/$locale/teams/$team': typeof LocaleTeamsTeamRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/storage/file': typeof ApiStorageFileRoute
   '/api/webhooks/creem': typeof ApiWebhooksCreemRoute
@@ -406,6 +442,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$locale'
     | '/admin'
     | '/auth'
     | '/dashboard'
@@ -413,6 +450,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/settings'
     | '/sitemap.xml'
+    | '/$locale/$page'
     | '/cookie'
     | '/privacy'
     | '/terms'
@@ -444,6 +482,8 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/dashboard/'
     | '/settings/'
+    | '/$locale/groups/$group'
+    | '/$locale/teams/$team'
     | '/api/auth/$'
     | '/api/storage/file'
     | '/api/webhooks/creem'
@@ -451,10 +491,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$locale'
     | '/auth'
     | '/manifest.json'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/$locale/$page'
     | '/cookie'
     | '/privacy'
     | '/terms'
@@ -486,6 +528,8 @@ export interface FileRouteTypes {
     | '/blog'
     | '/dashboard'
     | '/settings'
+    | '/$locale/groups/$group'
+    | '/$locale/teams/$team'
     | '/api/auth/$'
     | '/api/storage/file'
     | '/api/webhooks/creem'
@@ -493,6 +537,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$locale'
     | '/admin'
     | '/auth'
     | '/dashboard'
@@ -500,6 +545,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/settings'
     | '/sitemap.xml'
+    | '/$locale/$page'
     | '/(legals)/cookie'
     | '/(legals)/privacy'
     | '/(legals)/terms'
@@ -531,6 +577,8 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/dashboard/'
     | '/settings/'
+    | '/$locale/groups/$group'
+    | '/$locale/teams/$team'
     | '/api/auth/$'
     | '/api/storage/file'
     | '/api/webhooks/creem'
@@ -539,6 +587,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LocaleRoute: typeof LocaleRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
@@ -616,6 +665,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$locale': {
+      id: '/$locale'
+      path: '/$locale'
+      fullPath: '/$locale'
+      preLoaderRoute: typeof LocaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -842,6 +898,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof legalsCookieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$locale/$page': {
+      id: '/$locale/$page'
+      path: '/$page'
+      fullPath: '/$locale/$page'
+      preLoaderRoute: typeof LocalePageRouteImport
+      parentRoute: typeof LocaleRoute
+    }
     '/api/webhooks/stripe': {
       id: '/api/webhooks/stripe'
       path: '/api/webhooks/stripe'
@@ -870,8 +933,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$locale/teams/$team': {
+      id: '/$locale/teams/$team'
+      path: '/teams/$team'
+      fullPath: '/$locale/teams/$team'
+      preLoaderRoute: typeof LocaleTeamsTeamRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/groups/$group': {
+      id: '/$locale/groups/$group'
+      path: '/groups/$group'
+      fullPath: '/$locale/groups/$group'
+      preLoaderRoute: typeof LocaleGroupsGroupRouteImport
+      parentRoute: typeof LocaleRoute
+    }
   }
 }
+
+interface LocaleRouteChildren {
+  LocalePageRoute: typeof LocalePageRoute
+  LocaleGroupsGroupRoute: typeof LocaleGroupsGroupRoute
+  LocaleTeamsTeamRoute: typeof LocaleTeamsTeamRoute
+}
+
+const LocaleRouteChildren: LocaleRouteChildren = {
+  LocalePageRoute: LocalePageRoute,
+  LocaleGroupsGroupRoute: LocaleGroupsGroupRoute,
+  LocaleTeamsTeamRoute: LocaleTeamsTeamRoute,
+}
+
+const LocaleRouteWithChildren =
+  LocaleRoute._addFileChildren(LocaleRouteChildren)
 
 interface AdminRouteChildren {
   AdminUsersRoute: typeof AdminUsersRoute
@@ -943,6 +1035,7 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LocaleRoute: LocaleRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,

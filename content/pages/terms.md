@@ -1,50 +1,78 @@
 ---
 title: Terms of Service
-description: The terms and conditions governing the use of our services
-date: 2026-02-15
+description: Terms for using World Cup 2026 Simulator and its prediction tools
+date: 2026-06-11
 ---
 
-## Introduction
+## Agreement
 
-These Terms of Service ("Terms") govern your use of our website and services. By accessing or using our services, you agree to be bound by these Terms.
+These Terms of Service govern your use of World Cup 2026 Simulator. By using this website, you agree to these terms.
 
-## Use of Services
+If you do not agree, please do not use the website.
 
-Our services are provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that our services will be uninterrupted, secure, or error-free.
+## What This Website Provides
 
-## User Accounts
+World Cup 2026 Simulator provides free football tournament tools, including:
 
-When you create an account with us, you must provide accurate and complete information. You are responsible for safeguarding your account and for all activities that occur under your account.
+- Group stage score and ranking simulation
+- Best third-place qualification calculation
+- Round of 32 and knockout bracket prediction
+- Team path pages
+- Group goal prediction pages
+- Multilingual tournament planning pages
 
-## Intellectual Property
+The tools are designed for entertainment, planning, and informational use.
 
-Our website and its original content, features, and functionality are owned by us and are protected by international copyright, trademark, and other intellectual property laws.
+## Not Official And Not Affiliated
 
-## User Content
+World Cup 2026 Simulator is an independent website. It is not affiliated with, endorsed by, sponsored by, or officially connected to FIFA, the FIFA World Cup, any host organization, any national team, or any football federation.
 
-You retain all rights to any content you submit, post, or display on or through our services. By submitting content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute your content.
+Names of teams, competitions, and related football terms are used for identification and informational purposes.
 
-## Prohibited Activities
+## No Betting Or Financial Advice
+
+Predictions, rankings, probabilities, scores, and simulations are for entertainment and informational purposes only. They are not betting advice, gambling recommendations, financial advice, or guarantees of real-world results.
+
+You are responsible for how you interpret or use any prediction output.
+
+## Accuracy Of Information
+
+We work to keep tournament structures, teams, groups, and tool logic useful and understandable. However, football schedules, qualification rules, team lists, venues, and public information may change.
+
+We do not guarantee that every page, ranking, team profile, score estimate, or simulation result is complete, accurate, or current at all times.
+
+## Acceptable Use
 
 You agree not to:
 
-- Use our services in any way that violates any applicable law or regulation
-- Engage in any conduct that restricts or inhibits anyone's use or enjoyment of our services
-- Attempt to gain unauthorized access to our servers or networks
-- Use our services to distribute malware or other harmful code
+- Use the site for illegal activity
+- Attempt to disrupt, overload, scrape aggressively, or reverse engineer the service
+- Interfere with security, caching, analytics, or hosting systems
+- Copy large portions of the site for a competing automated content service
+- Misrepresent this site as an official tournament website
 
-## Termination
+## Intellectual Property
 
-We may terminate or suspend your account and access to our services immediately, without prior notice or liability, for any reason.
+The website design, original text, tool layouts, code, and page structure are owned by World Cup 2026 Simulator or its operators, unless otherwise noted.
 
-## Limitation of Liability
+You may link to public pages and share predictions for personal, editorial, or social use. You may not copy the full site, republish the tool experience at scale, or remove attribution from copied content.
 
-In no event shall we be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services.
+## Third-Party Services
 
-## Changes to Terms
+The website may use third-party providers for hosting, security, analytics, consent management, and advertising. Your use of the site may also be subject to those providers' terms and policies.
 
-We reserve the right to modify these Terms at any time. If we make changes, we will provide notice by posting the updated Terms on this page.
+## Advertising
 
-## Contact Us
+The website may display advertising in the future. Ads help support free access to the simulator tools. Advertising does not mean that an advertiser controls our predictions, rankings, or editorial decisions.
 
-If you have any questions about these Terms, please [contact us](/contact).
+## Limitation Of Liability
+
+The website is provided "as is" and "as available." To the maximum extent permitted by law, we are not liable for losses or damages arising from use of the site, reliance on predictions, service interruptions, data errors, or third-party services.
+
+## Changes To These Terms
+
+We may update these Terms from time to time. The updated version will be posted on this page with a revised date.
+
+## Contact
+
+If you have questions about these Terms, please [contact us](/contact).
