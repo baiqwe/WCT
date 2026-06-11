@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 import { getGroupMatches, getTeamStrength, type WorldCupMatch } from '@/lib/world-cup-data';
 import { IconArrowLeft, IconArrowRight, IconChartBar, IconTargetArrow } from '@tabler/icons-react';
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type GroupScore = WorldCupMatch & {
   awayScore: number;
@@ -124,6 +124,10 @@ function GroupPredictionPage() {
     [groupPage.group]
   );
   const [scores, setScores] = useState(initialScores);
+  useEffect(() => {
+    const storedScores = loadGroupScores(groupPage.group, initialScores);
+    if (storedScores) setScores(storedScores);
+  }, [groupPage.group, initialScores]);
   const standings = useMemo(
     () => calculateGroupStandings(scores, group?.teams ?? []),
     [scores, group?.teams]
@@ -269,9 +273,16 @@ function GroupPredictionPage() {
                     label={`${match.home} ${copy.goals}`}
                     value={match.homeScore}
                     onChange={(value) =>
-                      setScores((current) =>
-                        updateGroupScore(current, match.id, 'homeScore', value)
-                      )
+                      setScores((current) => {
+                        const next = updateGroupScore(
+                          current,
+                          match.id,
+                          'homeScore',
+                          value
+                        );
+                        saveGroupScores(groupPage.group, next);
+                        return next;
+                      })
                     }
                   />
                   <span className="text-center font-mono text-white/35">-</span>
@@ -279,9 +290,16 @@ function GroupPredictionPage() {
                     label={`${match.away} ${copy.goals}`}
                     value={match.awayScore}
                     onChange={(value) =>
-                      setScores((current) =>
-                        updateGroupScore(current, match.id, 'awayScore', value)
-                      )
+                      setScores((current) => {
+                        const next = updateGroupScore(
+                          current,
+                          match.id,
+                          'awayScore',
+                          value
+                        );
+                        saveGroupScores(groupPage.group, next);
+                        return next;
+                      })
                     }
                   />
                   <span className="truncate rounded-lg border border-white/8 bg-black/20 px-3 py-2 font-semibold text-white">{match.away}</span>
@@ -416,6 +434,62 @@ function updateGroupScore(
       ? { ...match, [field]: Number.isFinite(value) ? Math.max(0, Math.min(12, value)) : 0 }
       : match
   );
+}
+
+function getGroupScoreStorageKey(group: string) {
+  return `wct:group-scores:${group}`;
+}
+
+function saveGroupScores(group: string, scores: GroupScore[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      getGroupScoreStorageKey(group),
+      JSON.stringify(
+        scores.map((match) => ({
+          awayScore: match.awayScore,
+          homeScore: match.homeScore,
+          id: match.id,
+        }))
+      )
+    );
+  } catch {
+    // Persistence is optional; score editing still works in memory.
+  }
+}
+
+function loadGroupScores(group: string, fallbackScores: GroupScore[]) {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(getGroupScoreStorageKey(group));
+    if (!raw) return null;
+    const stored = JSON.parse(raw) as Array<{
+      awayScore?: number;
+      homeScore?: number;
+      id?: string;
+    }>;
+    if (!Array.isArray(stored)) return null;
+    const byId = new Map(fallbackScores.map((match) => [match.id, { ...match }]));
+    let applied = false;
+    for (const item of stored) {
+      if (!item.id || !byId.has(item.id)) continue;
+      const match = byId.get(item.id);
+      if (!match) continue;
+      match.homeScore = sanitizeScoreValue(item.homeScore);
+      match.awayScore = sanitizeScoreValue(item.awayScore);
+      byId.set(item.id, match);
+      applied = true;
+    }
+    return applied ? Array.from(byId.values()) : null;
+  } catch {
+    return null;
+  }
+}
+
+function sanitizeScoreValue(value: unknown) {
+  return typeof value === 'number' && Number.isFinite(value)
+    ? Math.max(0, Math.min(12, value))
+    : 0;
 }
 
 function calculateGroupStandings(

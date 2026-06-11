@@ -20,12 +20,15 @@ import {
 import { cn } from '@/lib/utils';
 import {
   IconArrowRight,
+  IconChevronDown,
+  IconChevronUp,
   IconRefresh,
   IconShare2,
   IconTrophy,
 } from '@tabler/icons-react';
 import {
   Fragment,
+  useEffect,
   useMemo,
   useState,
   type Dispatch,
@@ -41,6 +44,8 @@ type WorldCupHomePageProps = {
 type WorldCupContent = ReturnType<typeof getWorldCupContent>;
 type ToolUiCopy = ReturnType<typeof getToolUiCopy>;
 type Picks = Record<string, string>;
+type GroupRankings = Record<string, string[]>;
+type DetailedGroups = Record<string, boolean>;
 type MatchScore = {
   away: string;
   awayScore: number;
@@ -59,6 +64,7 @@ type StandingRow = {
   goalDifference: number;
   goalsFor: number;
   rank: number;
+  source: 'ranking' | 'scores';
 };
 
 export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageProps) {
@@ -75,9 +81,22 @@ export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageP
   const [picks, setPicks] = useState(initialPicks);
   const initialScores = useMemo(() => createInitialGroupScores(), []);
   const [scores, setScores] = useState(initialScores);
+  const initialGroupRankings = useMemo(() => createInitialGroupRankings(), []);
+  const [groupRankings, setGroupRankings] = useState(initialGroupRankings);
+  const [detailedGroups, setDetailedGroups] = useState<DetailedGroups>({});
+
+  useEffect(() => {
+    const stored = loadStoredTournamentScores(initialScores);
+    if (Object.keys(stored.detailedGroups).length === 0) return;
+    setScores(stored.scores);
+    setDetailedGroups(stored.detailedGroups);
+  }, [initialScores]);
 
   const projectedWinners = Object.values(picks);
-  const standings = useMemo(() => calculateStandings(scores), [scores]);
+  const standings = useMemo(
+    () => calculateStandings(scores, groupRankings, detailedGroups),
+    [scores, groupRankings, detailedGroups]
+  );
   const allGroupIds = useMemo(() => sampleGroups.map((group) => group.group), []);
   const thirdRankings = useMemo(() => getThirdPlaceRankings(standings), [standings]);
   const qualifiedTeams = useMemo(
@@ -184,8 +203,12 @@ export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageP
             scores={scores}
             setPicks={setPicks}
             setScores={setScores}
+            setGroupRankings={setGroupRankings}
+            setDetailedGroups={setDetailedGroups}
             allGroupIds={allGroupIds}
             activeLocale={activeLocale}
+            detailedGroups={detailedGroups}
+            groupRankings={groupRankings}
             standings={standings}
             thirdRankings={thirdRankings}
             t={t}
@@ -294,7 +317,11 @@ function PrimaryToolPanel({
   scores,
   setPicks,
   setScores,
+  setGroupRankings,
+  setDetailedGroups,
   standings,
+  detailedGroups,
+  groupRankings,
   thirdRankings,
   t,
   ui,
@@ -308,8 +335,12 @@ function PrimaryToolPanel({
   scores: MatchScore[];
   setPicks: Dispatch<SetStateAction<Picks>>;
   setScores: Dispatch<SetStateAction<MatchScore[]>>;
+  setGroupRankings: Dispatch<SetStateAction<GroupRankings>>;
+  setDetailedGroups: Dispatch<SetStateAction<DetailedGroups>>;
   allGroupIds: string[];
   activeLocale: Locale;
+  detailedGroups: DetailedGroups;
+  groupRankings: GroupRankings;
   standings: StandingRow[];
   thirdRankings: StandingRow[];
   t: WorldCupContent;
@@ -373,6 +404,7 @@ function PrimaryToolPanel({
         <GroupScoreEditor
           activeGroups={allGroupIds}
           scores={scores}
+          setDetailedGroups={setDetailedGroups}
           setScores={setScores}
           ui={ui}
         />
@@ -482,6 +514,10 @@ function PrimaryToolPanel({
           allGroupIds={allGroupIds}
           activeLocale={activeLocale}
           standings={standings}
+          detailedGroups={detailedGroups}
+          groupRankings={groupRankings}
+          scores={scores}
+          setGroupRankings={setGroupRankings}
           ui={ui}
         />
       ) : (
@@ -511,6 +547,10 @@ function FullPathComposer({
   qualifiedTeams,
   allGroupIds,
   activeLocale,
+  detailedGroups,
+  groupRankings,
+  scores,
+  setGroupRankings,
   standings,
   ui,
 }: {
@@ -519,6 +559,10 @@ function FullPathComposer({
   qualifiedTeams: StandingRow[];
   allGroupIds: string[];
   activeLocale: Locale;
+  detailedGroups: DetailedGroups;
+  groupRankings: GroupRankings;
+  scores: MatchScore[];
+  setGroupRankings: Dispatch<SetStateAction<GroupRankings>>;
   standings: StandingRow[];
   ui: ToolUiCopy;
 }) {
@@ -551,7 +595,11 @@ function FullPathComposer({
               <GroupRankCard
                 key={group}
                 activeLocale={activeLocale}
+                detailedGroups={detailedGroups}
                 group={group}
+                groupRankings={groupRankings}
+                scores={scores}
+                setGroupRankings={setGroupRankings}
                 standings={standings}
                 ui={ui}
               />
@@ -570,17 +618,28 @@ function FullPathComposer({
 
 function GroupRankCard({
   activeLocale,
+  detailedGroups,
   group,
+  groupRankings,
+  scores,
+  setGroupRankings,
   standings,
   ui,
 }: {
   activeLocale: Locale;
+  detailedGroups: DetailedGroups;
   group: string;
+  groupRankings: GroupRankings;
+  scores: MatchScore[];
+  setGroupRankings: Dispatch<SetStateAction<GroupRankings>>;
   standings: StandingRow[];
   ui: ToolUiCopy;
 }) {
   const rows = standings.filter((row) => row.group === group).slice(0, 4);
   const groupSlug = `group-${group.toLowerCase()}-goal-prediction`;
+  const isDetailed = Boolean(detailedGroups[group]);
+  const groupScores = scores.filter((match) => match.group === group);
+  const ranking = groupRankings[group] ?? rows.map((row) => row.team);
 
   return (
     <article className="group relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-3 transition hover:border-[#c7ff57]/35 hover:bg-[#c7ff57]/8">
@@ -593,21 +652,75 @@ function GroupRankCard({
           {ui.groupLabel} {group}
         </span>
         <span className="rounded-full border border-white/10 bg-black/25 px-2 py-0.5 text-[10px] text-white/46">
-          {ui.pathCanvas.rankOnly}
+          {isDetailed ? ui.pathCanvas.scoreMode : ui.pathCanvas.rankMode}
         </span>
       </div>
       <div className="grid gap-1.5">
-        {rows.map((row) => (
+        {rows.map((row, index) => (
           <div
             key={row.team}
-            className="grid grid-cols-[18px_1fr_28px] items-center gap-2 text-xs"
+            className="grid grid-cols-[18px_1fr_52px] items-center gap-2 text-xs"
           >
             <span className="font-mono text-white/40">{row.rank}</span>
             <span className="truncate font-medium text-white/78">{row.team}</span>
-            <span className="text-right font-mono text-[#d8ff80]/80">{row.points}</span>
+            {isDetailed ? (
+              <span className="text-right font-mono text-[#d8ff80]/80">
+                {row.points} {ui.pointsShort}
+              </span>
+            ) : (
+              <span className="flex justify-end gap-1">
+                <button
+                  aria-label={`${ui.moveUp} ${row.team}`}
+                  className="grid size-5 place-items-center rounded border border-white/8 bg-black/25 text-white/42 transition hover:border-[#c7ff57]/30 hover:text-[#d8ff80] disabled:pointer-events-none disabled:opacity-25"
+                  disabled={index === 0}
+                  onClick={() =>
+                    moveGroupTeam(setGroupRankings, group, row.team, -1)
+                  }
+                  type="button"
+                >
+                  <IconChevronUp className="size-3" />
+                </button>
+                <button
+                  aria-label={`${ui.moveDown} ${row.team}`}
+                  className="grid size-5 place-items-center rounded border border-white/8 bg-black/25 text-white/42 transition hover:border-[#c7ff57]/30 hover:text-[#d8ff80] disabled:pointer-events-none disabled:opacity-25"
+                  disabled={index === ranking.length - 1}
+                  onClick={() =>
+                    moveGroupTeam(setGroupRankings, group, row.team, 1)
+                  }
+                  type="button"
+                >
+                  <IconChevronDown className="size-3" />
+                </button>
+              </span>
+            )}
           </div>
         ))}
       </div>
+      {isDetailed ? (
+        <div className="mt-3 grid gap-1 border-t border-white/8 pt-2">
+          {groupScores.slice(0, 2).map((match) => (
+            <div
+              key={match.id}
+              className="grid grid-cols-[1fr_38px_1fr] items-center gap-1 text-[10px] text-white/42"
+            >
+              <span className="truncate text-right">{match.home}</span>
+              <span className="rounded bg-black/25 px-1.5 py-0.5 text-center font-mono text-[#d8ff80]/75">
+                {match.homeScore}-{match.awayScore}
+              </span>
+              <span className="truncate">{match.away}</span>
+            </div>
+          ))}
+          {groupScores.length > 2 ? (
+            <span className="text-right text-[10px] text-white/32">
+              +{groupScores.length - 2} {ui.moreMatches}
+            </span>
+          ) : null}
+        </div>
+      ) : (
+        <p className="mt-3 border-t border-white/8 pt-2 text-[11px] leading-4 text-white/36">
+          {ui.pathCanvas.rankOnly}
+        </p>
+      )}
       <a
         className="mt-3 flex items-center justify-end gap-1 text-[11px] font-semibold text-[#c7ff57] hover:text-[#e7ffad]"
         href={getGroupPredictionPath(activeLocale, groupSlug)}
@@ -740,11 +853,13 @@ function PickBoard({
 function GroupScoreEditor({
   activeGroups,
   scores,
+  setDetailedGroups,
   setScores,
   ui,
 }: {
   activeGroups: string[];
   scores: MatchScore[];
+  setDetailedGroups: Dispatch<SetStateAction<DetailedGroups>>;
   setScores: Dispatch<SetStateAction<MatchScore[]>>;
   ui: ToolUiCopy;
 }) {
@@ -811,7 +926,7 @@ function GroupScoreEditor({
             value={match.homeScore}
             label={ui.scoreLabel}
             onChange={(value) =>
-              updateScore(setScores, match.id, 'homeScore', value)
+              updateScore(setScores, setDetailedGroups, match.id, match.group, 'homeScore', value)
             }
           />
           <span className="text-center text-white/35">-</span>
@@ -819,7 +934,7 @@ function GroupScoreEditor({
             value={match.awayScore}
             label={ui.scoreLabel}
             onChange={(value) =>
-              updateScore(setScores, match.id, 'awayScore', value)
+              updateScore(setScores, setDetailedGroups, match.id, match.group, 'awayScore', value)
             }
           />
           <span className="truncate text-white/75">{match.away}</span>
@@ -1492,7 +1607,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: 'Group',
       scoreLabel: 'Score',
       pointsGoalDiff: 'Pts / GD',
+      pointsShort: 'pts',
       winnerShort: 'W',
+      moveUp: 'Move up',
+      moveDown: 'Move down',
+      moreMatches: 'more',
       qualified: 'Qualified',
       out: 'Out',
       versus: 'vs',
@@ -1509,8 +1628,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       stages: ['Groups', 'Best 3rd', 'R32', 'R16', 'QF', 'Final'],
       pathCanvas: {
         groupsTitle: 'Group ranking cards',
-        groupsBody: 'The canvas only shows predicted rank and points. Open details to predict every goal in that group.',
-        rankOnly: 'rank only',
+        groupsBody: 'Start by ranking each group. Scorelines stay hidden until you open a group detail page or edit match scores.',
+        rankOnly: 'Rank the group first; add exact scores only when you need detail.',
+        rankMode: 'ranking',
+        scoreMode: 'scores',
         round32Body: 'Auto-filled from group winners, runners-up, and best third-place teams.',
         round16Body: 'Advance your Round of 32 picks into the next lane.',
         quarterBody: 'Keep only the strongest paths alive.',
@@ -1656,7 +1777,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: 'Grupo',
       scoreLabel: 'Marcador',
       pointsGoalDiff: 'Pts / DG',
+      pointsShort: 'pts',
       winnerShort: 'G',
+      moveUp: 'Subir',
+      moveDown: 'Bajar',
+      moreMatches: 'mas',
       qualified: 'Clasificado',
       out: 'Fuera',
       versus: 'vs',
@@ -1673,8 +1798,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       stages: ['Grupos', 'Mejores 3os', 'R32', 'R16', 'CF', 'Final'],
       pathCanvas: {
         groupsTitle: 'Ranking de grupos',
-        groupsBody: 'El lienzo solo muestra ranking y puntos. Abre detalles para predecir cada gol del grupo.',
-        rankOnly: 'solo ranking',
+        groupsBody: 'Empieza ordenando cada grupo. Los marcadores aparecen solo cuando abres detalles o editas partidos.',
+        rankOnly: 'Ordena el grupo primero; agrega marcadores exactos solo si necesitas detalle.',
+        rankMode: 'ranking',
+        scoreMode: 'marcadores',
         round32Body: 'Se completa con primeros, segundos y mejores terceros.',
         round16Body: 'Avanza tus picks de R32 a la siguiente columna.',
         quarterBody: 'Mantiene vivas las rutas mas fuertes.',
@@ -1820,7 +1947,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: 'Grupo',
       scoreLabel: 'Placar',
       pointsGoalDiff: 'Pts / SG',
+      pointsShort: 'pts',
       winnerShort: 'V',
+      moveUp: 'Subir',
+      moveDown: 'Descer',
+      moreMatches: 'mais',
       qualified: 'Classificado',
       out: 'Fora',
       versus: 'vs',
@@ -1837,8 +1968,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       stages: ['Grupos', 'Melhores 3os', 'R32', 'R16', 'QF', 'Final'],
       pathCanvas: {
         groupsTitle: 'Ranking dos grupos',
-        groupsBody: 'O canvas mostra so ranking e pontos. Abra detalhes para prever cada gol do grupo.',
-        rankOnly: 'so ranking',
+        groupsBody: 'Comece ordenando cada grupo. Os placares aparecem so quando voce abre detalhes ou edita jogos.',
+        rankOnly: 'Ordene o grupo primeiro; adicione placares exatos so quando precisar.',
+        rankMode: 'ranking',
+        scoreMode: 'placares',
         round32Body: 'Preenchido por primeiros, segundos e melhores terceiros.',
         round16Body: 'Avance seus palpites da R32 para a proxima coluna.',
         quarterBody: 'Mantenha vivas as rotas mais fortes.',
@@ -1987,6 +2120,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       liveIntentLabel: 'Intention active',
       groupLabel: 'Groupe',
       scoreLabel: 'Score',
+      pointsShort: 'pts',
+      moveUp: 'Monter',
+      moveDown: 'Descendre',
+      moreMatches: 'autres',
       qualified: 'Qualifie',
       out: 'Elimine',
       share: 'Partager',
@@ -1999,6 +2136,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       liveIntentLabel: 'Aktive Absicht',
       groupLabel: 'Gruppe',
       scoreLabel: 'Ergebnis',
+      pointsShort: 'Pkt',
+      moveUp: 'Nach oben',
+      moveDown: 'Nach unten',
+      moreMatches: 'mehr',
       qualified: 'Qualifiziert',
       out: 'Aus',
       share: 'Teilen',
@@ -2011,6 +2152,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       liveIntentLabel: 'Intento attivo',
       groupLabel: 'Girone',
       scoreLabel: 'Risultato',
+      pointsShort: 'pt',
+      moveUp: 'Su',
+      moveDown: 'Giu',
+      moreMatches: 'altre',
       qualified: 'Qualificata',
       out: 'Fuori',
       share: 'Condividi',
@@ -2023,6 +2168,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       liveIntentLabel: 'Actieve intentie',
       groupLabel: 'Groep',
       scoreLabel: 'Score',
+      pointsShort: 'pt',
+      moveUp: 'Omhoog',
+      moveDown: 'Omlaag',
+      moreMatches: 'meer',
       qualified: 'Geplaatst',
       out: 'Uit',
       share: 'Delen',
@@ -2036,7 +2185,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: 'グループ',
       scoreLabel: 'スコア',
       pointsGoalDiff: '勝点 / 得失点',
+      pointsShort: '点',
       winnerShort: '勝',
+      moveUp: '上へ',
+      moveDown: '下へ',
+      moreMatches: '試合',
       qualified: '通過',
       out: '敗退',
       versus: '対',
@@ -2047,6 +2200,13 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       details: '詳細',
       stepLabel: 'ステップ',
       editingGroupLabel: '編集中のグループ',
+      pathCanvas: {
+        groupsTitle: 'グループ順位カード',
+        groupsBody: 'まず順位だけを調整できます。詳細でスコアを入力したグループだけ、カードに試合スコアが表示されます。',
+        rankOnly: 'まず順位を決め、必要な時だけ詳細でスコアを入力します。',
+        rankMode: '順位',
+        scoreMode: 'スコア',
+      },
       matchesLabel: '試合',
       groupTabsLabel: '編集するグループを選択',
       groupStage: { cutoffFallback: '8位ライン', cutoffLabel: '通過ライン' },
@@ -2057,7 +2217,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: '조',
       scoreLabel: '스코어',
       pointsGoalDiff: '승점 / 득실',
+      pointsShort: '점',
       winnerShort: '승',
+      moveUp: '위로',
+      moveDown: '아래로',
+      moreMatches: '경기',
       qualified: '진출',
       out: '탈락',
       versus: '대',
@@ -2068,6 +2232,13 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       details: '상세',
       stepLabel: '단계',
       editingGroupLabel: '편집 중인 조',
+      pathCanvas: {
+        groupsTitle: '조별 순위 카드',
+        groupsBody: '먼저 순위만 조정할 수 있습니다. 상세에서 스코어를 입력한 조만 카드에 경기 스코어가 표시됩니다.',
+        rankOnly: '먼저 조 순위를 정하고, 필요할 때만 상세에서 스코어를 입력하세요.',
+        rankMode: '순위',
+        scoreMode: '스코어',
+      },
       matchesLabel: '경기',
       groupTabsLabel: '편집할 조 선택',
       groupStage: { cutoffFallback: '8위 라인', cutoffLabel: '컷오프' },
@@ -2078,7 +2249,11 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       groupLabel: '小组',
       scoreLabel: '比分',
       pointsGoalDiff: '积分 / 净胜球',
+      pointsShort: '分',
       winnerShort: '胜',
+      moveUp: '上移',
+      moveDown: '下移',
+      moreMatches: '场',
       qualified: '晋级',
       out: '出局',
       versus: '对',
@@ -2095,8 +2270,10 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
       stages: ['小组赛', '最佳第三名', '32强', '16强', '8强', '决赛'],
       pathCanvas: {
         groupsTitle: '小组排名卡片',
-        groupsBody: '主画布只展示你预测的小组排名和积分，点详情再进入每场进球数预测。',
-        rankOnly: '只看排名',
+        groupsBody: '可以先只调整每个小组的排名。只有进入详情维护过比分后，卡片才显示具体比分。',
+        rankOnly: '先排小组名次；需要精细预测时再进详情填比分。',
+        rankMode: '排名模式',
+        scoreMode: '比分模式',
         round32Body: '由小组前二和最佳第三名自动生成。',
         round16Body: '把 32 强预测结果继续推进到下一列。',
         quarterBody: '只保留更强的晋级路径。',
@@ -2377,21 +2554,69 @@ function createInitialGroupScores(): MatchScore[] {
   });
 }
 
+function createInitialGroupRankings(): GroupRankings {
+  return Object.fromEntries(
+    sampleGroups.map((group) => [group.group, [...group.teams]])
+  ) as GroupRankings;
+}
+
 function updateScore(
   setScores: Dispatch<SetStateAction<MatchScore[]>>,
+  setDetailedGroups: Dispatch<SetStateAction<DetailedGroups>>,
   id: string,
+  group: string,
   key: 'homeScore' | 'awayScore',
   value: number
 ) {
   const safeValue = Number.isFinite(value) ? Math.max(0, Math.min(12, value)) : 0;
-  setScores((current) =>
-    current.map((match) =>
+  setDetailedGroups((current) => ({ ...current, [group]: true }));
+  setScores((current) => {
+    const next = current.map((match) =>
       match.id === id ? { ...match, [key]: safeValue } : match
-    )
-  );
+    );
+    saveGroupScores(group, next.filter((match) => match.group === group));
+    return next;
+  });
 }
 
-function calculateStandings(scores: MatchScore[]): StandingRow[] {
+function moveGroupTeam(
+  setGroupRankings: Dispatch<SetStateAction<GroupRankings>>,
+  group: string,
+  team: string,
+  direction: -1 | 1
+) {
+  setGroupRankings((current) => {
+    const currentRanking =
+      current[group] ??
+      sampleGroups.find((item) => item.group === group)?.teams ??
+      [];
+    const ranking = [...currentRanking];
+    const index = ranking.indexOf(team);
+    const nextIndex = index + direction;
+    if (index < 0 || nextIndex < 0 || nextIndex >= ranking.length) {
+      return current;
+    }
+    [ranking[index], ranking[nextIndex]] = [ranking[nextIndex], ranking[index]];
+    return { ...current, [group]: ranking };
+  });
+}
+
+function calculateStandings(
+  scores: MatchScore[],
+  rankings: GroupRankings,
+  detailedGroups: DetailedGroups
+): StandingRow[] {
+  return sampleGroups.flatMap((group) => {
+    if (!detailedGroups[group.group]) {
+      return createRankingStandings(group.group, rankings[group.group] ?? group.teams);
+    }
+    return calculateScoreStandings(
+      scores.filter((match) => match.group === group.group)
+    );
+  });
+}
+
+function calculateScoreStandings(scores: MatchScore[]): StandingRow[] {
   const tables = new Map<string, Map<string, Omit<StandingRow, 'rank'>>>();
   for (const match of scores) {
     if (!tables.has(match.group)) {
@@ -2426,8 +2651,92 @@ function calculateStandings(scores: MatchScore[]): StandingRow[] {
   return Array.from(tables.values()).flatMap((table) =>
     Array.from(table.values())
       .sort(compareStandingRows)
-      .map((row, index) => ({ ...row, rank: index + 1 }))
+      .map((row, index) => ({ ...row, rank: index + 1, source: 'scores' as const }))
   );
+}
+
+function createRankingStandings(group: string, ranking: readonly string[]): StandingRow[] {
+  return ranking.map((team, index) => ({
+    team,
+    group,
+    played: 0,
+    points: index === 0 ? 9 : index === 1 ? 6 : index === 2 ? 4 : 1,
+    goalDifference: 0,
+    goalsFor: 0,
+    rank: index + 1,
+    source: 'ranking',
+  }));
+}
+
+function getGroupScoreStorageKey(group: string) {
+  return `wct:group-scores:${group}`;
+}
+
+function saveGroupScores(group: string, groupScores: MatchScore[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      getGroupScoreStorageKey(group),
+      JSON.stringify(
+        groupScores.map((match) => ({
+          awayScore: match.awayScore,
+          homeScore: match.homeScore,
+          id: match.id,
+        }))
+      )
+    );
+  } catch {
+    // Local storage is optional; the simulator still works without persistence.
+  }
+}
+
+function loadStoredTournamentScores(initialScores: MatchScore[]) {
+  if (typeof window === 'undefined') {
+    return { scores: initialScores, detailedGroups: {} as DetailedGroups };
+  }
+
+  const detailedGroups: DetailedGroups = {};
+  const scoreById = new Map(
+    initialScores.map((match) => [match.id, { ...match }])
+  );
+
+  for (const group of sampleGroups) {
+    try {
+      const raw = window.localStorage.getItem(getGroupScoreStorageKey(group.group));
+      if (!raw) continue;
+      const stored = JSON.parse(raw) as Array<{
+        awayScore?: number;
+        homeScore?: number;
+        id?: string;
+      }>;
+      if (!Array.isArray(stored)) continue;
+
+      let applied = false;
+      for (const item of stored) {
+        if (!item.id || !scoreById.has(item.id)) continue;
+        const match = scoreById.get(item.id);
+        if (!match) continue;
+        match.homeScore = sanitizeScoreValue(item.homeScore);
+        match.awayScore = sanitizeScoreValue(item.awayScore);
+        scoreById.set(item.id, match);
+        applied = true;
+      }
+      if (applied) detailedGroups[group.group] = true;
+    } catch {
+      continue;
+    }
+  }
+
+  return {
+    scores: Array.from(scoreById.values()),
+    detailedGroups,
+  };
+}
+
+function sanitizeScoreValue(value: unknown) {
+  return typeof value === 'number' && Number.isFinite(value)
+    ? Math.max(0, Math.min(12, value))
+    : 0;
 }
 
 function ensureTeam(
@@ -2443,6 +2752,7 @@ function ensureTeam(
       points: 0,
       goalDifference: 0,
       goalsFor: 0,
+      source: 'scores',
     });
   }
 }
