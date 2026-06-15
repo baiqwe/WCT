@@ -131,6 +131,19 @@ export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageP
                   </a>
                 ))}
               </div>
+              <nav
+                aria-label="Breadcrumb"
+                className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/42"
+              >
+                <a
+                  className="transition hover:text-[#d8ff80]"
+                  href={getPagePath(activeLocale, 'home')}
+                >
+                  {ui.breadcrumbHome}
+                </a>
+                <span aria-hidden="true">/</span>
+                <span className="text-white/68">{t.seo.h1}</span>
+              </nav>
               <Badge className="mb-5 border-[#c7ff57]/30 bg-[#c7ff57]/10 text-[#d8ff80]">
                 {t.seo.eyebrow}
               </Badge>
@@ -230,6 +243,8 @@ export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageP
       />
 
       <ToolSeoSection activeLocale={activeLocale} pageKey={pageKey} t={t} ui={ui} />
+
+      <SearchIntentSection activeLocale={activeLocale} t={t} ui={ui} />
 
       <section className="bg-[#050907] px-4 py-16 md:px-6" id="bracket">
         <div className="mx-auto max-w-7xl">
@@ -1397,6 +1412,56 @@ function ToolSeoSection({
   );
 }
 
+function SearchIntentSection({
+  activeLocale,
+  t,
+  ui,
+}: {
+  activeLocale: Locale;
+  t: WorldCupContent;
+  ui: ToolUiCopy;
+}) {
+  return (
+    <section className="border-b border-white/10 bg-[#07100b] px-4 py-16 md:px-6">
+      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+        <SectionIntro
+          eyebrow={ui.searchIntentEyebrow}
+          title={t.seoDeepDive.title}
+          body={t.seoDeepDive.intro}
+        />
+        <div className="grid gap-3">
+          {t.seoDeepDive.sections.map((section) => (
+            <article
+              key={section.title}
+              className="rounded-lg border border-white/10 bg-white/[0.028] p-5"
+            >
+              <h2 className="text-xl font-semibold leading-7 text-white">
+                {section.title}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-white/58">
+                {section.body}
+              </p>
+              {section.links?.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {section.links.map((link) => (
+                    <a
+                      key={link.pageKey}
+                      href={getPagePath(activeLocale, link.pageKey)}
+                      className="rounded-md border border-[#c7ff57]/22 bg-[#c7ff57]/8 px-3 py-2 text-xs font-semibold text-[#d8ff80] transition hover:border-[#c7ff57]/45 hover:bg-[#c7ff57]/12"
+                    >
+                      {ui.relatedToolLabel}: {link.label}
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TeamDirectory({
   activeLocale,
   labels,
@@ -1604,6 +1669,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
   const ui = {
     en: {
       liveIntentLabel: 'Live intent',
+      breadcrumbHome: 'Home',
+      searchIntentEyebrow: 'Search intent',
+      relatedToolLabel: 'Related tool',
       groupLabel: 'Group',
       scoreLabel: 'Score',
       pointsGoalDiff: 'Pts / GD',
@@ -1774,6 +1842,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     },
     es: {
       liveIntentLabel: 'Intencion activa',
+      breadcrumbHome: 'Inicio',
+      searchIntentEyebrow: 'Intencion de busqueda',
+      relatedToolLabel: 'Herramienta relacionada',
       groupLabel: 'Grupo',
       scoreLabel: 'Marcador',
       pointsGoalDiff: 'Pts / DG',
@@ -1944,6 +2015,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     },
     pt: {
       liveIntentLabel: 'Intencao ativa',
+      breadcrumbHome: 'Inicio',
+      searchIntentEyebrow: 'Intencao de busca',
+      relatedToolLabel: 'Ferramenta relacionada',
       groupLabel: 'Grupo',
       scoreLabel: 'Placar',
       pointsGoalDiff: 'Pts / SG',
@@ -2118,6 +2192,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
   const extra = {
     fr: makeDerivedUi(ui.es, {
       liveIntentLabel: 'Intention active',
+      breadcrumbHome: 'Accueil',
+      searchIntentEyebrow: 'Intention de recherche',
+      relatedToolLabel: 'Outil lie',
       groupLabel: 'Groupe',
       scoreLabel: 'Score',
       pointsShort: 'pts',
@@ -2134,6 +2211,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     de: makeDerivedUi(ui.en, {
       liveIntentLabel: 'Aktive Absicht',
+      breadcrumbHome: 'Startseite',
+      searchIntentEyebrow: 'Suchintention',
+      relatedToolLabel: 'Verwandtes Tool',
       groupLabel: 'Gruppe',
       scoreLabel: 'Ergebnis',
       pointsShort: 'Pkt',
@@ -2150,6 +2230,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     it: makeDerivedUi(ui.es, {
       liveIntentLabel: 'Intento attivo',
+      breadcrumbHome: 'Home',
+      searchIntentEyebrow: 'Intento di ricerca',
+      relatedToolLabel: 'Strumento correlato',
       groupLabel: 'Girone',
       scoreLabel: 'Risultato',
       pointsShort: 'pt',
@@ -2166,6 +2249,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     nl: makeDerivedUi(ui.en, {
       liveIntentLabel: 'Actieve intentie',
+      breadcrumbHome: 'Home',
+      searchIntentEyebrow: 'Zoekintentie',
+      relatedToolLabel: 'Gerelateerde tool',
       groupLabel: 'Groep',
       scoreLabel: 'Score',
       pointsShort: 'pt',
@@ -2182,6 +2268,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     ja: makeDerivedUi(ui.en, {
       liveIntentLabel: '現在の目的',
+      breadcrumbHome: 'ホーム',
+      searchIntentEyebrow: '検索意図',
+      relatedToolLabel: '関連ツール',
       groupLabel: 'グループ',
       scoreLabel: 'スコア',
       pointsGoalDiff: '勝点 / 得失点',
@@ -2214,6 +2303,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     ko: makeDerivedUi(ui.en, {
       liveIntentLabel: '현재 목적',
+      breadcrumbHome: '홈',
+      searchIntentEyebrow: '검색 의도',
+      relatedToolLabel: '관련 도구',
       groupLabel: '조',
       scoreLabel: '스코어',
       pointsGoalDiff: '승점 / 득실',
@@ -2246,6 +2338,9 @@ export function getToolUiCopy(group: WorldCupContent['config']['languageGroup'])
     }),
     zh: makeDerivedUi(ui.en, {
       liveIntentLabel: '当前意图',
+      breadcrumbHome: '首页',
+      searchIntentEyebrow: '搜索意图',
+      relatedToolLabel: '相关工具',
       groupLabel: '小组',
       scoreLabel: '比分',
       pointsGoalDiff: '积分 / 净胜球',

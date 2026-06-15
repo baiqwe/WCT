@@ -378,6 +378,16 @@ type PageSeo = {
   body: string;
 };
 
+type SeoDeepDive = {
+  title: string;
+  intro: string;
+  sections: Array<{
+    title: string;
+    body: string;
+    links?: Array<{ label: string; pageKey: PageKey }>;
+  }>;
+};
+
 type LanguageCopy = {
   nav: Record<PageKey | 'faq' | 'pools', string>;
   cta: string;
@@ -409,6 +419,7 @@ type LanguageCopy = {
     body: string;
     items: Array<[string, string]>;
   };
+  seoDeepDive: SeoDeepDive;
   faq: Array<{ q: string; a: string }>;
   pages: Record<PageKey, PageSeo>;
 };
@@ -475,6 +486,32 @@ const englishCopy: LanguageCopy = {
       ['Privacy-friendly use', 'core predictions work without an account and can be explored before sharing'],
     ],
   },
+  seoDeepDive: {
+    title: 'World Cup simulator search guide',
+    intro: 'The tool is built for fans who want a working World Cup 2026 simulator, not a static article. You can start with quick group rankings, open exact score predictions only when needed, and continue into the Round of 32, quarter-finals, semi-finals, final, and champion pick.',
+    sections: [
+      {
+        title: 'World Cup 2026 simulator',
+        body: 'Use the simulator when you want the full tournament path in one place. Rank each group first, then refine the prediction with scorelines, goal totals, best third-place teams, and knockout winners. This keeps the first visit fast while still supporting detailed score prediction for users who want to test every match.',
+        links: [
+          { label: 'Group stage simulator', pageKey: 'groupStage' },
+          { label: 'Best third-place calculator', pageKey: 'thirdPlace' },
+        ],
+      },
+      {
+        title: 'Bracket predictor and score predictor',
+        body: 'The bracket predictor starts from qualified teams instead of asking users to fill a blank chart. Group winners, runners-up, and the best third-place teams feed the Round of 32, then each later round can be adjusted. Score prediction pages are available for every group, so exact goal picks support the table instead of slowing down casual users.',
+        links: [
+          { label: 'Bracket predictor', pageKey: 'bracket' },
+          { label: 'World Cup predictor', pageKey: 'predictor' },
+        ],
+      },
+      {
+        title: 'Transparent assumptions',
+        body: 'World Cup Tool is an independent fan-made simulator. It explains the 48-team format, the 12 group tables, the best third-place cutoff, and the knockout flow on the page so users can understand how each prediction moves through the tournament.',
+      },
+    ],
+  },
   faq: [
     {
       q: 'Is this a real simulator or only a landing page?',
@@ -491,12 +528,12 @@ const englishCopy: LanguageCopy = {
   ],
   pages: {
     home: {
-      title: 'World Cup 2026 Simulator - Bracket Predictor & Group Stage Calculator',
-      description: 'Simulate the World Cup 2026 tournament, rank every group, calculate the best third-place teams, generate the Round of 32 bracket, and share your prediction.',
-      keywords: 'world cup simulator, world cup 2026 simulator, world cup predictor, world cup bracket predictor, world cup group stage simulator',
+      title: 'World Cup 2026 Simulator - Group Stage, Bracket and Score Predictor',
+      description: 'Use a free World Cup 2026 simulator to rank groups, predict scores, calculate best third-place teams, build the Round of 32 bracket, and choose a champion.',
+      keywords: 'world cup simulator, world cup 2026 simulator, world cup score predictor, world cup bracket predictor, world cup group stage simulator',
       h1: 'World Cup 2026 Simulator',
       eyebrow: 'World Cup 2026 Simulator',
-      body: 'A multilingual World Cup simulator designed around the real 48-team format: group rankings, best third-place math, round-of-32 flow, private pools, and shareable predictions.',
+      body: 'Rank every group, predict scores only when you want details, and build a full path from the group stage to the World Cup Final.',
     },
     predictor: {
       title: 'World Cup 2026 Predictor - Make Your Picks & Share Your Bracket',
@@ -700,6 +737,7 @@ function mergeCopy(base: LanguageCopy, override: Partial<LanguageCopy>): Languag
     predictor: { ...base.predictor, ...override.predictor },
     thirdPlace: { ...base.thirdPlace, ...override.thirdPlace },
     seoPlan: { ...base.seoPlan, ...override.seoPlan },
+    seoDeepDive: override.seoDeepDive ?? base.seoDeepDive,
     pages: { ...base.pages, ...override.pages },
   };
 }
@@ -719,12 +757,12 @@ function spanishCopy(): Partial<LanguageCopy> {
     },
     pages: {
       home: {
-        title: 'Simulador Mundial 2026 - Predictor de Bracket y Grupos',
-        description: 'Simula el Mundial 2026, ordena grupos, calcula los mejores terceros, genera la ronda de 32 y comparte tu prediccion.',
-        keywords: 'simulador mundial 2026, predictor mundial 2026, bracket mundial, simulador fase de grupos',
-        h1: 'Simulador Mundial 2026',
+        title: 'Simulador Mundial 2026 - Grupos, Goles, Tabla y Eliminatorias',
+        description: 'Simula el Mundial 2026 con goles: ordena grupos, predice marcadores, calcula mejores terceros, genera la ronda de 32 y elige campeon.',
+        keywords: 'simulador mundial 2026, simulador mundial 2026 con goles, calculadora mundial 2026, predictor mundial 2026, bracket mundial',
+        h1: 'Simulador del Mundial 2026',
         eyebrow: 'Simulador Mundial 2026',
-        body: 'Un simulador multilingue para el formato real de 48 equipos: grupos, mejores terceros, ronda de 32, porras privadas y predicciones compartibles.',
+        body: 'Empieza ordenando cada grupo y agrega goles solo cuando quieras detalle. El simulador calcula tablas, mejores terceros, ronda de 32, eliminatorias y campeon.',
       },
       predictor: localizedPage(
         'Predictor Mundial 2026',
@@ -751,6 +789,32 @@ function spanishCopy(): Partial<LanguageCopy> {
         'Ejecuta miles de simulaciones del Mundial 2026 y compara probabilidades de campeon, final y cada ronda.',
         'simulador monte carlo mundial, probabilidades mundial 2026, prediccion probabilistica mundial'
       ),
+    },
+    seoDeepDive: {
+      title: 'Guia del simulador del Mundial 2026',
+      intro: 'Esta pagina esta pensada para busquedas como simulador mundial 2026, simulador del mundial con goles y calculadora mundial 2026. Puedes empezar rapido con el ranking de grupos o entrar en cada detalle para predecir goles y marcadores.',
+      sections: [
+        {
+          title: 'Simulador Mundial 2026 con goles',
+          body: 'El flujo no obliga a rellenar todos los partidos desde el primer minuto. Primero ordenas cada grupo, ves los clasificados y despues, si quieres precision, abres la pagina del grupo para poner goles partido por partido. Asi la tabla cambia con marcadores reales sin hacer pesada la primera visita.',
+          links: [
+            { label: 'Simulador de fase de grupos', pageKey: 'groupStage' },
+            { label: 'Calculadora de mejores terceros', pageKey: 'thirdPlace' },
+          ],
+        },
+        {
+          title: 'Calculadora Mundial 2026',
+          body: 'La calculadora conecta puntos, diferencia de goles, goles a favor, mejores terceros y ronda de 32. El objetivo es que el usuario entienda por que un equipo avanza, queda en la burbuja o cae eliminado antes de modificar el bracket.',
+          links: [
+            { label: 'Bracket Mundial 2026', pageKey: 'bracket' },
+            { label: 'Predictor Mundial 2026', pageKey: 'predictor' },
+          ],
+        },
+        {
+          title: 'Independiente y facil de revisar',
+          body: 'World Cup Tool es una herramienta hecha por fans, sin afiliacion con FIFA. Las reglas del formato 2026 se explican junto al producto para que cada prediccion sea verificable y facil de compartir.',
+        },
+      ],
     },
   };
 }
@@ -818,6 +882,38 @@ function simpleCopy(group: LocaleConfig['languageGroup']): Partial<LanguageCopy>
   } as const;
   const [h1, description] = map[group as keyof typeof map] ?? map.fr;
   const pages = simpleLocalizedPages(group, h1, description);
+  if (group === 'de') {
+    return {
+      ...commonLocalizedCopy(group),
+      pages,
+      seoDeepDive: {
+        title: 'WM 2026 Simulator und Baum Rechner',
+        intro: 'Diese Seite ist fur Suchanfragen wie WM 2026 Simulator, WM Baum Rechner, WM Plan Rechner und WM Tipp Simulator aufgebaut. Du kannst zuerst nur die Gruppen sortieren und den Turnierbaum sehen, ohne sofort jedes Ergebnis einzutragen.',
+        sections: [
+          {
+            title: 'WM 2026 Gruppenphase simulieren',
+            body: 'Der schnelle Einstieg beginnt mit der Reihenfolge jeder Gruppe. Gewinner, Zweite und beste Drittplatzierte werden automatisch in die Runde der 32 ubernommen. Wer genauer tippen mochte, offnet die Detailseite einer Gruppe und tragt Tore fur jedes Spiel ein.',
+            links: [
+              { label: 'WM Gruppenphase Simulator', pageKey: 'groupStage' },
+              { label: 'Beste Dritte Rechner', pageKey: 'thirdPlace' },
+            ],
+          },
+          {
+            title: 'WM Baum Rechner mit K.o.-Runde',
+            body: 'Der Turnierbaum wird nicht als leere Grafik gezeigt. Er entsteht aus den Gruppentabellen, dem Drittplatzierten-Vergleich und deinen Tipps fur jede K.o.-Runde. Dadurch bleibt nachvollziehbar, warum ein Team im Achtelfinale, Viertelfinale, Halbfinale oder Finale steht.',
+            links: [
+              { label: 'WM Baum Rechner', pageKey: 'bracket' },
+              { label: 'WM Tipp Simulator', pageKey: 'predictor' },
+            ],
+          },
+          {
+            title: 'Transparente Regeln',
+            body: 'World Cup Tool ist ein unabhangiger Fan-Simulator. Die Seite erklart Punkte, Tordifferenz, erzielte Tore, die acht besten Drittplatzierten und den Weg zur K.o.-Phase direkt neben dem Tool.',
+          },
+        ],
+      },
+    };
+  }
   return {
     ...commonLocalizedCopy(group),
     pages,
@@ -1463,9 +1559,9 @@ function simpleLocalizedPages(
       ['Simulateur Monte Carlo Coupe du Monde 2026', 'Lancez des simulations repetees et comparez les probabilites de chaque equipe.'],
     ],
     de: [
-      ['WM 2026 Predictor', 'Erstelle deine WM 2026 Tipps fur Gruppen, K.o.-Runden, Finalisten und Champion.'],
-      ['WM 2026 Turnierbaum', 'Baue den WM 2026 Turnierbaum von der Gruppenphase bis zum Finale.'],
-      ['WM 2026 Gruppenphase Simulator', 'Simuliere alle 12 Gruppen, Tabellen, Tie-Breaker und qualifizierte Teams.'],
+      ['WM 2026 Tipp Simulator', 'Erstelle deine WM 2026 Tipps fur Gruppen, K.o.-Runden, Finalisten und Champion.'],
+      ['WM Baum Rechner 2026', 'Baue den WM 2026 Turnierbaum von der Gruppenphase bis zum Finale und verfolge jede K.o.-Runde.'],
+      ['WM 2026 Gruppenphase Simulator', 'Simuliere alle 12 Gruppen, Tabellen, Tie-Breaker, beste Drittplatzierte und qualifizierte Teams.'],
       ['Beste Dritte Rechner', 'Berechne die acht besten Drittplatzierten fur die Runde der 32.'],
       ['WM 2026 Monte Carlo Simulator', 'Fuhre viele Simulationen aus und vergleiche Titel- und Rundenwahrscheinlichkeiten.'],
     ],
@@ -1506,6 +1602,23 @@ function simpleLocalizedPages(
     ],
   } as const;
   const selected = labels[group as keyof typeof labels] ?? labels.fr;
+  if (group === 'de') {
+    return {
+      home: {
+        title: 'WM 2026 Simulator & Baum Rechner - Gruppen, K.o.-Runde und Finale tippen',
+        description: 'Simuliere die WM 2026 mit Gruppenphase, besten Drittplatzierten, K.o.-Runde, Ergebnissen und Turnierbaum. Kostenloser WM 2026 Rechner.',
+        keywords: 'wm 2026 simulator, wm baum rechner, wm plan rechner, wm tipp simulator, wm gruppenphase simulator',
+        h1: 'WM 2026 Simulator und Turnierbaum Rechner',
+        eyebrow: 'WM 2026 Simulator',
+        body: 'Sortiere zuerst die Gruppen, berechne die besten Drittplatzierten und baue danach den kompletten WM-Baum bis zum Finale.',
+      },
+      predictor: localizedPage(selected[0][0], selected[0][1], 'wm tipp simulator, wm 2026 predictor, wm tipps, wm vorhersage'),
+      bracket: localizedPage(selected[1][0], selected[1][1], 'wm baum rechner, wm 2026 turnierbaum, wm plan rechner, wm k.o.-runde'),
+      groupStage: localizedPage(selected[2][0], selected[2][1], 'wm gruppenphase simulator, wm 2026 gruppen rechner, wm tabellen rechner'),
+      thirdPlace: localizedPage(selected[3][0], selected[3][1], 'beste dritte rechner, wm 2026 beste drittplatzierte, runde der 32 rechner'),
+      monteCarlo: localizedPage(selected[4][0], selected[4][1], 'wm monte carlo simulator, wm wahrscheinlichkeiten, wm 2026 simulation'),
+    };
+  }
   return {
     home: localizedPage(h1, description, `${h1}, ${description}`),
     predictor: localizedPage(selected[0][0], selected[0][1], `${selected[0][0]}, ${selected[0][1]}`),

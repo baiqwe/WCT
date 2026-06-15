@@ -47,12 +47,19 @@ export const Route = createFileRoute('/$locale/$page')({
     };
     const appJsonLd = {
       '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      name: websiteConfig.metadata?.name ?? 'World Cup 2026 Simulator',
+      '@type': 'WebApplication',
+      name: page.seo.h1,
       applicationCategory: 'SportsApplication',
       operatingSystem: 'Web',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       description: page.seo.description,
+      url: getCanonicalUrl(path),
+      isAccessibleForFree: true,
+      publisher: {
+        '@type': 'Organization',
+        name: websiteConfig.metadata?.name ?? 'World Cup Tool',
+        url: getCanonicalUrl(getPagePath(defaultLocale, 'home')),
+      },
     };
     const breadcrumbJsonLd = {
       '@context': 'https://schema.org',
