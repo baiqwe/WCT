@@ -35,6 +35,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AuthErrorRouteImport } from './routes/auth/error'
+import { Route as ApiWorldCupLiveRouteImport } from './routes/api/world-cup-live'
 import { Route as ApiPingRouteImport } from './routes/api/ping'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as testsTestErrorRouteImport } from './routes/(tests)/test-error'
@@ -187,6 +188,11 @@ const AuthErrorRoute = AuthErrorRouteImport.update({
   path: '/error',
   getParentRoute: () => AuthRoute,
 } as any)
+const ApiWorldCupLiveRoute = ApiWorldCupLiveRouteImport.update({
+  id: '/api/world-cup-live',
+  path: '/api/world-cup-live',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPingRoute = ApiPingRouteImport.update({
   id: '/api/ping',
   path: '/api/ping',
@@ -318,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/test-error': typeof testsTestErrorRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/ping': typeof ApiPingRoute
+  '/api/world-cup-live': typeof ApiWorldCupLiveRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -364,6 +371,7 @@ export interface FileRoutesByTo {
   '/test-error': typeof testsTestErrorRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/ping': typeof ApiPingRoute
+  '/api/world-cup-live': typeof ApiWorldCupLiveRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -414,6 +422,7 @@ export interface FileRoutesById {
   '/(tests)/test-error': typeof testsTestErrorRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/ping': typeof ApiPingRoute
+  '/api/world-cup-live': typeof ApiWorldCupLiveRoute
   '/auth/error': typeof AuthErrorRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -465,6 +474,7 @@ export interface FileRouteTypes {
     | '/test-error'
     | '/admin/users'
     | '/api/ping'
+    | '/api/world-cup-live'
     | '/auth/error'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -511,6 +521,7 @@ export interface FileRouteTypes {
     | '/test-error'
     | '/admin/users'
     | '/api/ping'
+    | '/api/world-cup-live'
     | '/auth/error'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -560,6 +571,7 @@ export interface FileRouteTypes {
     | '/(tests)/test-error'
     | '/admin/users'
     | '/api/ping'
+    | '/api/world-cup-live'
     | '/auth/error'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -608,6 +620,7 @@ export interface RootRouteChildren {
   testsTest404Route: typeof testsTest404Route
   testsTestErrorRoute: typeof testsTestErrorRoute
   ApiPingRoute: typeof ApiPingRoute
+  ApiWorldCupLiveRoute: typeof ApiWorldCupLiveRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -799,6 +812,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/error'
       preLoaderRoute: typeof AuthErrorRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/api/world-cup-live': {
+      id: '/api/world-cup-live'
+      path: '/api/world-cup-live'
+      fullPath: '/api/world-cup-live'
+      preLoaderRoute: typeof ApiWorldCupLiveRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/ping': {
       id: '/api/ping'
@@ -1056,6 +1076,7 @@ const rootRouteChildren: RootRouteChildren = {
   testsTest404Route: testsTest404Route,
   testsTestErrorRoute: testsTestErrorRoute,
   ApiPingRoute: ApiPingRoute,
+  ApiWorldCupLiveRoute: ApiWorldCupLiveRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

@@ -54,6 +54,9 @@ type MatchScore = {
   home: string;
   homeScore: number;
   id: string;
+  source?: string;
+  status?: 'scheduled' | 'live' | 'finished';
+  userPredicted?: boolean;
   venue: string;
 };
 type StandingRow = {
@@ -83,14 +86,63 @@ export function WorldCupHomePage({ locale, pageKey = 'home' }: WorldCupHomePageP
   const [scores, setScores] = useState(initialScores);
   const initialGroupRankings = useMemo(() => createInitialGroupRankings(), []);
   const [groupRankings, setGroupRankings] = useState(initialGroupRankings);
-  const [detailedGroups, setDetailedGroups] = useState<DetailedGroups>({});
+  const [detailedGroups, setDetailedGroups] = useState<DetailedGroups>(() =>
+    Object.fromEntries(
+      initialScores
+        .filter((match) => match.status === 'finished')
+        .map((match) => [match.group, true])
+    ) as DetailedGroups
+  );
 
   useEffect(() => {
     const stored = loadStoredTournamentScores(initialScores);
     if (Object.keys(stored.detailedGroups).length === 0) return;
     setScores(stored.scores);
-    setDetailedGroups(stored.detailedGroups);
+    setDetailedGroups((current) => ({ ...current, ...stored.detailedGroups }));
   }, [initialScores]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/world-cup-live')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { matches?: Partial<MatchScore>[] } | null) => {
+        if (!isMounted || !payload?.matches?.length) return;
+        const nextDetailedGroups: DetailedGroups = {};
+        setScores((current) =>
+          current.map((match) => {
+            const liveMatch = payload.matches?.find((item) => item.id === match.id);
+            if (!liveMatch) return match;
+            if (liveMatch.status === 'finished') {
+              nextDetailedGroups[match.group] = true;
+            }
+            return {
+              ...match,
+              awayScore:
+                typeof liveMatch.awayScore === 'number'
+                  ? liveMatch.awayScore
+                  : match.awayScore,
+              date: liveMatch.date ?? match.date,
+              homeScore:
+                typeof liveMatch.homeScore === 'number'
+                  ? liveMatch.homeScore
+                  : match.homeScore,
+              source: liveMatch.source ?? match.source,
+              status: liveMatch.status ?? match.status,
+              userPredicted:
+                liveMatch.status === 'finished' ? true : match.userPredicted,
+              venue: liveMatch.venue ?? match.venue,
+            };
+          })
+        );
+        if (Object.keys(nextDetailedGroups).length) {
+          setDetailedGroups((current) => ({ ...current, ...nextDetailedGroups }));
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const projectedWinners = Object.values(picks);
   const standings = useMemo(
@@ -2643,8 +2695,10 @@ function createInitialGroupScores(): MatchScore[] {
     const awayScore = diff < -12 ? 2 : diff > 12 ? 0 : 1;
     return {
       ...match,
-      homeScore,
-      awayScore,
+      homeScore: match.homeScore ?? homeScore,
+      awayScore: match.awayScore ?? awayScore,
+      status: match.status ?? 'scheduled',
+      userPredicted: match.status === 'finished',
     };
   });
 }
@@ -2667,7 +2721,7 @@ function updateScore(
   setDetailedGroups((current) => ({ ...current, [group]: true }));
   setScores((current) => {
     const next = current.map((match) =>
-      match.id === id ? { ...match, [key]: safeValue } : match
+      match.id === id ? { ...match, [key]: safeValue, userPredicted: true } : match
     );
     saveGroupScores(group, next.filter((match) => match.group === group));
     return next;
@@ -2713,7 +2767,9 @@ function calculateStandings(
 
 function calculateScoreStandings(scores: MatchScore[]): StandingRow[] {
   const tables = new Map<string, Map<string, Omit<StandingRow, 'rank'>>>();
-  for (const match of scores) {
+  for (const match of scores.filter(
+    (item) => item.status === 'finished' || item.userPredicted
+  )) {
     if (!tables.has(match.group)) {
       tables.set(match.group, new Map());
     }
@@ -2777,6 +2833,7 @@ function saveGroupScores(group: string, groupScores: MatchScore[]) {
           awayScore: match.awayScore,
           homeScore: match.homeScore,
           id: match.id,
+          userPredicted: match.userPredicted,
         }))
       )
     );
@@ -2803,6 +2860,7 @@ function loadStoredTournamentScores(initialScores: MatchScore[]) {
         awayScore?: number;
         homeScore?: number;
         id?: string;
+        userPredicted?: boolean;
       }>;
       if (!Array.isArray(stored)) continue;
 
@@ -2813,6 +2871,7 @@ function loadStoredTournamentScores(initialScores: MatchScore[]) {
         if (!match) continue;
         match.homeScore = sanitizeScoreValue(item.homeScore);
         match.awayScore = sanitizeScoreValue(item.awayScore);
+        match.userPredicted = item.userPredicted !== false;
         scoreById.set(item.id, match);
         applied = true;
       }

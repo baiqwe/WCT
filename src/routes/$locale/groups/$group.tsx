@@ -24,6 +24,7 @@ import { useEffect, useMemo, useState } from 'react';
 type GroupScore = WorldCupMatch & {
   awayScore: number;
   homeScore: number;
+  userPredicted?: boolean;
 };
 
 type GroupStanding = {
@@ -128,6 +129,41 @@ function GroupPredictionPage() {
     const storedScores = loadGroupScores(groupPage.group, initialScores);
     if (storedScores) setScores(storedScores);
   }, [groupPage.group, initialScores]);
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/world-cup-live')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { matches?: Partial<GroupScore>[] } | null) => {
+        if (!isMounted || !payload?.matches?.length) return;
+        setScores((current) =>
+          current.map((match) => {
+            const liveMatch = payload.matches?.find((item) => item.id === match.id);
+            if (!liveMatch) return match;
+            return {
+              ...match,
+              awayScore:
+                typeof liveMatch.awayScore === 'number'
+                  ? liveMatch.awayScore
+                  : match.awayScore,
+              date: liveMatch.date ?? match.date,
+              homeScore:
+                typeof liveMatch.homeScore === 'number'
+                  ? liveMatch.homeScore
+                  : match.homeScore,
+              source: liveMatch.source ?? match.source,
+              status: liveMatch.status ?? match.status,
+              userPredicted:
+                liveMatch.status === 'finished' ? true : match.userPredicted,
+              venue: liveMatch.venue ?? match.venue,
+            };
+          })
+        );
+      })
+      .catch(() => undefined);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const standings = useMemo(
     () => calculateGroupStandings(scores, group?.teams ?? []),
     [scores, group?.teams]
@@ -417,8 +453,11 @@ function createInitialScores(group: string): GroupScore[] {
     const awayStrength = getTeamStrength(match.away);
     return {
       ...match,
-      homeScore: Math.max(0, Math.round((homeStrength - awayStrength + 18) / 18)),
-      awayScore: Math.max(0, Math.round((awayStrength - homeStrength + 14) / 20)),
+      homeScore:
+        match.homeScore ?? Math.max(0, Math.round((homeStrength - awayStrength + 18) / 18)),
+      awayScore:
+        match.awayScore ?? Math.max(0, Math.round((awayStrength - homeStrength + 14) / 20)),
+      userPredicted: match.status === 'finished',
     };
   });
 }
@@ -431,7 +470,7 @@ function updateGroupScore(
 ) {
   return scores.map((match) =>
     match.id === matchId
-      ? { ...match, [field]: Number.isFinite(value) ? Math.max(0, Math.min(12, value)) : 0 }
+      ? { ...match, [field]: Number.isFinite(value) ? Math.max(0, Math.min(12, value)) : 0, userPredicted: true }
       : match
   );
 }
@@ -450,6 +489,7 @@ function saveGroupScores(group: string, scores: GroupScore[]) {
           awayScore: match.awayScore,
           homeScore: match.homeScore,
           id: match.id,
+          userPredicted: match.userPredicted,
         }))
       )
     );
@@ -467,6 +507,7 @@ function loadGroupScores(group: string, fallbackScores: GroupScore[]) {
       awayScore?: number;
       homeScore?: number;
       id?: string;
+      userPredicted?: boolean;
     }>;
     if (!Array.isArray(stored)) return null;
     const byId = new Map(fallbackScores.map((match) => [match.id, { ...match }]));
@@ -477,6 +518,7 @@ function loadGroupScores(group: string, fallbackScores: GroupScore[]) {
       if (!match) continue;
       match.homeScore = sanitizeScoreValue(item.homeScore);
       match.awayScore = sanitizeScoreValue(item.awayScore);
+      match.userPredicted = item.userPredicted !== false;
       byId.set(item.id, match);
       applied = true;
     }
@@ -507,7 +549,9 @@ function calculateGroupStandings(
     });
   });
 
-  scores.forEach((match) => {
+  scores
+    .filter((match) => match.status === 'finished' || match.userPredicted)
+    .forEach((match) => {
     const home = table.get(match.home);
     const away = table.get(match.away);
     if (!home || !away) return;
